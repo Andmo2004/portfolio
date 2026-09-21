@@ -1,0 +1,218 @@
+---
+// src/components/Navbar.astro
+import LiveClock from './LiveClock.astro';
+import type { Locale, TranslationSchema } from '../i18n/translations';
+
+interface Props {
+  currentLocale: Locale;
+  t: TranslationSchema;
+}
+
+const { currentLocale, t } = Astro.props;
+
+const navLinks = [
+  { label: t.nav.projects, href: '#projects' },
+  { label: t.nav.tech, href: '#tech' },
+  { label: t.nav.about, href: '#about' },
+  { label: t.nav.contact, href: '#contact' },
+  { label: t.nav.github, href: 'https://github.com/Andmo2004', external: true },
+  { label: t.nav.linkedin || 'LinkedIn', href: 'https://www.linkedin.com/in/andrés-moros-rincón-a0247639b', external: true },
+];
+---
+
+<header class="nav">
+  <div class="nav__brand">
+    <a href={currentLocale === 'en' ? '/en' : '/'} class="nav__mark">
+      {t.nav.mark}
+    </a>
+  </div>
+
+  <nav class="nav__menu" aria-label="Navegación principal">
+    <ul class="nav__links">
+      {navLinks.map((link) => (
+        <li>
+          <a
+            href={link.href}
+            target={link.external ? '_blank' : undefined}
+            rel={link.external ? 'noopener noreferrer' : undefined}
+          >
+            {link.label}
+          </a>
+        </li>
+      ))}
+    </ul>
+  </nav>
+
+  <div class="nav__actions">
+    <a
+      href={t.nav.langSwitchTarget}
+      class="nav__lang-toggle"
+      title={`Cambiar idioma a ${t.nav.langSwitchLabel}`}
+    >
+      <span class="nav__lang-bracket">[</span>
+      <span class="nav__lang-code">{t.nav.langSwitchLabel}</span>
+      <span class="nav__lang-bracket">]</span>
+    </a>
+
+    <LiveClock
+      baseTimeZone="Europe/Madrid"
+      madridLabel={t.clock.madridLabel}
+      visitorLabel={t.clock.visitorLabel}
+    />
+  </div>
+</header>
+
+<style>
+  .nav {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-sm);
+    padding-inline: var(--grid-margin);
+    padding-block: var(--space-sm);
+    background: color-mix(in srgb, var(--bg) 88%, transparent);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--border);
+    transition: background-color var(--duration-base) var(--ease-out),
+                border-color var(--duration-base) var(--ease-out);
+  }
+
+  .nav__brand {
+    display: flex;
+    align-items: center;
+  }
+
+  .nav__mark {
+    font-family: var(--font-serif);
+    font-style: italic;
+    font-size: var(--text-lead);
+    font-weight: 400;
+    color: var(--fg);
+    text-decoration: none;
+    letter-spacing: var(--tracking-tight);
+    white-space: nowrap;
+    transition: color var(--duration-fast) var(--ease-out);
+  }
+
+  .nav__mark:hover,
+  .nav__mark:focus-visible {
+    color: var(--fg-muted);
+  }
+
+  .nav__menu {
+    display: flex;
+    align-items: center;
+  }
+
+  .nav__links {
+    display: flex;
+    align-items: center;
+    gap: var(--space-md);
+    list-style: none;
+  }
+
+  .nav__links a {
+    position: relative;
+    font-family: var(--font-serif);
+    font-size: var(--text-body);
+    color: var(--fg-muted);
+    text-decoration: none;
+    transition: color var(--duration-fast) var(--ease-out);
+    white-space: nowrap;
+  }
+
+  .nav__links a::before,
+  .nav__links a::after {
+    color: var(--fg-subtle);
+    opacity: 0;
+    transition: opacity var(--duration-fast) var(--ease-out),
+                margin var(--duration-fast) var(--ease-out);
+    font-family: var(--font-serif);
+  }
+
+  .nav__links a::before {
+    content: '[';
+    margin-right: 0;
+  }
+
+  .nav__links a::after {
+    content: ']';
+    margin-left: 0;
+  }
+
+  .nav__links a:hover,
+  .nav__links a:focus-visible {
+    color: var(--fg);
+  }
+
+  .nav__links a:hover::before,
+  .nav__links a:hover::after,
+  .nav__links a:focus-visible::before,
+  .nav__links a:focus-visible::after {
+    opacity: 1;
+  }
+
+  .nav__links a:hover::before,
+  .nav__links a:focus-visible::before {
+    margin-right: 0.35em;
+  }
+
+  .nav__links a:hover::after,
+  .nav__links a:focus-visible::after {
+    margin-left: 0.35em;
+  }
+
+  .nav__actions {
+    display: flex;
+    align-items: center;
+    gap: var(--space-md);
+  }
+
+  .nav__lang-toggle {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.2em;
+    font-family: var(--font-mono);
+    font-size: var(--text-caption);
+    color: var(--fg-muted);
+    text-decoration: none;
+    transition: color var(--duration-fast) var(--ease-out);
+  }
+
+  .nav__lang-bracket {
+    color: var(--fg-subtle);
+    transition: transform var(--duration-fast) var(--ease-out);
+  }
+
+  .nav__lang-code {
+    font-weight: 600;
+  }
+
+  .nav__lang-toggle:hover,
+  .nav__lang-toggle:focus-visible {
+    color: var(--fg);
+  }
+
+  .nav__lang-toggle:hover .nav__lang-bracket:first-child,
+  .nav__lang-toggle:focus-visible .nav__lang-bracket:first-child {
+    transform: translateX(-2px);
+  }
+
+  .nav__lang-toggle:hover .nav__lang-bracket:last-child,
+  .nav__lang-toggle:focus-visible .nav__lang-bracket:last-child {
+    transform: translateX(2px);
+  }
+
+  @media (max-width: 860px) {
+    .nav__links {
+      display: none;
+    }
+    .nav__actions {
+      gap: var(--space-xs);
+    }
+  }
+</style>

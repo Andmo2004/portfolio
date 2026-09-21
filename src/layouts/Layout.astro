@@ -1,0 +1,54 @@
+---
+// src/layouts/Layout.astro
+import '@fontsource-variable/newsreader';
+import '@fontsource-variable/newsreader/wght-italic.css';
+import '@fontsource-variable/jetbrains-mono/wght.css';
+import '../styles/tokens.css';
+
+interface Props {
+  title: string;
+  description: string;
+  lang?: 'es' | 'en';
+}
+
+const { title, description, lang = 'es' } = Astro.props;
+---
+
+<!doctype html>
+<html lang={lang}>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="icon" href="/favicon.ico" />
+    <meta name="generator" content={Astro.generator} />
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <meta name="color-scheme" content="light dark" />
+    <meta name="author" content="Andrés Moros" />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:type" content="website" />
+    <meta name="twitter:card" content="summary_large_image" />
+
+    <!-- Detección instantánea de tema según preferencia del sistema (sin parpadeo) -->
+    <script is:inline>
+      (function () {
+        const prefersDark = window.matchMedia('(prefers-color-scheme: dark)');
+        function updateTheme(mediaQuery) {
+          const theme = mediaQuery.matches ? 'dark' : 'light';
+          document.documentElement.setAttribute('data-theme', theme);
+        }
+        updateTheme(prefersDark);
+        try {
+          prefersDark.addEventListener('change', updateTheme);
+        } catch (e) {
+          prefersDark.addListener(updateTheme);
+        }
+      })();
+    </script>
+  </head>
+  <body>
+    <slot />
+  </body>
+</html>

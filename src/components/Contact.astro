@@ -1,0 +1,229 @@
+---
+// src/components/Contact.astro
+import type { TranslationSchema } from '../i18n/translations';
+
+interface Props {
+  t: TranslationSchema;
+}
+
+const { t } = Astro.props;
+---
+
+<section id="contact" class="contact-section grid" aria-labelledby="contact-title" data-reveal-simple>
+  <div class="contact-section__content">
+    <span class="contact-section__ref">[{t.contact.sectionRef}]</span>
+    <h2 id="contact-title" class="contact-section__title">{t.contact.sectionTitle}</h2>
+    
+    <p class="contact-section__lead">
+      {t.contact.lead}
+    </p>
+
+    <div class="contact-section__details">
+      <div class="contact-item">
+        <span class="contact-item__label">{t.contact.emailLabel}</span>
+        <a href="mailto:andresmorosrincon@gmail.com" class="contact-item__link contact-item__link--email">
+          andresmorosrincon@gmail.com
+        </a>
+      </div>
+
+      <div class="contact-item">
+        <span class="contact-item__label">{t.contact.locationLabel}</span>
+        <span class="contact-item__value">{t.contact.locationValue}</span>
+      </div>
+
+      <div class="contact-item">
+        <span class="contact-item__label">{t.contact.linksLabel}</span>
+        <div class="contact-item__links">
+          <a
+            href="https://github.com/Andmo2004"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="contact-link"
+          >
+            <span class="contact-link__bracket">[</span>
+            <span>GitHub</span>
+            <span class="contact-link__arrow">↗</span>
+            <span class="contact-link__bracket">]</span>
+          </a>
+
+          <a
+            href="https://www.linkedin.com/in/andrés-moros-rincón-a0247639b"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="contact-link"
+          >
+            <span class="contact-link__bracket">[</span>
+            <span>LinkedIn</span>
+            <span class="contact-link__arrow">↗</span>
+            <span class="contact-link__bracket">]</span>
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .contact-section {
+    padding-block: var(--space-3xl);
+    border-top: 1px solid var(--border);
+    transition: opacity var(--duration-base) var(--ease-out);
+  }
+
+  .contact-section__content {
+    grid-column: 2 / 9;
+  }
+
+  .contact-section__ref {
+    display: inline-block;
+    font-family: var(--font-serif);
+    font-size: var(--text-small);
+    color: var(--fg-subtle);
+    margin-bottom: var(--space-2xs);
+  }
+
+  .contact-section__title {
+    font-family: var(--font-serif);
+    font-size: var(--text-h2);
+    font-weight: 400;
+    line-height: var(--leading-snug);
+    letter-spacing: var(--tracking-tight);
+    color: var(--fg);
+    margin-bottom: var(--space-xs);
+  }
+
+  .contact-section__lead {
+    font-family: var(--font-serif);
+    font-size: var(--text-lead);
+    line-height: var(--leading-snug);
+    color: var(--fg-muted);
+    max-inline-size: 50ch;
+    margin-bottom: var(--space-xl);
+  }
+
+  .contact-section__details {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-md);
+  }
+
+  .contact-item {
+    display: flex;
+    flex-direction: column;
+    gap: 0.35em;
+  }
+
+  .contact-item__label {
+    font-family: var(--font-mono);
+    font-size: var(--text-caption);
+    color: var(--fg-subtle);
+    letter-spacing: var(--tracking-wide);
+  }
+
+  .contact-item__link--email {
+    font-family: var(--font-serif);
+    font-size: var(--text-h3);
+    color: var(--fg);
+    text-decoration: underline;
+    text-decoration-color: var(--border);
+    text-underline-offset: 6px;
+    transition: color var(--duration-fast) var(--ease-out),
+                text-decoration-color var(--duration-fast) var(--ease-out);
+  }
+
+  .contact-item__link--email:hover,
+  .contact-item__link--email:focus-visible {
+    color: var(--coffee-dark);
+    text-decoration-color: var(--coffee-dark);
+  }
+
+  .contact-item__value {
+    font-family: var(--font-serif);
+    font-size: var(--text-body);
+    color: var(--fg);
+  }
+
+  .contact-item__links {
+    display: flex;
+    align-items: center;
+    gap: var(--space-md);
+    flex-wrap: wrap;
+  }
+
+  .contact-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35em;
+    padding: 0.35em 0.8em;
+    font-family: var(--font-serif);
+    font-size: var(--text-body);
+    color: var(--fg);
+    background: var(--surface);
+    border: 1px solid var(--border);
+    text-decoration: none;
+    transition: background-color var(--duration-fast) var(--ease-out),
+                border-color var(--duration-fast) var(--ease-out),
+                color var(--duration-fast) var(--ease-out),
+                transform var(--duration-fast) var(--ease-out);
+  }
+
+  .contact-link__bracket {
+    color: var(--fg-subtle);
+    transition: transform var(--duration-fast) var(--ease-out);
+  }
+
+  .contact-link__arrow {
+    font-family: var(--font-mono);
+    font-size: var(--text-caption);
+    font-weight: 700;
+    color: var(--coffee-dark);
+    transition: transform var(--duration-fast) var(--ease-out);
+  }
+
+  .contact-link:hover,
+  .contact-link:focus-visible {
+    border-color: var(--fg-subtle);
+    background: color-mix(in srgb, var(--surface) 70%, var(--bg));
+    transform: translateY(-2px);
+  }
+
+  .contact-link:hover .contact-link__bracket:first-child,
+  .contact-link:focus-visible .contact-link__bracket:first-child {
+    transform: translateX(-3px);
+  }
+
+  .contact-link:hover .contact-link__bracket:last-child,
+  .contact-link:focus-visible .contact-link__bracket:last-child {
+    transform: translateX(3px);
+  }
+
+  .contact-link:hover .contact-link__arrow,
+  .contact-link:focus-visible .contact-link__arrow {
+    transform: translateX(3px);
+  }
+
+  [data-reveal-simple] {
+    opacity: 0;
+  }
+
+  [data-reveal-simple].is-visible {
+    opacity: 1;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    [data-reveal-simple] {
+      opacity: 1;
+    }
+  }
+
+  @media (max-width: 860px) {
+    .contact-section__content {
+      grid-column: 1 / -1;
+    }
+
+    .contact-item__link--email {
+      font-size: var(--text-lead);
+      word-break: break-all;
+    }
+  }
+</style>

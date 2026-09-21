@@ -1,0 +1,195 @@
+---
+// src/components/About.astro
+import type { TranslationSchema } from '../i18n/translations';
+
+interface Props {
+  t: TranslationSchema;
+}
+
+const { t } = Astro.props;
+---
+
+<section id="about" class="about-section grid" aria-labelledby="about-title" data-reveal-simple>
+  <div class="about-section__text">
+    <span class="about-section__ref">[{t.about.sectionRef}]</span>
+    <h2 id="about-title" class="about-section__title">{t.about.sectionTitle}</h2>
+    
+    <p class="about-section__lead">
+      {t.about.lead}
+    </p>
+
+    <div class="about-section__body">
+      {t.about.paragraphs.map((para) => (
+        <p>{para}</p>
+      ))}
+    </div>
+  </div>
+
+  <aside class="about-section__aside">
+    <div class="about-card">
+      <div class="about-card__header">
+        <span class="about-card__symbol">·</span>
+        <span class="about-card__title">metadata // overview</span>
+      </div>
+
+      <dl class="about-card__list">
+        {t.about.highlights.map((h) => (
+          <div class="about-card__item">
+            <dt class="about-card__label">{h.label}</dt>
+            <dd class="about-card__value">{h.value}</dd>
+          </div>
+        ))}
+      </dl>
+    </div>
+  </aside>
+</section>
+
+<style>
+  .about-section {
+    padding-block: var(--space-3xl);
+    border-top: 1px solid var(--border);
+    transition: opacity var(--duration-base) var(--ease-out);
+  }
+
+  .about-section__text {
+    grid-column: 1 / 8;
+  }
+
+  .about-section__ref {
+    display: inline-block;
+    font-family: var(--font-serif);
+    font-size: var(--text-small);
+    color: var(--fg-subtle);
+    margin-bottom: var(--space-2xs);
+  }
+
+  .about-section__title {
+    font-family: var(--font-serif);
+    font-size: var(--text-h2);
+    font-weight: 400;
+    line-height: var(--leading-snug);
+    letter-spacing: var(--tracking-tight);
+    color: var(--fg);
+    margin-bottom: var(--space-md);
+  }
+
+  .about-section__lead {
+    font-family: var(--font-serif);
+    font-size: var(--text-lead);
+    line-height: var(--leading-snug);
+    color: var(--fg);
+    max-inline-size: 54ch;
+    margin-bottom: var(--space-md);
+  }
+
+  .about-section__body {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-sm);
+    font-family: var(--font-serif);
+    font-size: var(--text-body);
+    line-height: var(--leading-body);
+    color: var(--fg-muted);
+    max-inline-size: 60ch;
+  }
+
+  .about-section__aside {
+    grid-column: 8 / 13;
+    padding-top: var(--space-xl);
+  }
+
+  .about-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-md);
+    overflow: hidden;
+    transition: border-color var(--duration-base) var(--ease-out);
+  }
+
+  .about-card:hover {
+    border-color: var(--fg-subtle);
+  }
+
+  .about-card__header {
+    display: flex;
+    align-items: center;
+    gap: 0.6em;
+    padding: var(--space-2xs) var(--space-sm);
+    border-bottom: 1px solid var(--border);
+    background: color-mix(in srgb, var(--surface) 85%, var(--bg));
+  }
+
+  .about-card__symbol {
+    font-family: var(--font-mono);
+    font-size: var(--text-caption);
+    font-weight: 700;
+    color: var(--coffee-dark);
+  }
+
+  .about-card__title {
+    font-family: var(--font-mono);
+    font-size: var(--text-caption);
+    color: var(--fg-subtle);
+    letter-spacing: var(--tracking-wide);
+  }
+
+  .about-card__list {
+    display: flex;
+    flex-direction: column;
+    padding: var(--space-sm);
+    gap: var(--space-sm);
+    border-radius: var(--radius-md);
+  }
+
+  .about-card__item {
+    display: flex;
+    flex-direction: column;
+    gap: 0.2em;
+    border-bottom: 1px dashed var(--border);
+    padding-bottom: var(--space-2xs);
+  }
+
+  .about-card__item:last-child {
+    border-bottom: none;
+    padding-bottom: 0;
+  }
+
+  .about-card__label {
+    font-family: var(--font-mono);
+    font-size: var(--text-caption);
+    color: var(--fg-subtle);
+    letter-spacing: var(--tracking-wide);
+  }
+
+  .about-card__value {
+    font-family: var(--font-serif);
+    font-size: var(--text-small);
+    color: var(--fg);
+    line-height: var(--leading-snug);
+  }
+
+  [data-reveal-simple] {
+    opacity: 0;
+  }
+
+  [data-reveal-simple].is-visible {
+    opacity: 1;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    [data-reveal-simple] {
+      opacity: 1;
+    }
+  }
+
+  @media (max-width: 860px) {
+    .about-section__text,
+    .about-section__aside {
+      grid-column: 1 / -1;
+    }
+
+    .about-section__aside {
+      padding-top: var(--space-md);
+    }
+  }
+</style>

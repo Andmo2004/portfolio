@@ -1,0 +1,365 @@
+---
+// src/components/ProjectCard.astro
+import ProjectSchematic from './ProjectSchematic.astro';
+
+interface Props {
+  index: number;
+  title: string;
+  description: string;
+  tags: string[];
+  href: string;
+  exploreLabel?: string;
+  schematicId?: 'minigpt' | 'miclustering' | 'enterprise';
+  schematicTitle?: string;
+  codeExcerpt?: string;
+  image?: {
+    src: string;
+    alt: string;
+  };
+  isExternal?: boolean;
+}
+
+const {
+  index,
+  title,
+  description,
+  tags,
+  href,
+  exploreLabel = 'Explore',
+  schematicId,
+  schematicTitle = 'fig. 01 > system schematic',
+  codeExcerpt,
+  image,
+  isExternal = true,
+} = Astro.props;
+
+const isReversed = index % 2 === 1;
+---
+
+<article
+  class:list={['case-study', { 'case-study--reversed': isReversed }]}
+  data-reveal
+>
+  <span class="case-study__ref">[{index + 1}]</span>
+
+  <div class="case-study__media">
+    {image ? (
+      <img src={image.src} alt={image.alt} loading="lazy" />
+    ) : schematicId ? (
+      <div class="case-study__schematic-wrapper">
+        <div class="case-study__schematic-header">
+          <span class="case-study__schematic-symbol">&gt;&gt;&gt;</span>
+          <span class="case-study__schematic-label">{schematicTitle}</span>
+        </div>
+        <div class="case-study__schematic-body">
+          <ProjectSchematic schematicId={schematicId} />
+        </div>
+      </div>
+    ) : codeExcerpt ? (
+      <div class="case-study__code-wrapper">
+        <div class="case-study__code-header">
+          <span class="case-study__code-symbol">&gt;&gt;</span>
+          <span class="case-study__code-label">preview // snippet</span>
+        </div>
+        <pre class="case-study__code"><code>{codeExcerpt}</code></pre>
+      </div>
+    ) : (
+      <div class="case-study__placeholder">
+        <span>Boceto en desarrollo</span>
+      </div>
+    )}
+  </div>
+
+  <div class="case-study__content">
+    <h3 class="case-study__title">{title}</h3>
+    <p class="case-study__description">{description}</p>
+    
+    <ul class="case-study__tags" aria-label="Tecnologías empleadas">
+      {tags.map((tag) => (
+        <li>{tag}</li>
+      ))}
+    </ul>
+
+    <a
+      href={href}
+      class="case-study__link"
+      target={isExternal ? '_blank' : undefined}
+      rel={isExternal ? 'noopener noreferrer' : undefined}
+    >
+      <span>{exploreLabel}</span>
+      <span class="case-study__arrow" aria-hidden="true">→</span>
+    </a>
+  </div>
+</article>
+
+<style>
+  .case-study {
+    --reveal-x: 24px;
+    display: grid;
+    grid-template-columns: repeat(12, 1fr);
+    align-items: center;
+    gap: var(--grid-gutter);
+    padding-block: var(--space-xl);
+    border-top: 1px solid var(--border);
+    transition: border-color var(--duration-base) var(--ease-out);
+  }
+
+  .case-study--reversed {
+    --reveal-x: -24px;
+  }
+
+  .case-study__ref {
+    grid-column: 1 / 2;
+    align-self: start;
+    font-family: var(--font-serif);
+    font-size: var(--text-small);
+    color: var(--fg-subtle);
+    padding-top: var(--space-2xs);
+    transition: color var(--duration-fast) var(--ease-out);
+  }
+
+  .case-study:hover .case-study__ref {
+    color: var(--fg);
+  }
+
+  .case-study__media {
+    grid-column: 2 / 8;
+    aspect-ratio: 4 / 3;
+    overflow: hidden;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    clip-path: inset(0 0 0 0 round var(--radius-lg));
+    box-shadow: 0 4px 20px -8px color-mix(in srgb, var(--fg) 4%, transparent);
+    transition: transform var(--duration-base) var(--ease-out),
+                border-color var(--duration-base) var(--ease-out);
+  }
+
+  .case-study:hover .case-study__media {
+    border-color: var(--fg-subtle);
+  }
+
+  .case-study__media img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: var(--radius-lg);
+    transition: transform 700ms var(--ease-out);
+  }
+
+  .case-study:hover .case-study__media img {
+    transform: scale(1.03);
+  }
+
+  .case-study__schematic-wrapper,
+  .case-study__code-wrapper {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    background: var(--surface);
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+  }
+
+  .case-study__schematic-header,
+  .case-study__code-header {
+    display: flex;
+    align-items: center;
+    gap: 0.6em;
+    padding: var(--space-2xs) var(--space-sm);
+    border-bottom: 1px solid var(--border);
+    background: color-mix(in srgb, var(--surface) 85%, var(--bg));
+    border-top-left-radius: var(--radius-lg);
+    border-top-right-radius: var(--radius-lg);
+  }
+
+  .case-study__schematic-symbol,
+  .case-study__code-symbol {
+    font-family: var(--font-mono);
+    font-size: var(--text-caption);
+    font-weight: 700;
+    color: var(--coffee-dark);
+  }
+
+  .case-study__schematic-label,
+  .case-study__code-label {
+    font-family: var(--font-mono);
+    font-size: var(--text-caption);
+    color: var(--fg-subtle);
+    letter-spacing: var(--tracking-wide);
+  }
+
+  .case-study__schematic-body {
+    flex: 1;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .case-study__code {
+    flex: 1;
+    margin: 0;
+    padding: var(--space-sm);
+    font-family: var(--font-mono);
+    font-size: clamp(0.75rem, 0.72rem + 0.15vw, 0.8125rem);
+    line-height: 1.5;
+    color: var(--fg-muted);
+    overflow: hidden;
+    white-space: pre-wrap;
+    word-break: break-word;
+  }
+
+  .case-study__placeholder {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+    font-family: var(--font-mono);
+    font-size: var(--text-small);
+    color: var(--fg-subtle);
+  }
+
+  .case-study__content {
+    grid-column: 8 / 13;
+  }
+
+  .case-study--reversed .case-study__media {
+    grid-column: 6 / 12;
+    order: 2;
+  }
+
+  .case-study--reversed .case-study__content {
+    grid-column: 1 / 6;
+    order: 1;
+  }
+
+  .case-study--reversed .case-study__ref {
+    order: 0;
+  }
+
+  .case-study__title {
+    font-family: var(--font-serif);
+    font-size: var(--text-h3);
+    font-weight: 500;
+    line-height: var(--leading-snug);
+    letter-spacing: var(--tracking-tight);
+    color: var(--fg);
+    margin-bottom: var(--space-xs);
+  }
+
+  .case-study__description {
+    font-family: var(--font-serif);
+    font-size: var(--text-body);
+    line-height: var(--leading-body);
+    color: var(--fg-muted);
+    max-inline-size: 42ch;
+    margin-bottom: var(--space-sm);
+  }
+
+  .case-study__tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-2xs);
+    list-style: none;
+    margin-bottom: var(--space-md);
+  }
+
+  .case-study__tags li {
+    padding: 0.28em 0.7em;
+    font-family: var(--font-mono);
+    font-size: var(--text-caption);
+    color: var(--fg-muted);
+    background: var(--surface);
+    border: 1px solid var(--border);
+    transition: border-color var(--duration-fast) var(--ease-out),
+                color var(--duration-fast) var(--ease-out);
+  }
+
+  .case-study:hover .case-study__tags li {
+    border-color: var(--fg-subtle);
+  }
+
+  .case-study__link {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4em;
+    font-family: var(--font-serif);
+    font-style: italic;
+    font-size: var(--text-body);
+    color: var(--fg);
+    text-decoration: none;
+    transition: color var(--duration-fast) var(--ease-out);
+  }
+
+  .case-study__arrow {
+    font-style: normal;
+    font-family: var(--font-mono);
+    font-size: var(--text-small);
+    transition: transform var(--duration-base) var(--ease-out);
+  }
+
+  .case-study__link:hover .case-study__arrow,
+  .case-study__link:focus-visible .case-study__arrow {
+    transform: translateX(6px);
+  }
+
+  /* Animación reveal */
+  .case-study:not(.is-visible) .case-study__media {
+    clip-path: inset(0 0 0 100% round var(--radius-lg));
+  }
+
+  .case-study:not(.is-visible) .case-study__content {
+    opacity: 0;
+    transform: translateX(var(--reveal-x));
+  }
+
+  .case-study.is-visible .case-study__media,
+  .case-study.is-visible .case-study__content {
+    transition: clip-path var(--duration-reveal) var(--ease-out),
+                opacity var(--duration-reveal) var(--ease-out),
+                transform var(--duration-reveal) var(--ease-out);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .case-study:not(.is-visible) .case-study__media {
+      clip-path: none;
+    }
+    .case-study:not(.is-visible) .case-study__content {
+      opacity: 1;
+      transform: none;
+    }
+  }
+
+  @media (max-width: 860px) {
+    .case-study,
+    .case-study--reversed {
+      grid-template-columns: 1fr;
+      padding-block: var(--space-lg);
+    }
+
+    .case-study__ref {
+      grid-column: 1 / -1;
+      order: 0;
+      margin-bottom: var(--space-2xs);
+    }
+
+    .case-study__media,
+    .case-study--reversed .case-study__media {
+      grid-column: 1 / -1;
+      order: 1;
+      aspect-ratio: 16 / 11;
+      margin-bottom: var(--space-sm);
+    }
+
+    .case-study__content,
+    .case-study--reversed .case-study__content {
+      grid-column: 1 / -1;
+      order: 2;
+    }
+
+    .case-study__description {
+      max-inline-size: none;
+    }
+  }
+</style>

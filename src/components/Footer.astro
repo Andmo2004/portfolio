@@ -1,0 +1,177 @@
+---
+// src/components/Footer.astro
+import type { TranslationSchema } from '../i18n/translations';
+
+interface Props {
+  t: TranslationSchema;
+}
+
+const { t } = Astro.props;
+const currentYear = new Date().getFullYear();
+---
+
+<footer class="footer">
+  <div class="footer__inner">
+    <div class="footer__meta">
+      <span class="footer__brand">{t.nav.mark}</span>
+      <p class="footer__rights">© {currentYear} {t.footer.rights}</p>
+      <p class="footer__aesthetic">{t.footer.aesthetic}</p>
+    </div>
+
+    <div class="footer__nav">
+      <ul class="footer__links">
+        <li><a href="#projects">{t.nav.projects}</a></li>
+        <li><a href="#tech">{t.nav.tech}</a></li>
+        <li><a href="#about">{t.nav.about}</a></li>
+        <li><a href="#contact">{t.nav.contact}</a></li>
+        <li>
+          <a
+            href="https://github.com/Andmo2004"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            GitHub ↗
+          </a>
+        </li>
+        <li>
+          <a
+            href="https://www.linkedin.com/in/andrés-moros-rincón-a0247639b"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            LinkedIn ↗
+          </a>
+        </li>
+      </ul>
+
+      <a href="#" class="footer__top" title={t.footer.backToTop}>
+        <span class="footer__top-bracket">[</span>
+        <span>↑ {t.footer.backToTop}</span>
+        <span class="footer__top-bracket">]</span>
+      </a>
+    </div>
+  </div>
+</footer>
+
+<style>
+  .footer {
+    border-top: 1px solid var(--border);
+    padding-inline: var(--grid-margin);
+    padding-block: var(--space-xl);
+    background: var(--surface);
+    transition: background-color var(--duration-base) var(--ease-out),
+                border-color var(--duration-base) var(--ease-out);
+  }
+
+  .footer__inner {
+    max-width: var(--content-max);
+    margin-inline: auto;
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: var(--space-lg);
+    flex-wrap: wrap;
+  }
+
+  .footer__meta {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-3xs);
+  }
+
+  .footer__brand {
+    font-family: var(--font-serif);
+    font-style: italic;
+    font-size: var(--text-lead);
+    color: var(--fg);
+  }
+
+  .footer__rights {
+    font-family: var(--font-serif);
+    font-size: var(--text-small);
+    color: var(--fg-muted);
+  }
+
+  .footer__aesthetic {
+    font-family: var(--font-mono);
+    font-size: var(--text-caption);
+    color: var(--fg-subtle);
+    letter-spacing: var(--tracking-wide);
+  }
+
+  .footer__nav {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: var(--space-md);
+  }
+
+  .footer__links {
+    display: flex;
+    align-items: center;
+    gap: var(--space-md);
+    list-style: none;
+    flex-wrap: wrap;
+  }
+
+  .footer__links a {
+    font-family: var(--font-serif);
+    font-size: var(--text-small);
+    color: var(--fg-muted);
+    text-decoration: none;
+    transition: color var(--duration-fast) var(--ease-out);
+  }
+
+  .footer__links a:hover,
+  .footer__links a:focus-visible {
+    color: var(--fg);
+  }
+
+  .footer__top {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.25em;
+    font-family: var(--font-mono);
+    font-size: var(--text-caption);
+    color: var(--fg-muted);
+    text-decoration: none;
+    transition: color var(--duration-fast) var(--ease-out);
+  }
+
+  .footer__top-bracket {
+    color: var(--fg-subtle);
+    transition: transform var(--duration-fast) var(--ease-out);
+  }
+
+  .footer__top:hover,
+  .footer__top:focus-visible {
+    color: var(--fg);
+  }
+
+  .footer__top:hover .footer__top-bracket:first-child,
+  .footer__top:focus-visible .footer__top-bracket:first-child {
+    transform: translateX(-2px);
+  }
+
+  .footer__top:hover .footer__top-bracket:last-child,
+  .footer__top:focus-visible .footer__top-bracket:last-child {
+    transform: translateX(2px);
+  }
+
+  @media (max-width: 768px) {
+    .footer__inner {
+      flex-direction: column;
+      align-items: flex-start;
+      gap: var(--space-lg);
+    }
+
+    .footer__nav {
+      align-items: flex-start;
+      gap: var(--space-sm);
+    }
+
+    .footer__links {
+      gap: var(--space-sm);
+    }
+  }
+</style>

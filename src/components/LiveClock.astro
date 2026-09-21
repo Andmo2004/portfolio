@@ -1,0 +1,149 @@
+---
+// src/components/LiveClock.astro
+interface Props {
+  baseTimeZone?: string;
+  madridLabel?: string;
+  visitorLabel?: string;
+}
+
+const {
+  baseTimeZone = 'Europe/Madrid',
+  madridLabel = 'MAD',
+  visitorLabel = 'LOC',
+} = Astro.props;
+---
+
+<div
+  class="live-clock"
+  data-base-tz={baseTimeZone}
+  data-madrid-label={madridLabel}
+  data-visitor-label={visitorLabel}
+  title="Hora local en tiempo real"
+  aria-label="Hora local en tiempo real"
+>
+  <span class="live-clock__symbol" aria-hidden="true">&gt;&gt;&gt;</span>
+  <span class="live-clock__display" aria-live="off">--:--:--</span>
+</div>
+
+<script>
+  function formatTz(date: Date, tz: string): string {
+    try {
+      return new Intl.DateTimeFormat('en-GB', {
+        timeZone: tz,
+        hour: '2-digit',
+        minute: '2-digit',
+        second: '2-digit',
+        hour12: false,
+      }).format(date);
+    } catch {
+      return date.toTimeString().slice(0, 8);
+    }
+  }
+
+  function getShortOffset(date: Date, tz: string): string {
+    try {
+      const parts = new Intl.DateTimeFormat('en-GB', {
+        timeZone: tz,
+        timeZoneName: 'short',
+      }).formatToParts(date);
+      return parts.find((p) => p.type === 'timeZoneName')?.value ?? '';
+    } catch {
+      return '';
+    }
+  }
+
+  function updateClocks() {
+    const now = new Date();
+    const visitorTz = Intl.DateTimeFormat().resolvedOptions().timeZone || 'UTC';
+
+    document.querySelectorAll<HTMLElement>('.live-clock').forEach((clockEl) => {
+      const baseTz = clockEl.dataset.baseTz || 'Europe/Madrid';
+      const madLabel = clockEl.dataset.madridLabel || 'MAD';
+      const locLabel = clockEl.dataset.visitorLabel || 'LOC';
+
+      const baseTime = formatTz(now, baseTz);
+      const visitorTime = formatTz(now, visitorTz);
+
+      const baseOffset = getShortOffset(now, baseTz);
+      const visitorOffset = getShortOffset(now, visitorTz);
+
+      const isSameTime = baseTime === visitorTime || baseOffset === visitorOffset;
+      const displayEl = clockEl.querySelector<HTMLElement>('.live-clock__display');
+
+      if (displayEl) {
+        if (isSameTime) {
+          displayEl.textContent = `${baseTime} ${madLabel}`;
+        } else {
+          displayEl.textContent = `${madLabel} ${baseTime} > ${locLabel} ${visitorTime}`;
+        }
+      }
+    });
+  }
+
+  updateClocks();
+  setInterval(updateClocks, 1000);
+
+  if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+    document.querySelectorAll('.live-clock__symbol').forEach((d) => d.classList.add('is-static'));
+  }
+</script>
+
+<style>
+  .live-clock {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35em;
+    font-family: var(--font-mono);
+    font-size: var(--text-caption);
+    letter-spacing: var(--tracking-wide);
+    color: var(--fg-muted);
+    font-variant-numeric: tabular-nums;
+    white-space: nowrap;
+    user-select: none;
+  }
+
+  .live-clock::before {
+    content: '[';
+    margin-right: 0.1em;
+    color: var(--fg-subtle);
+  }
+
+  .live-clock::after {
+    content: ']';
+    margin-left: 0.1em;
+    color: var(--fg-subtle);
+  }
+
+  .live-clock__symbol {
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    font-weight: 700;
+    color: var(--coffee-dark);
+    letter-spacing: -0.15em;
+    margin-right: 0.2em;
+    animation: symbolPulse 2s ease-in-out infinite;
+    flex-shrink: 0;
+  }
+
+  .live-clock__symbol.is-static {
+    animation: none;
+    opacity: 0.7;
+  }
+
+  @keyframes symbolPulse {
+    0%, 100% {
+      opacity: 0.4;
+      transform: scale(0.95);
+    }
+    50% {
+      opacity: 1;
+      transform: scale(1.05);
+    }
+  }
+
+  @media (max-width: 640px) {
+    .live-clock {
+      font-size: 0.6875rem;
+    }
+  }
+</style>

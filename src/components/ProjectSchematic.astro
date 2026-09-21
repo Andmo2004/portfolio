@@ -1,0 +1,272 @@
+---
+// src/components/ProjectSchematic.astro
+interface Props {
+  schematicId: 'minigpt' | 'miclustering' | 'enterprise';
+}
+
+const { schematicId } = Astro.props;
+---
+
+<div class="schematic-container" data-schematic={schematicId}>
+  {schematicId === 'minigpt' && (
+    <svg viewBox="0 0 540 380" class="schematic-svg" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <pattern id="grid-minigpt" width="16" height="16" patternUnits="userSpaceOnUse">
+          <circle cx="2" cy="2" r="0.8" fill="var(--fg-subtle)" opacity="0.3" />
+        </pattern>
+        <marker id="arrow-gpt" viewBox="0 0 10 10" refX="6" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+          <path d="M 0 1 L 8 5 L 0 9 z" fill="var(--fg-muted)" />
+        </marker>
+      </defs>
+      
+      <rect width="100%" height="100%" fill="var(--surface)" rx="16" />
+      <rect width="100%" height="100%" fill="url(#grid-minigpt)" rx="16" />
+
+      <!-- Input Tokens -->
+      <g transform="translate(40, 20)">
+        <rect x="0" y="0" width="460" height="34" rx="8" fill="var(--bg)" stroke="var(--border)" stroke-width="1.2" />
+        <text x="230" y="21" text-anchor="middle" font-family="var(--font-mono)" font-size="11" fill="var(--fg-muted)">
+          INPUT: &quot;Attention is all you need&quot; &gt;&gt; Tokenized &amp; Pos. Embeddings
+        </text>
+      </g>
+
+      <!-- Connection Arrow -->
+      <line x1="270" y1="54" x2="270" y2="76" stroke="var(--fg-muted)" stroke-width="1.4" marker-end="url(#arrow-gpt)" />
+
+      <!-- Main Transformer Layer Block -->
+      <g transform="translate(50, 78)">
+        <rect x="0" y="0" width="440" height="200" rx="14" fill="var(--bg)" stroke="var(--border)" stroke-width="1.5" stroke-dasharray="4 2" />
+        <text x="16" y="24" font-family="var(--font-mono)" font-size="10" fill="var(--fg-subtle)" letter-spacing="0.05em">
+          TRANSFORMER DECODER LAYER [x N]
+        </text>
+
+        <!-- Causal Attention Subblock -->
+        <g transform="translate(20, 36)">
+          <rect x="0" y="0" width="400" height="64" rx="10" fill="var(--surface)" stroke="var(--border)" stroke-width="1.2" />
+          <text x="200" y="26" text-anchor="middle" font-family="var(--font-serif)" font-size="14" font-weight="500" fill="var(--fg)">
+            Causal Multi-Head Self-Attention
+          </text>
+          <text x="200" y="46" text-anchor="middle" font-family="var(--font-mono)" font-size="10" fill="var(--fg-muted)">
+            Q, K, V Projections &gt; Tril Mask [T x T] &gt; Softmax(QK^T / sqrt(d_k))
+          </text>
+        </g>
+
+        <!-- Residual / LayerNorm 1 -->
+        <g transform="translate(140, 108)">
+          <rect x="0" y="0" width="160" height="24" rx="6" fill="var(--bg)" stroke="var(--border)" stroke-width="1" />
+          <text x="80" y="16" text-anchor="middle" font-family="var(--font-mono)" font-size="9.5" fill="var(--fg-muted)">
+            Add &amp; LayerNorm
+          </text>
+        </g>
+
+        <!-- MLP Subblock -->
+        <g transform="translate(20, 140)">
+          <rect x="0" y="0" width="400" height="46" rx="10" fill="var(--surface)" stroke="var(--border)" stroke-width="1.2" />
+          <text x="200" y="24" text-anchor="middle" font-family="var(--font-serif)" font-size="13" font-weight="500" fill="var(--fg)">
+            Position-wise Feed Forward (MLP)
+          </text>
+          <text x="200" y="38" text-anchor="middle" font-family="var(--font-mono)" font-size="9.5" fill="var(--fg-muted)">
+            Linear(d, 4d) &gt; GELU &gt; Linear(4d, d)
+          </text>
+        </g>
+      </g>
+
+      <!-- Connection Arrow -->
+      <line x1="270" y1="278" x2="270" y2="298" stroke="var(--fg-muted)" stroke-width="1.4" marker-end="url(#arrow-gpt)" />
+
+      <!-- Final Projection & Logits -->
+      <g transform="translate(60, 300)">
+        <rect x="0" y="0" width="420" height="60" rx="10" fill="var(--bg)" stroke="var(--border)" stroke-width="1.2" />
+        <text x="210" y="26" text-anchor="middle" font-family="var(--font-serif)" font-size="13" font-weight="500" fill="var(--fg)">
+          Final LayerNorm &gt;&gt; Linear Head
+        </text>
+        <text x="210" y="46" text-anchor="middle" font-family="var(--font-mono)" font-size="10.5" fill="var(--fg-muted)">
+          P(Next Token | Context) &gt; Logits &gt;&gt; Vocab Dist.
+        </text>
+      </g>
+    </svg>
+  )}
+
+  {schematicId === 'miclustering' && (
+    <svg viewBox="0 0 540 380" class="schematic-svg" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <pattern id="grid-mil" width="16" height="16" patternUnits="userSpaceOnUse">
+          <circle cx="2" cy="2" r="0.8" fill="var(--fg-subtle)" opacity="0.3" />
+        </pattern>
+        <marker id="arrow-mil" viewBox="0 0 10 10" refX="6" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+          <path d="M 0 1 L 8 5 L 0 9 z" fill="var(--fg-muted)" />
+        </marker>
+      </defs>
+
+      <rect width="100%" height="100%" fill="var(--surface)" rx="16" />
+      <rect width="100%" height="100%" fill="url(#grid-mil)" rx="16" />
+
+      <!-- Bags Input representation -->
+      <g transform="translate(30, 24)">
+        <rect x="0" y="0" width="480" height="60" rx="12" fill="var(--bg)" stroke="var(--border)" stroke-width="1.2" />
+        <text x="20" y="24" font-family="var(--font-mono)" font-size="11" fill="var(--fg)">
+          BAGS INPUT: B = &#123; B_1, B_2, ... B_N &#125;
+        </text>
+        <text x="20" y="44" font-family="var(--font-mono)" font-size="10" fill="var(--fg-muted)">
+          Each Bag B_i = &#123; x_i1, x_i2, ..., x_im &#125; in R^d (Multiple-Instance Data)
+        </text>
+      </g>
+
+      <line x1="270" y1="84" x2="270" y2="108" stroke="var(--fg-muted)" stroke-width="1.4" marker-end="url(#arrow-mil)" />
+
+      <!-- Distance Matrix Computation -->
+      <g transform="translate(30, 110)">
+        <rect x="0" y="0" width="480" height="80" rx="12" fill="var(--bg)" stroke="var(--border)" stroke-width="1.2" />
+        <text x="240" y="28" text-anchor="middle" font-family="var(--font-serif)" font-size="14" font-weight="500" fill="var(--fg)">
+          Pairwise Bag Metric Space
+        </text>
+        <text x="240" y="50" text-anchor="middle" font-family="var(--font-mono)" font-size="10" fill="var(--fg-muted)">
+          D(B_i, B_j) = Hausdorff / Chamfer / MinDist Kernels
+        </text>
+        <text x="240" y="68" text-anchor="middle" font-family="var(--font-mono)" font-size="9.5" fill="var(--fg-subtle)">
+          Matrix D in R^(N x N) &gt;&gt; Symmetric Non-Euclidean Distance
+        </text>
+      </g>
+
+      <line x1="270" y1="190" x2="270" y2="214" stroke="var(--fg-muted)" stroke-width="1.4" marker-end="url(#arrow-mil)" />
+
+      <!-- Density Expansion -->
+      <g transform="translate(30, 216)">
+        <rect x="0" y="0" width="480" height="74" rx="12" fill="var(--bg)" stroke="var(--border)" stroke-width="1.2" />
+        <text x="240" y="26" text-anchor="middle" font-family="var(--font-serif)" font-size="14" font-weight="500" fill="var(--fg)">
+          DBSCAN Density-Connected Core Bags
+        </text>
+        <text x="240" y="46" text-anchor="middle" font-family="var(--font-mono)" font-size="10" fill="var(--fg-muted)">
+          N_eps(B_i) = &#123; B_j | D(B_i, B_j) &lt;= eps &#125; &gt;&gt; |N_eps| &gt;= MinPts
+        </text>
+        <text x="240" y="62" text-anchor="middle" font-family="var(--font-mono)" font-size="9.5" fill="var(--fg-subtle)">
+          Recursive cluster expansion over connected components
+        </text>
+      </g>
+
+      <line x1="270" y1="290" x2="270" y2="310" stroke="var(--fg-muted)" stroke-width="1.4" marker-end="url(#arrow-mil)" />
+
+      <!-- Output Clusters -->
+      <g transform="translate(40, 312)">
+        <rect x="0" y="0" width="460" height="46" rx="10" fill="var(--bg)" stroke="var(--border)" stroke-width="1.2" />
+        <text x="230" y="28" text-anchor="middle" font-family="var(--font-mono)" font-size="11" fill="var(--fg)">
+          OUTPUT: Cluster Partitions C_1, C_2, ... C_k &gt;&gt; Noise Detection
+        </text>
+      </g>
+    </svg>
+  )}
+
+  {schematicId === 'enterprise' && (
+    <svg viewBox="0 0 540 380" class="schematic-svg" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <pattern id="grid-ent" width="16" height="16" patternUnits="userSpaceOnUse">
+          <circle cx="2" cy="2" r="0.8" fill="var(--fg-subtle)" opacity="0.3" />
+        </pattern>
+        <marker id="arrow-ent" viewBox="0 0 10 10" refX="6" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+          <path d="M 0 1 L 8 5 L 0 9 z" fill="var(--fg-muted)" />
+        </marker>
+      </defs>
+
+      <rect width="100%" height="100%" fill="var(--surface)" rx="16" />
+      <rect width="100%" height="100%" fill="url(#grid-ent)" rx="16" />
+
+      <!-- Top: API Gateway -->
+      <g transform="translate(40, 22)">
+        <rect x="0" y="0" width="460" height="48" rx="12" fill="var(--bg)" stroke="var(--border)" stroke-width="1.2" />
+        <text x="230" y="24" text-anchor="middle" font-family="var(--font-serif)" font-size="13" font-weight="500" fill="var(--fg)">
+          Client Applications &gt;&gt; API Gateway (.NET / REST / Auth)
+        </text>
+        <text x="230" y="40" text-anchor="middle" font-family="var(--font-mono)" font-size="9.5" fill="var(--fg-muted)">
+          Validation &gt; Middleware Pipeline &gt; Rate Limiting
+        </text>
+      </g>
+
+      <line x1="270" y1="70" x2="270" y2="94" stroke="var(--fg-muted)" stroke-width="1.4" marker-end="url(#arrow-ent)" />
+
+      <!-- Middle: Core Application Domain -->
+      <g transform="translate(30, 96)">
+        <rect x="0" y="0" width="480" height="120" rx="14" fill="var(--bg)" stroke="var(--border)" stroke-width="1.5" stroke-dasharray="4 2" />
+        <text x="18" y="24" font-family="var(--font-mono)" font-size="10" fill="var(--fg-subtle)">
+          APPLICATION CORE &amp; BUSINESS DOMAIN
+        </text>
+
+        <!-- Command / Query Handlers -->
+        <g transform="translate(18, 38)">
+          <rect x="0" y="0" width="210" height="66" rx="8" fill="var(--surface)" stroke="var(--border)" stroke-width="1.2" />
+          <text x="105" y="26" text-anchor="middle" font-family="var(--font-serif)" font-size="12" font-weight="500" fill="var(--fg)">
+            CQRS &amp; Pipelines
+          </text>
+          <text x="105" y="44" text-anchor="middle" font-family="var(--font-mono)" font-size="9" fill="var(--fg-muted)">
+            C# Services &gt; Transactions
+          </text>
+        </g>
+
+        <!-- AI Orchestrator -->
+        <g transform="translate(252, 38)">
+          <rect x="0" y="0" width="210" height="66" rx="8" fill="var(--surface)" stroke="var(--border)" stroke-width="1.2" />
+          <text x="105" y="26" text-anchor="middle" font-family="var(--font-serif)" font-size="12" font-weight="500" fill="var(--fg)">
+            AI Agent &amp; LLM Orchestrator
+          </text>
+          <text x="105" y="44" text-anchor="middle" font-family="var(--font-mono)" font-size="9" fill="var(--fg-muted)">
+            Semantic Workflows &gt; Tooling
+          </text>
+        </g>
+      </g>
+
+      <!-- Connections from Middle to Bottom -->
+      <line x1="140" y1="216" x2="140" y2="246" stroke="var(--fg-muted)" stroke-width="1.4" marker-end="url(#arrow-ent)" />
+      <line x1="390" y1="216" x2="390" y2="246" stroke="var(--fg-muted)" stroke-width="1.4" marker-end="url(#arrow-ent)" />
+
+      <!-- Bottom: Persistence & Infrastructure -->
+      <g transform="translate(30, 248)">
+        <!-- Relational DB -->
+        <g transform="translate(10, 0)">
+          <rect x="0" y="0" width="220" height="96" rx="12" fill="var(--bg)" stroke="var(--border)" stroke-width="1.2" />
+          <text x="110" y="28" text-anchor="middle" font-family="var(--font-serif)" font-size="13" font-weight="500" fill="var(--fg)">
+            Relational Persistence
+          </text>
+          <text x="110" y="50" text-anchor="middle" font-family="var(--font-mono)" font-size="9.5" fill="var(--fg-muted)">
+            SQL Database &gt;&gt; Query Plan Opt.
+          </text>
+          <text x="110" y="70" text-anchor="middle" font-family="var(--font-mono)" font-size="9" fill="var(--fg-subtle)">
+            Connection Pooling &gt; Migrations
+          </text>
+        </g>
+
+        <!-- Vector & Cloud Engine -->
+        <g transform="translate(250, 0)">
+          <rect x="0" y="0" width="220" height="96" rx="12" fill="var(--bg)" stroke="var(--border)" stroke-width="1.2" />
+          <text x="110" y="28" text-anchor="middle" font-family="var(--font-serif)" font-size="13" font-weight="500" fill="var(--fg)">
+            Cloud &amp; Vector Store
+          </text>
+          <text x="110" y="50" text-anchor="middle" font-family="var(--font-mono)" font-size="9.5" fill="var(--fg-muted)">
+            Embeddings &gt;&gt; Cosine Search
+          </text>
+          <text x="110" y="70" text-anchor="middle" font-family="var(--font-mono)" font-size="9" fill="var(--fg-subtle)">
+            Dockerized Workers &gt; Azure/AWS
+          </text>
+        </g>
+      </g>
+    </svg>
+  )}
+</div>
+
+<style>
+  .schematic-container {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--surface);
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+  }
+
+  .schematic-svg {
+    width: 100%;
+    height: 100%;
+    max-height: 100%;
+    display: block;
+  }
+</style>
