@@ -1,0 +1,193 @@
+---
+// src/pages/en/projects/glasstics.astro (English)
+import GlassticsLayout from '../../../layouts/GlassticsLayout.astro';
+import GlassticsNavbar from '../../../components/glasstics/GlassticsNavbar.astro';
+import GlassticsVideoDemo from '../../../components/glasstics/GlassticsVideoDemo.astro';
+import GlassticsArchitecture from '../../../components/glasstics/GlassticsArchitecture.astro';
+
+const locale = 'en';
+const title = 'Glasstics · Case Study & Demo — AI Governance | Andrés Moros & Miguel Ángel Montijano';
+const description = 'Technical case study and demo of Glasstics: AI observability and cost-governance dashboard, Git correlation, and architecture.';
+---
+
+<GlassticsLayout title={title} description={description} locale={locale}>
+  <GlassticsNavbar currentLocale={locale} />
+
+  <main class="glasstics-main">
+    <div class="glasstics-container">
+      <!-- Hero Header -->
+      <header class="glasstics-hero">
+        <h1 class="glasstics-hero__title">Glasstics</h1>
+
+        <p class="glasstics-hero__lead">
+          AI governance, observability, and cost-monitoring dashboard for software engineering teams. Correlates AI assistant telemetry with Git commit activity in ±30 min sliding windows, forecasts expenditure with Prophet time-series models, and enforces RGPD anonymization guardrails.
+        </p>
+
+        <div class="glasstics-hero__meta">
+          <div class="hero-team">
+            <span class="hero-team__label">Engineered in collaboration with:</span>
+            <span class="hero-team__name">Miguel Ángel Montijano Sempere</span>
+            <span class="hero-team__amp">&amp;</span>
+            <span class="hero-team__name">Andrés Moros Rincón</span>
+          </div>
+        </div>
+      </header>
+
+      <!-- 1. Video demo (Empty 16:9 frame) -->
+      <GlassticsVideoDemo currentLocale={locale} />
+
+      <!-- 2. System Architecture (Frontend → Backend → Database) -->
+      <GlassticsArchitecture currentLocale={locale} />
+
+      <!-- Bottom return link -->
+      <div class="glasstics-bottom-nav">
+        <a href="/en" class="glasstics-bottom-back-btn">
+          <span class="back-arrow" aria-hidden="true">←</span>
+          <span>Return to main portfolio</span>
+        </a>
+      </div>
+    </div>
+  </main>
+
+  <footer class="glasstics-footer">
+    <div class="glasstics-container glasstics-footer__inner">
+      <span>Glasstics // AI Governance & Observability</span>
+      <span>Miguel Ángel Montijano Sempere &amp; Andrés Moros Rincón</span>
+    </div>
+  </footer>
+</GlassticsLayout>
+
+<style>
+  .glasstics-main {
+    flex: 1;
+    padding: 2.5rem 1.5rem 4rem;
+  }
+
+  .glasstics-container {
+    max-width: 1080px;
+    margin: 0 auto;
+    width: 100%;
+  }
+
+  /* Hero */
+  .glasstics-hero {
+    margin-bottom: 2.25rem;
+  }
+
+  .glasstics-hero__title {
+    font-size: clamp(2.5rem, 2rem + 2.5vw, 3.75rem);
+    font-weight: 800;
+    letter-spacing: -0.03em;
+    color: var(--foreground);
+    line-height: 1.1;
+    margin: 0 0 1rem;
+  }
+
+  .glasstics-hero__lead {
+    font-size: 1.0625rem;
+    line-height: 1.65;
+    color: var(--muted-foreground);
+    max-width: 75ch;
+    margin: 0 0 1.5rem;
+  }
+
+  .glasstics-hero__meta {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    flex-wrap: wrap;
+    font-size: 0.875rem;
+    padding-top: 1rem;
+    border-top: 1px solid var(--glass-border);
+  }
+
+  .hero-team {
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+    flex-wrap: wrap;
+  }
+
+  .hero-team__label {
+    color: var(--muted-foreground);
+    font-family: var(--glasstics-font-sans);
+  }
+
+  .hero-team__name {
+    color: var(--foreground);
+    font-weight: 600;
+    font-family: var(--glasstics-font-sans);
+  }
+
+  .hero-team__amp {
+    color: var(--muted-foreground);
+    font-family: var(--glasstics-font-sans);
+  }
+
+  .hero-cat-pill {
+    font-family: var(--glasstics-font-mono);
+    font-size: 0.6875rem;
+    padding: 0.2rem 0.55rem;
+    border-radius: var(--glasstics-radius-xs);
+    background: var(--secondary);
+    border: 1px solid var(--glass-border);
+    color: var(--muted-foreground);
+  }
+
+  /* Bottom nav */
+  .glasstics-bottom-nav {
+    display: flex;
+    justify-content: center;
+    padding-top: 1.5rem;
+    margin-bottom: 2rem;
+  }
+
+  .glasstics-bottom-back-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.6rem;
+    font-family: var(--glasstics-font-sans);
+    font-size: 1rem;
+    font-weight: 600;
+    color: var(--foreground);
+    text-decoration: none;
+    padding: 0.85rem 1.85rem;
+    border-radius: var(--glasstics-radius-md);
+    background: var(--card);
+    border: 1px solid var(--glass-border);
+    box-shadow: var(--glasstics-shadow-card);
+    transition: all var(--glasstics-duration) var(--glasstics-ease);
+  }
+
+  .glasstics-bottom-back-btn:hover {
+    border-color: var(--primary);
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(79, 70, 229, 0.25);
+  }
+
+  .back-arrow {
+    transition: transform var(--glasstics-duration) var(--glasstics-ease);
+  }
+
+  .glasstics-bottom-back-btn:hover .back-arrow {
+    transform: translateX(-4px);
+  }
+
+  /* Footer */
+  .glasstics-footer {
+    border-top: 1px solid var(--glass-border);
+    background: var(--card);
+    padding: 1.25rem 1.5rem;
+    font-size: 0.75rem;
+    color: var(--muted-foreground);
+    font-family: var(--glasstics-font-mono);
+  }
+
+  .glasstics-footer__inner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    flex-wrap: wrap;
+  }
+</style>

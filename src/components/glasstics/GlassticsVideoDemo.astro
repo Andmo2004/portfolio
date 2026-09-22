@@ -1,0 +1,101 @@
+---
+// src/components/glasstics/GlassticsVideoDemo.astro
+interface Props {
+  currentLocale: 'es' | 'en';
+}
+
+const { currentLocale } = Astro.props;
+const isEs = currentLocale === 'es';
+---
+
+<section class="glass-card video-section" aria-labelledby="video-demo-heading">
+  <div class="video-section__header">
+    <div class="video-section__title-group">
+      <h2 id="video-demo-heading" class="video-section__title">
+        {isEs ? 'Vídeo Demostrativo de Glasstics' : 'Glasstics Demo Video'}
+      </h2>
+      <p class="video-section__subtitle">
+        {isEs 
+          ? 'Grabación de la herramienta en ejecución mostrando el flujo de telemetría y métricas de principio a fin.' 
+          : 'Full recording showing end-to-end telemetry and metric flows.'}
+      </p>
+    </div>
+
+    <div class="video-section__meta">
+      <span class="video-meta-chip">16:9 Aspect Ratio</span>
+      <span class="video-meta-chip">1080p HD</span>
+    </div>
+  </div>
+
+  <!-- Contenedor del Vídeo con Dimensiones 16:9 para Embeber (Vacío) -->
+  <div class="video-embed-frame">
+    <!-- Espacio reservado para embeber vídeo (iframe / video) -->
+  </div>
+</section>
+
+<style>
+  .video-section {
+    padding: 2.25rem;
+    margin-bottom: 2.5rem;
+    border-radius: var(--glasstics-radius-xl);
+  }
+
+  .video-section__header {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 1.5rem;
+    margin-bottom: 1.75rem;
+    flex-wrap: wrap;
+    position: relative;
+    z-index: 2;
+  }
+
+  .video-section__title {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--foreground);
+    letter-spacing: -0.02em;
+    margin: 0 0 0.35rem;
+  }
+
+  .video-section__subtitle {
+    font-size: 0.875rem;
+    color: var(--muted-foreground);
+    margin: 0;
+    max-width: 65ch;
+  }
+
+  .video-section__meta {
+    display: flex;
+    gap: 0.5rem;
+  }
+
+  .video-meta-chip {
+    font-family: var(--glasstics-font-mono);
+    font-size: 0.6875rem;
+    padding: 0.25rem 0.6rem;
+    border-radius: var(--glasstics-radius-sm);
+    background: var(--secondary);
+    border: 1px solid var(--glass-border);
+    color: var(--muted-foreground);
+  }
+
+  /* Contenedor 16:9 completamente vacío con bordes agrandados */
+  .video-embed-frame {
+    position: relative;
+    z-index: 2;
+    width: 100%;
+    aspect-ratio: 16 / 9;
+    border-radius: var(--glasstics-radius-lg);
+    overflow: hidden;
+    background: color-mix(in srgb, var(--card) 75%, transparent);
+    border: 1.5px solid var(--glass-border);
+    box-shadow: 0 12px 36px -8px rgba(0, 0, 0, 0.4);
+    transition: border-color var(--glasstics-duration) var(--glasstics-ease);
+  }
+
+  .video-embed-frame:hover {
+    border-color: var(--primary);
+  }
+</style>

@@ -2,14 +2,23 @@
 
 export type Locale = 'es' | 'en';
 
+export interface ProjectCollaborator {
+  name: string;
+  role?: string;
+  url?: string;
+}
+
 export interface ProjectItem {
   title: string;
   description: string;
   tags: string[];
   href: string;
-  schematicId: 'minigpt' | 'miclustering' | 'enterprise';
-  schematicTitle: string;
-  codeExcerpt: string;
+  badge?: string;
+  collaborator?: ProjectCollaborator;
+  image?: {
+    src: string;
+    alt: string;
+  };
   isExternal?: boolean;
 }
 
@@ -118,7 +127,7 @@ export const translations: Record<Locale, TranslationSchema> = {
       sectionRef: 'SEC. 01',
       sectionTitle: 'Proyectos Seleccionados',
       exploreLabel: 'Explorar',
-      statusNotice: 'Esquemáticos de arquitectura técnica',
+      statusNotice: 'Casos de estudio & sistemas interactivos',
       items: [
         {
           title: 'miniGPT',
@@ -126,59 +135,26 @@ export const translations: Record<Locale, TranslationSchema> = {
           tags: ['Python', 'PyTorch', 'Transformers', 'NLP'],
           href: '/projects/minigpt',
           isExternal: false,
-          schematicId: 'minigpt',
-          schematicTitle: 'fig. 01 > transformer_causal_decoder.diag',
-          codeExcerpt: `class CausalSelfAttention(nn.Module):
-    def __init__(self, config):
-        super().__init__()
-        self.c_attn = nn.Linear(config.n_embd, 3 * config.n_embd)
-        self.c_proj = nn.Linear(config.n_embd, config.n_embd)
-        self.register_buffer("bias", torch.tril(torch.ones(config.block_size, config.block_size)))
-
-    def forward(self, x):
-        B, T, C = x.size()
-        q, k, v = self.c_attn(x).split(self.n_embd, dim=2)
-        att = (q @ k.transpose(-2, -1)) * (1.0 / math.sqrt(k.size(-1)))
-        att = att.masked_fill(self.bias[:, :, :T, :T] == 0, float('-inf'))
-        return self.c_proj(F.softmax(att, dim=-1) @ v)`,
         },
         {
           title: 'MIClustering',
           description: 'Librería científica de Machine Learning en Python desarrollada como trabajo de investigación en Multiple-Instance Learning (MIL). Implementación de agrupamiento basado en densidad con métricas de distancia personalizadas entre bolsas de instancias.',
           tags: ['Python', 'Scikit-learn', 'NumPy', 'MIL', 'Research'],
           href: 'https://github.com/Andmo2004',
-          schematicId: 'miclustering',
-          schematicTitle: 'fig. 02 > mil_density_clustering_pipeline.diag',
-          codeExcerpt: `class MILDBSCAN(BaseClustering):
-    def __init__(self, eps: float = 0.5, min_samples: int = 5, metric=hausdorff_distance):
-        self.eps = eps
-        self.min_samples = min_samples
-        self.metric = metric
-
-    def fit(self, bags: Sequence[Bag]) -> "MILDBSCAN":
-        dist_matrix = self._compute_pairwise_distances(bags, self.metric)
-        self.labels_ = self._density_cluster(dist_matrix, self.eps, self.min_samples)
-        return self`,
+          isExternal: true,
         },
         {
-          title: 'Arquitectura Empresarial & Sistemas',
-          description: 'Diseño de aplicaciones web corporativas y servicios backend con C#/.NET, optimización de consultas SQL en bases de datos relacionales e integración de flujos asistidos por IA y automatización.',
-          tags: ['C#', '.NET', 'SQL', 'JavaScript', 'Docker', 'Azure'],
-          href: 'https://github.com/Andmo2004',
-          schematicId: 'enterprise',
-          schematicTitle: 'fig. 03 > distributed_enterprise_architecture.diag',
-          codeExcerpt: `public class DataPipelineService : IPipelineService
-{
-    private readonly IDbConnectionFactory _dbFactory;
-    private readonly ILogger<DataPipelineService> _logger;
-
-    public async Task<PipelineResult> ProcessAsync(BatchContext context, CancellationToken ct)
-    {
-        using var connection = await _dbFactory.CreateOpenConnectionAsync(ct);
-        return await connection.ExecuteTransactionAsync(async trx => 
-            await ApplyTransformationsAsync(trx, context, ct));
-    }
-}`,
+          title: 'Glasstics',
+          description: 'Dashboard de gobierno, observabilidad y monitorización del uso de IA en desarrollo software. Cruza eventos de asistentes de IA (prompts, tokens, costes) con actividad Git en ventanas de ±30 min, proyecta costes con series temporales (Prophet), aplica gobernanza RGPD e integra informes ejecutivos generados por Claude.',
+          badge: 'Reto Hackathon · Gobierno y control de IA',
+          collaborator: {
+            name: 'Miguel Ángel Montijano Sempere',
+            role: 'Coautor (Reto en parejas)',
+            // url: 'https://linkedin.com/in/...', // Listo para cuando añadas el enlace
+          },
+          tags: ['FastAPI', 'Python 3.12', 'React', 'PostgreSQL', 'Anthropic API', 'Prophet', 'Docker'],
+          href: '/projects/glasstics',
+          isExternal: false,
         },
       ],
     },
@@ -269,7 +245,7 @@ export const translations: Record<Locale, TranslationSchema> = {
       sectionRef: 'SEC. 01',
       sectionTitle: 'Selected Projects',
       exploreLabel: 'Explore',
-      statusNotice: 'Technical architecture schematics',
+      statusNotice: 'Selected systems & interactive case studies',
       items: [
         {
           title: 'miniGPT',
@@ -277,59 +253,26 @@ export const translations: Record<Locale, TranslationSchema> = {
           tags: ['Python', 'PyTorch', 'Transformers', 'NLP'],
           href: '/en/projects/minigpt',
           isExternal: false,
-          schematicId: 'minigpt',
-          schematicTitle: 'fig. 01 > transformer_causal_decoder.diag',
-          codeExcerpt: `class CausalSelfAttention(nn.Module):
-    def __init__(self, config):
-        super().__init__()
-        self.c_attn = nn.Linear(config.n_embd, 3 * config.n_embd)
-        self.c_proj = nn.Linear(config.n_embd, config.n_embd)
-        self.register_buffer("bias", torch.tril(torch.ones(config.block_size, config.block_size)))
-
-    def forward(self, x):
-        B, T, C = x.size()
-        q, k, v = self.c_attn(x).split(self.n_embd, dim=2)
-        att = (q @ k.transpose(-2, -1)) * (1.0 / math.sqrt(k.size(-1)))
-        att = att.masked_fill(self.bias[:, :, :T, :T] == 0, float('-inf'))
-        return self.c_proj(F.softmax(att, dim=-1) @ v)`,
         },
         {
           title: 'MIClustering',
           description: 'Python scientific Machine Learning library developed as part of research in Multiple-Instance Learning (MIL). Density-based clustering implementation supporting custom distance metrics across instance bags.',
           tags: ['Python', 'Scikit-learn', 'NumPy', 'MIL', 'Research'],
           href: 'https://github.com/Andmo2004',
-          schematicId: 'miclustering',
-          schematicTitle: 'fig. 02 > mil_density_clustering_pipeline.diag',
-          codeExcerpt: `class MILDBSCAN(BaseClustering):
-    def __init__(self, eps: float = 0.5, min_samples: int = 5, metric=hausdorff_distance):
-        self.eps = eps
-        self.min_samples = min_samples
-        self.metric = metric
-
-    def fit(self, bags: Sequence[Bag]) -> "MILDBSCAN":
-        dist_matrix = self._compute_pairwise_distances(bags, self.metric)
-        self.labels_ = self._density_cluster(dist_matrix, self.eps, self.min_samples)
-        return self`,
+          isExternal: true,
         },
         {
-          title: 'Enterprise Architecture & Systems',
-          description: 'Design of corporate web applications and backend services with C#/.NET, SQL query optimization for relational databases, and integration of AI-assisted pipelines and process automation.',
-          tags: ['C#', '.NET', 'SQL', 'JavaScript', 'Docker', 'Azure'],
-          href: 'https://github.com/Andmo2004',
-          schematicId: 'enterprise',
-          schematicTitle: 'fig. 03 > distributed_enterprise_architecture.diag',
-          codeExcerpt: `public class DataPipelineService : IPipelineService
-{
-    private readonly IDbConnectionFactory _dbFactory;
-    private readonly ILogger<DataPipelineService> _logger;
-
-    public async Task<PipelineResult> ProcessAsync(BatchContext context, CancellationToken ct)
-    {
-        using var connection = await _dbFactory.CreateOpenConnectionAsync(ct);
-        return await connection.ExecuteTransactionAsync(async trx => 
-            await ApplyTransformationsAsync(trx, context, ct));
-    }
-}`,
+          title: 'Glasstics',
+          description: 'AI governance, observability, and cost-monitoring dashboard for software engineering teams. Correlates AI assistant telemetry (prompts, tokens, models, spend) with Git commit activity in ±30 min sliding windows. Features 7- and 15-day cost forecasts with Prophet, RGPD compliance guardrails, and automated weekly executive summaries powered by Claude.',
+          badge: 'Hackathon Challenge · AI Governance & Control',
+          collaborator: {
+            name: 'Miguel Ángel Montijano Sempere',
+            role: 'Co-developer (Team project)',
+            // url: 'https://linkedin.com/in/...', // Ready for LinkedIn link
+          },
+          tags: ['FastAPI', 'Python 3.12', 'React', 'PostgreSQL', 'Anthropic API', 'Prophet', 'Docker'],
+          href: '/en/projects/glasstics',
+          isExternal: false,
         },
       ],
     },

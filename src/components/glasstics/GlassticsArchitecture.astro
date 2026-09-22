@@ -1,0 +1,385 @@
+---
+// src/components/glasstics/GlassticsArchitecture.astro
+interface Props {
+  currentLocale: 'es' | 'en';
+}
+
+const { currentLocale } = Astro.props;
+const isEs = currentLocale === 'es';
+---
+
+<section class="glass-card arch-section" aria-labelledby="arch-heading">
+  <div class="arch-section__header">
+    <div class="arch-section__title-group">
+      <span class="arch-section__pill">{isEs ? 'Diagrama de Arquitectura' : 'System Architecture'}</span>
+      <h2 id="arch-heading" class="arch-section__title">
+        {isEs ? 'Flujo de Telemetría: Frontend → Backend → BBDD' : 'Telemetry Pipeline: Frontend → Backend → Database'}
+      </h2>
+      <p class="arch-section__subtitle">
+        {isEs 
+          ? 'Arquitectura cliente-servidor mínima y desacoplada, diseñada para captura no intrusiva y procesamiento analítico de alta eficiencia.' 
+          : 'Minimal, decoupled client-server pattern engineered for non-disruptive telemetry ingestion and high-throughput analytics.'}
+      </p>
+    </div>
+
+    <div class="arch-tech-stack-pills">
+      <span class="tech-pill">FastAPI 0.111</span>
+      <span class="tech-pill">Python 3.12</span>
+      <span class="tech-pill">PostgreSQL 16</span>
+      <span class="tech-pill">React 18</span>
+    </div>
+  </div>
+
+  <!-- Diagrama Visual Interactivo -->
+  <div class="arch-diagram">
+    <!-- 1. Frontend -->
+    <div class="arch-node arch-node--frontend">
+      <div class="arch-node__badge">SPA Client</div>
+      <div class="arch-node__icon">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <rect x="2" y="3" width="20" height="14" rx="2" />
+          <line x1="8" y1="21" x2="16" y2="21" />
+          <line x1="12" y1="17" x2="12" y2="21" />
+        </svg>
+      </div>
+      <h3 class="arch-node__title">Frontend</h3>
+      <p class="arch-node__stack">React 18 · Vite · Tailwind</p>
+      <ul class="arch-node__features">
+        <li>{isEs ? 'Panel interactivo de KPIs' : 'Interactive KPI Dashboard'}</li>
+        <li>{isEs ? 'Gráficas con Recharts' : 'Recharts visualization'}</li>
+        <li>{isEs ? 'Chat con analista de IA' : 'AI Analyst Chat'}</li>
+      </ul>
+    </div>
+
+    <!-- Conector 1 -->
+    <div class="arch-connector">
+      <span class="arch-connector__line"></span>
+      <span class="arch-connector__label">REST / HTTPS</span>
+      <span class="arch-connector__arrow">→</span>
+    </div>
+
+    <!-- 2. Backend -->
+    <div class="arch-node arch-node--backend">
+      <div class="arch-node__badge arch-node__badge--primary">Core API</div>
+      <div class="arch-node__icon">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2" />
+        </svg>
+      </div>
+      <h3 class="arch-node__title">Backend</h3>
+      <p class="arch-node__stack">FastAPI 0.111 · Python 3.12</p>
+      <ul class="arch-node__features">
+        <li>{isEs ? 'Servicio de correlación IA↔Git' : 'AI↔Git correlation window'}</li>
+        <li>{isEs ? 'Proyecciones con Prophet' : 'Prophet time-series forecasting'}</li>
+        <li>{isEs ? 'SDK AsyncAnthropic (Claude)' : 'AsyncAnthropic Claude SDK'}</li>
+      </ul>
+    </div>
+
+    <!-- Conector 2 -->
+    <div class="arch-connector">
+      <span class="arch-connector__line"></span>
+      <span class="arch-connector__label">Async SQLAlchemy</span>
+      <span class="arch-connector__arrow">→</span>
+    </div>
+
+    <!-- 3. BBDD -->
+    <div class="arch-node arch-node--db">
+      <div class="arch-node__badge">Persistence</div>
+      <div class="arch-node__icon">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <ellipse cx="12" cy="5" rx="9" ry="3" />
+          <path d="M21 12c0 1.66-4 3-9 3s-9-1.34-9-3" />
+          <path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5" />
+        </svg>
+      </div>
+      <h3 class="arch-node__title">BBDD</h3>
+      <p class="arch-node__stack">PostgreSQL 16 · Alembic</p>
+      <ul class="arch-node__features">
+        <li>{isEs ? 'Eventos de prompts & tokens' : 'Prompts & tokens event log'}</li>
+        <li>{isEs ? 'Métricas Git (commits, diffs)' : 'Git commit & diff records'}</li>
+        <li>{isEs ? 'Políticas y retención RGPD' : 'RGPD retention & policies'}</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- Capa complementaria: Git Hook y Claude Insights -->
+  <div class="arch-side-grid">
+    <div class="arch-side-box">
+      <div class="arch-side-box__badge">{isEs ? 'Captura Cliente' : 'Client Ingestion'}</div>
+      <h4 class="arch-side-box__title">{isEs ? 'Git Post-Commit Hook + Agente Python' : 'Git Post-Commit Hook + Python Agent'}</h4>
+      <p class="arch-side-box__desc">
+        {isEs 
+          ? 'Script multiplataforma que se ejecuta silenciosamente tras cada commit capturando líneas modificadas, hashes y cruzándolos con la telemetría local de Cursor, Claude Code o Copilot.' 
+          : 'Lightweight cross-platform script executed on commit to capture LOC diffs, commit hashes, and correlate with local assistant telemetry.'}
+      </p>
+    </div>
+
+    <div class="arch-side-box">
+      <div class="arch-side-box__badge arch-side-box__badge--ai">{isEs ? 'Motor de Insights' : 'Insights Engine'}</div>
+      <h4 class="arch-side-box__title">{isEs ? 'Claude 3.5 Sonnet & Modelo Prophet' : 'Claude 3.5 Sonnet & Prophet Time-Series'}</h4>
+      <p class="arch-side-box__desc">
+        {isEs 
+          ? 'Síntesis ejecutiva semanal en lenguaje natural generada por Claude sobre los KPIs y proyecciones de gasto futuro a 7 y 15 días con intervalos de confianza al 95%.' 
+          : 'Weekly natural language executive synthesis powered by Claude with 7- and 15-day forward cost forecasts with 95% confidence intervals.'}
+      </p>
+    </div>
+  </div>
+</section>
+
+<style>
+  .arch-section {
+    padding: 2.25rem;
+    margin-bottom: 2.5rem;
+    border-radius: var(--glasstics-radius-xl);
+  }
+
+  .arch-section__header {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 1.5rem;
+    margin-bottom: 2rem;
+    flex-wrap: wrap;
+    position: relative;
+    z-index: 2;
+  }
+
+  .arch-section__pill {
+    display: inline-block;
+    font-family: var(--glasstics-font-mono);
+    font-size: 0.6875rem;
+    font-weight: 600;
+    color: var(--primary);
+    background: var(--secondary);
+    border: 1px solid var(--glass-border);
+    padding: 0.2rem 0.6rem;
+    border-radius: var(--glasstics-radius-full);
+    margin-bottom: 0.5rem;
+  }
+
+  .arch-section__title {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--foreground);
+    letter-spacing: -0.02em;
+    margin: 0 0 0.35rem;
+  }
+
+  .arch-section__subtitle {
+    font-size: 0.875rem;
+    color: var(--muted-foreground);
+    margin: 0;
+    max-width: 65ch;
+  }
+
+  .arch-tech-stack-pills {
+    display: flex;
+    gap: 0.4rem;
+    flex-wrap: wrap;
+  }
+
+  .tech-pill {
+    font-family: var(--glasstics-font-mono);
+    font-size: 0.6875rem;
+    padding: 0.25rem 0.6rem;
+    border-radius: var(--glasstics-radius-sm);
+    background: var(--secondary);
+    border: 1px solid var(--glass-border);
+    color: var(--foreground);
+  }
+
+  /* Diagrama */
+  .arch-diagram {
+    display: flex;
+    align-items: stretch;
+    justify-content: space-between;
+    gap: 0.75rem;
+    position: relative;
+    z-index: 2;
+    margin-bottom: 1.5rem;
+  }
+
+  @media (max-width: 860px) {
+    .arch-diagram {
+      flex-direction: column;
+    }
+  }
+
+  .arch-node {
+    flex: 1;
+    padding: 1.75rem 1.5rem;
+    border-radius: var(--glasstics-radius-lg);
+    background: var(--card);
+    border: 1.5px solid var(--glass-border);
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    transition: transform var(--glasstics-duration) var(--glasstics-ease);
+  }
+
+  .arch-node:hover {
+    transform: translateY(-3px);
+  }
+
+  .arch-node--frontend {
+    border-top: 3px solid var(--chart-1);
+  }
+  .arch-node--backend {
+    border-top: 3px solid var(--primary);
+  }
+  .arch-node--db {
+    border-top: 3px solid var(--color-success);
+  }
+
+  .arch-node__badge {
+    align-self: flex-start;
+    font-family: var(--glasstics-font-mono);
+    font-size: 0.6875rem;
+    color: var(--muted-foreground);
+    background: var(--secondary);
+    padding: 0.15rem 0.45rem;
+    border-radius: var(--glasstics-radius-xs);
+    margin-bottom: 0.75rem;
+  }
+
+  .arch-node__badge--primary {
+    color: var(--primary);
+    background: var(--accent);
+  }
+
+  .arch-node__icon {
+    width: 44px;
+    height: 44px;
+    border-radius: var(--glasstics-radius-sm);
+    background: var(--secondary);
+    border: 1px solid var(--glass-border);
+    color: var(--primary);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 0.85rem;
+  }
+
+  .arch-node__title {
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: var(--foreground);
+    margin: 0 0 0.2rem;
+  }
+
+  .arch-node__stack {
+    font-family: var(--glasstics-font-mono);
+    font-size: 0.75rem;
+    color: var(--muted-foreground);
+    margin: 0 0 1rem;
+  }
+
+  .arch-node__features {
+    list-style: none;
+    padding: 0;
+    margin: auto 0 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+    font-size: 0.78125rem;
+    color: var(--muted-foreground);
+    border-top: 1px solid var(--glass-border);
+    padding-top: 0.75rem;
+  }
+
+  .arch-node__features li::before {
+    content: '• ';
+    color: var(--primary);
+  }
+
+  /* Conectores */
+  .arch-connector {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 0.35rem;
+    padding: 0 0.5rem;
+    min-width: 100px;
+  }
+
+  @media (max-width: 860px) {
+    .arch-connector {
+      padding: 0.5rem 0;
+      flex-direction: row;
+    }
+  }
+
+  .arch-connector__label {
+    font-family: var(--glasstics-font-mono);
+    font-size: 0.6875rem;
+    color: var(--muted-foreground);
+    white-space: nowrap;
+    text-align: center;
+  }
+
+  .arch-connector__arrow {
+    font-family: var(--glasstics-font-mono);
+    font-size: 1.125rem;
+    color: var(--primary);
+    font-weight: 700;
+  }
+
+  @media (max-width: 860px) {
+    .arch-connector__arrow {
+      transform: rotate(90deg);
+    }
+  }
+
+  /* Side Grid */
+  .arch-side-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+    position: relative;
+    z-index: 2;
+  }
+
+  @media (max-width: 768px) {
+    .arch-side-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  .arch-side-box {
+    padding: 1.25rem;
+    border-radius: var(--glasstics-radius-md);
+    background: var(--card);
+    border: 1px solid var(--glass-border);
+  }
+
+  .arch-side-box__badge {
+    display: inline-block;
+    font-family: var(--glasstics-font-mono);
+    font-size: 0.6875rem;
+    color: var(--color-info);
+    background: rgba(59, 130, 246, 0.15);
+    padding: 0.15rem 0.5rem;
+    border-radius: var(--glasstics-radius-xs);
+    margin-bottom: 0.5rem;
+  }
+
+  .arch-side-box__badge--ai {
+    color: var(--primary);
+    background: var(--accent);
+  }
+
+  .arch-side-box__title {
+    font-size: 0.9375rem;
+    font-weight: 600;
+    color: var(--foreground);
+    margin: 0 0 0.35rem;
+  }
+
+  .arch-side-box__desc {
+    font-size: 0.8125rem;
+    color: var(--muted-foreground);
+    line-height: 1.55;
+    margin: 0;
+  }
+</style>

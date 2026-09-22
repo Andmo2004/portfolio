@@ -1,0 +1,121 @@
+---
+// src/layouts/GlassticsLayout.astro
+import '@fontsource-variable/jetbrains-mono/wght.css';
+import '../styles/glasstics-tokens.css';
+
+interface Props {
+  title: string;
+  description: string;
+  locale?: 'es' | 'en';
+}
+
+const {
+  title,
+  description,
+  locale = 'es',
+} = Astro.props;
+---
+
+<!doctype html>
+<html lang={locale} data-theme="dark" class="dark">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="icon" href="/favicon.ico" />
+    <meta name="generator" content={Astro.generator} />
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <meta name="color-scheme" content="dark light" />
+    <meta name="author" content="Andrés Moros & Miguel Ángel Montijano Sempere" />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:type" content="website" />
+    <meta name="twitter:card" content="summary_large_image" />
+
+
+    <script is:inline>
+      (function () {
+        const saved = localStorage.getItem('glasstics_theme');
+        if (saved === 'dark' || saved === 'light') {
+          document.documentElement.setAttribute('data-theme', saved);
+          if (saved === 'dark') {
+            document.documentElement.classList.add('dark');
+          } else {
+            document.documentElement.classList.remove('dark');
+          }
+          return;
+        }
+        document.documentElement.setAttribute('data-theme', 'dark');
+        document.documentElement.classList.add('dark');
+      })();
+    </script>
+  </head>
+  <body class="glasstics-app">
+    <div class="glasstics-shell">
+      <slot />
+    </div>
+
+    <!-- Script para Patrón GlassCard (interacción lumínica con cursor) -->
+    <script>
+      function initSheenEffect() {
+        const cards = document.querySelectorAll<HTMLElement>('.glass-card');
+        cards.forEach((card) => {
+          card.addEventListener('mousemove', (e) => {
+            const rect = card.getBoundingClientRect();
+            const x = e.clientX - rect.left;
+            const y = e.clientY - rect.top;
+            card.style.setProperty('--mouse-x', `${x}px`);
+            card.style.setProperty('--mouse-y', `${y}px`);
+          });
+        });
+      }
+
+      // Inicializar al cargar
+      initSheenEffect();
+      document.addEventListener('astro:page-load', initSheenEffect);
+    </script>
+  </body>
+</html>
+
+<style is:global>
+  *, *::before, *::after {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+  }
+
+  body.glasstics-app {
+    background-color: var(--background);
+    color: var(--foreground);
+    font-family: var(--glasstics-font-sans);
+    min-height: 100vh;
+    overflow-x: hidden;
+    line-height: 1.5;
+    -webkit-font-smoothing: antialiased;
+    transition: background-color var(--glasstics-duration) var(--glasstics-ease),
+                color var(--glasstics-duration) var(--glasstics-ease);
+  }
+
+  .glasstics-shell {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    background-image: var(--glasstics-aurora);
+    background-attachment: fixed;
+    background-repeat: no-repeat;
+  }
+
+  /* Scrollbar personalizado */
+  ::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+  }
+  ::-webkit-scrollbar-track {
+    background: var(--background);
+  }
+  ::-webkit-scrollbar-thumb {
+    background: var(--muted-foreground);
+    border-radius: var(--glasstics-radius-full);
+  }
+</style>

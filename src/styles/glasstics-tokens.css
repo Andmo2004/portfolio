@@ -1,0 +1,228 @@
+/* src/styles/glasstics-tokens.css */
+/* Sistema de diseño Glasstics — UI Design Patterns & Tokens */
+
+:root {
+  /* ==========================================================================
+     PALETA DE COLOR — MODO CLARO (Default :root)
+     ========================================================================== */
+  --background: #f4f6fc;
+  --foreground: #0f172a;
+  --primary: #4f46e5;
+  --card: rgba(255, 255, 255, 0.55);
+  --secondary: rgba(99, 102, 241, 0.15);
+  --accent: rgba(99, 102, 241, 0.25);
+  --glass-border: rgba(255, 255, 255, 0.7);
+  --muted-foreground: #64748b;
+
+  /* Tipografía Glasstics: Sans-serif limpia y moderna */
+  --glasstics-font-sans: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+  --glasstics-font-mono: 'JetBrains Mono Variable', ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+
+  /* Semántica */
+  --color-success: #22c55e;
+  --color-warning: #f59e0b;
+  --color-info: #3b82f6;
+  --color-destructive: #ef4444;
+
+  /* Gráficos OKLCH (Modo Claro) */
+  --chart-1: oklch(55% 0.22 260deg);
+  --chart-2: oklch(55% 0.22 300deg);
+  --chart-3: oklch(55% 0.22 340deg);
+  --chart-4: oklch(55% 0.22 20deg);
+  --chart-5: oklch(55% 0.22 60deg);
+  --chart-6: oklch(55% 0.22 100deg);
+  --chart-7: oklch(55% 0.22 140deg);
+  --chart-8: oklch(55% 0.22 180deg);
+  --chart-9: oklch(55% 0.22 220deg);
+
+  /* Superficies y sombras */
+  --glasstics-shadow-card: 0 10px 30px -10px rgba(15, 23, 42, 0.08), 0 0 1px 1px rgba(255, 255, 255, 0.8);
+  --glasstics-aurora: radial-gradient(circle at 50% -20%, rgba(99, 102, 241, 0.15), transparent 70%),
+                       radial-gradient(circle at 85% 10%, rgba(131, 143, 250, 0.1), transparent 60%);
+
+  /* Radios agrandados */
+  --glasstics-radius-xs: 8px;
+  --glasstics-radius-sm: 14px;
+  --glasstics-radius-md: 22px;
+  --glasstics-radius-lg: 30px;
+  --glasstics-radius-xl: 40px;
+  --glasstics-radius-full: 9999px;
+
+  /* Transición */
+  --glasstics-ease: cubic-bezier(0.16, 1, 0.3, 1);
+  --glasstics-duration: 250ms;
+}
+
+/* Modo Oscuro (Por defecto para la app o toggle con data-theme="dark" o .dark) */
+[data-theme='dark'],
+.dark {
+  --background: #000004;
+  --foreground: #e8e6f0;
+  --primary: #838ffa;
+  --card: rgba(26, 39, 76, 0.45);
+  --secondary: rgba(72, 88, 157, 0.40);
+  --accent: rgba(72, 88, 157, 0.55);
+  --glass-border: rgba(200, 200, 240, 0.25);
+  --muted-foreground: #a0a0c8;
+
+  /* Semántica */
+  --color-success: #66bb6a;
+  --color-warning: #ffa726;
+  --color-info: #42a5f5;
+  --color-destructive: #f06060;
+
+  /* Gráficos OKLCH (Modo Oscuro) */
+  --chart-1: oklch(80% 0.16 260deg);
+  --chart-2: oklch(80% 0.16 300deg);
+  --chart-3: oklch(80% 0.16 340deg);
+  --chart-4: oklch(80% 0.16 20deg);
+  --chart-5: oklch(80% 0.16 60deg);
+  --chart-6: oklch(80% 0.16 100deg);
+  --chart-7: oklch(80% 0.16 140deg);
+  --chart-8: oklch(80% 0.16 180deg);
+  --chart-9: oklch(80% 0.16 220deg);
+
+  --glasstics-shadow-card: 0 16px 40px -12px rgba(0, 0, 0, 0.6), 0 0 1px 1px rgba(200, 200, 240, 0.15);
+  --glasstics-aurora: radial-gradient(circle at 50% -20%, rgba(99, 102, 241, 0.22), transparent 70%),
+                       radial-gradient(circle at 85% 15%, rgba(131, 143, 250, 0.15), transparent 60%),
+                       radial-gradient(circle at 10% 40%, rgba(67, 56, 202, 0.15), transparent 50%);
+}
+
+/* ==========================================================================
+   ESTILOS BASE PARA PATRONES GLASSTICS
+   ========================================================================== */
+
+.glass-card {
+  position: relative;
+  background: var(--card);
+  backdrop-filter: blur(16px) saturate(180%);
+  -webkit-backdrop-filter: blur(16px) saturate(180%);
+  border: 1.5px solid var(--glass-border);
+  border-radius: var(--glasstics-radius-lg);
+  box-shadow: var(--glasstics-shadow-card);
+  overflow: hidden;
+  transition: transform var(--glasstics-duration) var(--glasstics-ease),
+              border-color var(--glasstics-duration) var(--glasstics-ease),
+              box-shadow var(--glasstics-duration) var(--glasstics-ease);
+}
+
+.glass-card:hover {
+  border-color: var(--primary);
+  transform: translateY(-2px);
+}
+
+/* Interacción lumínica reactiva al movimiento del ratón (Sheen) */
+.glass-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  border-radius: inherit;
+  background: radial-gradient(
+    500px circle at var(--mouse-x, 50%) var(--mouse-y, 50%),
+    rgba(255, 255, 255, 0.12),
+    transparent 50%
+  );
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  z-index: 1;
+}
+
+[data-theme='light'] .glass-card::before {
+  background: radial-gradient(
+    500px circle at var(--mouse-x, 50%) var(--mouse-y, 50%),
+    rgba(99, 102, 241, 0.08),
+    transparent 50%
+  );
+}
+
+.glass-card:hover::before {
+  opacity: 1;
+}
+
+/* Patrón KPI Card */
+.kpi-card {
+  padding: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.85rem;
+}
+
+.kpi-card__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.kpi-card__label {
+  font-size: 0.8125rem;
+  font-weight: 500;
+  color: var(--muted-foreground);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.kpi-card__icon {
+  width: 36px;
+  height: 36px;
+  border-radius: var(--glasstics-radius-sm);
+  background: var(--secondary);
+  border: 1px solid var(--glass-border);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--primary);
+  backdrop-filter: blur(8px);
+}
+
+.kpi-card__body {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.kpi-card__value {
+  font-family: var(--glasstics-font-mono);
+  font-size: 2.25rem;
+  font-weight: 700;
+  color: var(--foreground);
+  font-variant-numeric: tabular-nums;
+  line-height: 1.1;
+  letter-spacing: -0.02em;
+}
+
+.kpi-card__footer {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.8125rem;
+  color: var(--muted-foreground);
+  border-top: 1px solid var(--glass-border);
+  padding-top: 0.75rem;
+}
+
+.kpi-badge {
+  font-family: var(--glasstics-font-mono);
+  font-size: 0.75rem;
+  font-weight: 600;
+  padding: 0.2em 0.55em;
+  border-radius: var(--glasstics-radius-xs);
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+}
+
+.kpi-badge--success {
+  background: rgba(34, 197, 94, 0.15);
+  color: var(--color-success);
+  border: 1px solid rgba(34, 197, 94, 0.3);
+}
+
+.kpi-badge--info {
+  background: rgba(59, 130, 246, 0.15);
+  color: var(--color-info);
+  border: 1px solid rgba(59, 130, 246, 0.3);
+}

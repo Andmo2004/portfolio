@@ -1,6 +1,6 @@
 ---
 // src/components/ProjectCard.astro
-import ProjectSchematic from './ProjectSchematic.astro';
+import type { ProjectCollaborator } from '../i18n/translations';
 
 interface Props {
   index: number;
@@ -9,9 +9,8 @@ interface Props {
   tags: string[];
   href: string;
   exploreLabel?: string;
-  schematicId?: 'minigpt' | 'miclustering' | 'enterprise';
-  schematicTitle?: string;
-  codeExcerpt?: string;
+  badge?: string;
+  collaborator?: ProjectCollaborator;
   image?: {
     src: string;
     alt: string;
@@ -26,9 +25,8 @@ const {
   tags,
   href,
   exploreLabel = 'Explore',
-  schematicId,
-  schematicTitle = 'fig. 01 > system schematic',
-  codeExcerpt,
+  badge,
+  collaborator,
   image,
   isExternal = true,
 } = Astro.props;
@@ -45,33 +43,30 @@ const isReversed = index % 2 === 1;
   <div class="case-study__media">
     {image ? (
       <img src={image.src} alt={image.alt} loading="lazy" />
-    ) : schematicId ? (
-      <div class="case-study__schematic-wrapper">
-        <div class="case-study__schematic-header">
-          <span class="case-study__schematic-symbol">&gt;&gt;&gt;</span>
-          <span class="case-study__schematic-label">{schematicTitle}</span>
-        </div>
-        <div class="case-study__schematic-body">
-          <ProjectSchematic schematicId={schematicId} />
-        </div>
-      </div>
-    ) : codeExcerpt ? (
-      <div class="case-study__code-wrapper">
-        <div class="case-study__code-header">
-          <span class="case-study__code-symbol">&gt;&gt;</span>
-          <span class="case-study__code-label">preview // snippet</span>
-        </div>
-        <pre class="case-study__code"><code>{codeExcerpt}</code></pre>
-      </div>
     ) : (
-      <div class="case-study__placeholder">
-        <span>Boceto en desarrollo</span>
-      </div>
+      <div class="case-study__empty-frame" aria-hidden="true" />
     )}
   </div>
 
   <div class="case-study__content">
+    {badge && <span class="case-study__badge">{badge}</span>}
+    
     <h3 class="case-study__title">{title}</h3>
+
+    {collaborator && (
+      <div class="case-study__collaborator">
+        <span class="case-study__collaborator-label">En colaboración con:</span>
+        {collaborator.url ? (
+          <a href={collaborator.url} target="_blank" rel="noopener noreferrer" class="case-study__collaborator-link">
+            {collaborator.name}
+            <span class="case-study__collab-arrow" aria-hidden="true">↗</span>
+          </a>
+        ) : (
+          <span class="case-study__collaborator-name">{collaborator.name}</span>
+        )}
+      </div>
+    )}
+
     <p class="case-study__description">{description}</p>
     
     <ul class="case-study__tags" aria-label="Tecnologías empleadas">
@@ -151,73 +146,78 @@ const isReversed = index % 2 === 1;
     transform: scale(1.03);
   }
 
-  .case-study__schematic-wrapper,
-  .case-study__code-wrapper {
-    display: flex;
-    flex-direction: column;
+  .case-study__empty-frame {
+    width: 100%;
     height: 100%;
-    background: var(--surface);
+    background: color-mix(in srgb, var(--surface) 60%, var(--bg));
     border-radius: var(--radius-lg);
-    overflow: hidden;
+    transition: background-color var(--duration-base) var(--ease-out);
   }
 
-  .case-study__schematic-header,
-  .case-study__code-header {
-    display: flex;
-    align-items: center;
-    gap: 0.6em;
-    padding: var(--space-2xs) var(--space-sm);
-    border-bottom: 1px solid var(--border);
-    background: color-mix(in srgb, var(--surface) 85%, var(--bg));
-    border-top-left-radius: var(--radius-lg);
-    border-top-right-radius: var(--radius-lg);
+  .case-study:hover .case-study__empty-frame {
+    background: color-mix(in srgb, var(--surface) 80%, var(--bg));
   }
 
-  .case-study__schematic-symbol,
-  .case-study__code-symbol {
-    font-family: var(--font-mono);
+  .case-study__badge {
+    display: inline-block;
+    align-self: flex-start;
+    padding: 0.2em 0.6em;
+    margin-bottom: var(--space-2xs);
+    font-family: var(--font-roboto-serif);
     font-size: var(--text-caption);
-    font-weight: 700;
+    font-weight: 500;
+    letter-spacing: var(--tracking-wide);
+    color: var(--coffee-dark);
+    background: var(--coffee-bg);
+    border: 1px solid color-mix(in srgb, var(--coffee-dark) 20%, transparent);
+    border-radius: var(--radius-xs);
+  }
+
+  [data-theme='dark'] .case-study__badge {
+    color: #e8d0b5;
+    background: rgba(92, 64, 51, 0.25);
+    border-color: rgba(232, 208, 181, 0.2);
+  }
+
+  .case-study__collaborator {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4em;
+    font-family: var(--font-roboto-serif);
+    font-size: var(--text-caption);
+    color: var(--fg-subtle);
+    margin-bottom: var(--space-2xs);
+  }
+
+  .case-study__collaborator-label {
+    font-family: var(--font-roboto-serif);
+    color: var(--fg-subtle);
+  }
+
+  .case-study__collaborator-name {
+    font-family: var(--font-roboto-serif);
+    color: var(--fg);
+    font-weight: 500;
+  }
+
+  .case-study__collaborator-link {
+    font-family: var(--font-roboto-serif);
+    color: var(--fg);
+    font-weight: 500;
+    text-decoration: underline;
+    text-underline-offset: 3px;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.2em;
+    transition: color var(--duration-fast) var(--ease-out);
+  }
+
+  .case-study__collaborator-link:hover {
     color: var(--coffee-dark);
   }
 
-  .case-study__schematic-label,
-  .case-study__code-label {
-    font-family: var(--font-mono);
-    font-size: var(--text-caption);
-    color: var(--fg-subtle);
-    letter-spacing: var(--tracking-wide);
-  }
-
-  .case-study__schematic-body {
-    flex: 1;
-    overflow: hidden;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-  }
-
-  .case-study__code {
-    flex: 1;
-    margin: 0;
-    padding: var(--space-sm);
-    font-family: var(--font-mono);
-    font-size: clamp(0.75rem, 0.72rem + 0.15vw, 0.8125rem);
-    line-height: 1.5;
-    color: var(--fg-muted);
-    overflow: hidden;
-    white-space: pre-wrap;
-    word-break: break-word;
-  }
-
-  .case-study__placeholder {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    height: 100%;
-    font-family: var(--font-mono);
-    font-size: var(--text-small);
-    color: var(--fg-subtle);
+  .case-study__collab-arrow {
+    font-size: 0.85em;
   }
 
   .case-study__content {
