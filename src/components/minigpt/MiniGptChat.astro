@@ -1,0 +1,362 @@
+---
+// src/components/minigpt/MiniGptChat.astro
+interface Props {
+  currentLocale: 'es' | 'en';
+}
+
+const { currentLocale } = Astro.props;
+---
+
+<div class="chat-container">
+  <div id="message-stream" class="message-stream" role="log" aria-live="polite" aria-label="Historial de mensajes de chat">
+    
+    <!-- Estado Inicial / Vacío -->
+    <div id="empty-state" class="empty-state">
+      <h1 class="empty-state__title">
+        {currentLocale === 'en' ? 'What would you like to explore?' : '¿Qué deseas explorar hoy?'}
+      </h1>
+
+      <p class="empty-state__desc">
+        {currentLocale === 'en' 
+          ? 'An autoregressive GPT-style language model built from scratch in PyTorch. Explore its causal attention mechanics, training dynamics, or inspect tensor implementations.'
+          : 'Modelo de lenguaje autoregresivo tipo GPT implementado desde cero en PyTorch. Explora la mecánica de autoatención causal, la dinámica de optimización o inspecciona tensores reales.'}
+      </p>
+
+
+    </div>
+
+  </div>
+</div>
+
+<style is:global>
+  /* ==========================================================================
+     ESTILOS GLOBALES DE BURBUJAS Y RENDERIZADO DEL CHAT
+     Necesarios en ámbito global para elementos creados dinámicamente por TS.
+     ========================================================================== */
+  .chat-container {
+    width: 100%;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    position: relative;
+  }
+
+  .message-stream {
+    width: 100%;
+    max-width: 48rem; /* 768px - según wireframe spec */
+    margin-inline: auto;
+    padding-inline: var(--minigpt-space-4);
+    padding-block: var(--minigpt-space-6);
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    gap: var(--minigpt-space-5);
+    flex: 1;
+    scroll-behavior: smooth;
+  }
+
+  /* Estado vacío de bienvenida */
+  .empty-state {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    margin-block: auto;
+    padding: var(--minigpt-space-8) var(--minigpt-space-4);
+    gap: var(--minigpt-space-4);
+    max-width: 40rem;
+    margin-inline: auto;
+    animation: minigpt-fade-in var(--minigpt-duration-base) var(--minigpt-ease);
+  }
+
+  .empty-state__badge {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--minigpt-space-2);
+    font-family: var(--minigpt-font-mono);
+    font-size: var(--minigpt-font-xs);
+    color: var(--minigpt-accent);
+    padding: 3px 10px;
+    border-radius: var(--minigpt-radius-pill);
+    background: var(--minigpt-accent-subtle);
+    border: 1px solid rgba(37, 99, 235, 0.2);
+    letter-spacing: 0.02em;
+  }
+
+  .empty-state__symbol {
+    font-weight: 700;
+  }
+
+  .empty-state__title {
+    font-family: var(--minigpt-font-handwriting);
+    font-size: 2.85rem;
+    font-weight: 700;
+    letter-spacing: -0.01em;
+    color: var(--minigpt-text-primary);
+    line-height: 1.15;
+  }
+
+  .empty-state__desc {
+    font-family: var(--minigpt-font-sans);
+    font-size: var(--minigpt-font-sm);
+    color: var(--minigpt-text-secondary);
+    line-height: var(--minigpt-line-base);
+    max-width: 32rem;
+  }
+
+
+
+  /* BURBUJAS DE MENSAJE */
+  .bubble {
+    max-width: 82%;
+    padding: var(--minigpt-space-3) var(--minigpt-space-4);
+    font-size: var(--minigpt-font-base);
+    line-height: var(--minigpt-line-base);
+    position: relative;
+    word-break: break-word;
+    animation: minigpt-fade-in var(--minigpt-duration-fast) var(--minigpt-ease);
+  }
+
+  /* Burbuja de Usuario */
+  .bubble--user {
+    align-self: flex-end;
+    background: var(--minigpt-accent);
+    color: var(--minigpt-on-accent);
+    border-radius: var(--minigpt-radius-lg) var(--minigpt-radius-lg) var(--minigpt-radius-xs) var(--minigpt-radius-lg);
+    font-family: var(--minigpt-font-sans);
+    font-weight: 450;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+  }
+
+  /* Burbuja de Asistente (Fondo SÓLIDO, nunca glassmorphism, para máximo contraste y legibilidad) */
+  .bubble--assistant {
+    align-self: flex-start;
+    max-width: 96%;
+    background: var(--minigpt-surface-container);
+    color: var(--minigpt-text-primary);
+    border-radius: var(--minigpt-radius-lg) var(--minigpt-radius-lg) var(--minigpt-radius-lg) var(--minigpt-radius-xs);
+    border: 1px solid var(--minigpt-border-subtle);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+  }
+
+  .bubble--assistant .bubble__content {
+    display: flex;
+    flex-direction: column;
+    gap: var(--minigpt-space-3);
+    font-family: var(--minigpt-font-handwriting);
+    font-size: 1.35rem;
+    line-height: 1.45;
+    letter-spacing: 0.015em;
+  }
+
+  .bubble--assistant .bubble__content p {
+    margin: 0;
+    line-height: 1.45;
+  }
+
+  .bubble--assistant .bubble__content h1,
+  .bubble--assistant .bubble__content h2,
+  .bubble--assistant .bubble__content h3 {
+    margin-top: var(--minigpt-space-2);
+    margin-bottom: var(--minigpt-space-1);
+    font-family: var(--minigpt-font-handwriting);
+    font-size: 1.65rem;
+    font-weight: 700;
+    color: var(--minigpt-text-primary);
+  }
+
+  .bubble--assistant .bubble__content ul {
+    margin: 0;
+    padding-left: var(--minigpt-space-4);
+    display: flex;
+    flex-direction: column;
+    gap: var(--minigpt-space-1);
+  }
+
+  .bubble--assistant .bubble__content li {
+    line-height: 1.45;
+  }
+
+  /* Excepción estricta: Código y LaTeX usan Consolas y fuentes matemáticas, NUNCA Caveat */
+  .bubble--assistant .bubble__content .code-block,
+  .bubble--assistant .bubble__content code,
+  .bubble--assistant .bubble__content pre,
+  .bubble--assistant .bubble__content .math-block,
+  .bubble--assistant .bubble__content .math-inline {
+    font-family: var(--minigpt-font-mono) !important;
+  }
+
+  .bubble--assistant .bubble__content code:not([class*="language-"]) {
+    font-family: var(--minigpt-font-mono) !important;
+    font-size: 0.82em;
+    background: var(--minigpt-surface-container-high);
+    padding: 2px 6px;
+    border-radius: var(--minigpt-radius-xs);
+    color: var(--minigpt-text-primary);
+    border: 1px solid var(--minigpt-border-subtle);
+  }
+
+  /* Bloques de Código */
+  .code-block {
+    border-radius: var(--minigpt-radius-md);
+    background: var(--minigpt-surface-container-high);
+    border: 1px solid var(--minigpt-border-default);
+    overflow: hidden;
+    margin-block: var(--minigpt-space-2);
+  }
+
+  .code-block__header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: var(--minigpt-space-2) var(--minigpt-space-3);
+    background: var(--minigpt-surface-container-highest);
+    border-bottom: 1px solid var(--minigpt-border-subtle);
+    font-size: var(--minigpt-font-xs);
+  }
+
+  .code-block__lang {
+    font-family: var(--minigpt-font-mono);
+    color: var(--minigpt-text-secondary);
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+
+  .code-copy-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    padding: 3px 8px;
+    border-radius: var(--minigpt-radius-xs);
+    background: transparent;
+    border: 1px solid transparent;
+    color: var(--minigpt-text-secondary);
+    font-family: var(--minigpt-font-sans);
+    font-size: var(--minigpt-font-xs);
+    cursor: pointer;
+    transition: background-color var(--minigpt-duration-fast) var(--minigpt-ease),
+                color var(--minigpt-duration-fast) var(--minigpt-ease);
+  }
+
+  .code-copy-btn:hover {
+    background: var(--minigpt-surface-container);
+    color: var(--minigpt-text-primary);
+    border-color: var(--minigpt-border-subtle);
+  }
+
+  .code-copy-btn.is-copied {
+    color: #10B981;
+  }
+
+  .code-block__pre {
+    margin: 0;
+    padding: var(--minigpt-space-3) var(--minigpt-space-4);
+    overflow-x: auto;
+    font-family: var(--minigpt-font-mono);
+    font-size: var(--minigpt-font-sm);
+    line-height: 1.45;
+  }
+
+  .code-block__pre code {
+    background: transparent !important;
+    padding: 0 !important;
+    border: none !important;
+    font-family: inherit;
+  }
+
+  /* Notación Matemática (LaTeX) */
+  .math-block {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: var(--minigpt-space-3) var(--minigpt-space-4);
+    margin-block: var(--minigpt-space-2);
+    border-radius: var(--minigpt-radius-md);
+    background: var(--minigpt-surface-container-high);
+    border: 1px solid var(--minigpt-border-subtle);
+    font-family: var(--minigpt-font-mono);
+    font-size: var(--minigpt-font-sm);
+    overflow-x: auto;
+  }
+
+  .math-formula {
+    color: var(--minigpt-text-primary);
+    letter-spacing: 0.02em;
+  }
+
+  .math-inline {
+    font-family: var(--minigpt-font-mono);
+    font-size: 0.9em;
+    padding: 1px 4px;
+    background: var(--minigpt-surface-container-high);
+    border-radius: var(--minigpt-radius-xs);
+    color: var(--minigpt-accent);
+  }
+
+  /* Indicador de Escritura (Typing Bounce) */
+  .typing-indicator {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    padding: var(--minigpt-space-2) 0;
+  }
+
+  .typing-indicator span {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--minigpt-text-tertiary);
+    animation: minigpt-typing-bounce 1.2s infinite;
+  }
+
+  .typing-indicator span:nth-child(2) { animation-delay: 0.15s; }
+  .typing-indicator span:nth-child(3) { animation-delay: 0.3s; }
+
+  /* Cursor de Streaming */
+  .minigpt-cursor {
+    display: inline-block;
+    width: 3px;
+    height: 1em;
+    vertical-align: -2px;
+    margin-left: 3px;
+    background: var(--minigpt-accent);
+    animation: minigpt-cursor-blink 1s step-end infinite;
+  }
+
+  /* Barra de Acciones del Mensaje */
+  .bubble__action-bar {
+    display: flex;
+    align-items: center;
+    gap: var(--minigpt-space-1);
+    margin-top: var(--minigpt-space-3);
+    padding-top: var(--minigpt-space-2);
+    border-top: 1px solid var(--minigpt-border-subtle);
+  }
+
+  .bubble__action-bar .icon-button {
+    width: 1.875rem;
+    height: 1.875rem;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: var(--minigpt-radius-md);
+    color: var(--minigpt-text-secondary);
+    background: transparent;
+    border: 1px solid transparent;
+    cursor: pointer;
+    transition: background-color var(--minigpt-duration-fast) var(--minigpt-ease),
+                color var(--minigpt-duration-fast) var(--minigpt-ease);
+  }
+
+  .bubble__action-bar .icon-button:hover {
+    background: var(--minigpt-surface-container-high);
+    color: var(--minigpt-text-primary);
+  }
+
+  .bubble__action-bar .icon-button:focus-visible {
+    outline: none;
+    box-shadow: 0 0 0 2px var(--minigpt-bg-primary), 0 0 0 4px var(--minigpt-accent);
+  }
+</style>

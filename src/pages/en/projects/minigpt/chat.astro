@@ -1,0 +1,25 @@
+---
+// src/pages/en/projects/minigpt/chat.astro (English)
+import MiniGptLayout from '../../../../layouts/MiniGptLayout.astro';
+import MiniGptChat from '../../../../components/minigpt/MiniGptChat.astro';
+import MiniGptDock from '../../../../components/minigpt/MiniGptDock.astro';
+
+const locale = 'en';
+const metaTitle = 'miniGPT · Chat — Autoregressive Inference Interface | Andrés Moros';
+const metaDescription = 'Chat with miniGPT: a 15.2M-parameter decoder-only Transformer built from scratch in PyTorch featuring causal self-attention and generative token decoding.';
+---
+
+<MiniGptLayout
+  title={metaTitle}
+  description={metaDescription}
+  locale={locale}
+  activeTab="chat"
+>
+  <MiniGptChat currentLocale={locale} />
+  <MiniGptDock currentLocale={locale} />
+
+  <script>
+    import { initMiniGptChat } from '../../../../scripts/minigpt/chat-engine';
+    initMiniGptChat({ locale: 'en' });
+  </script>
+</MiniGptLayout>

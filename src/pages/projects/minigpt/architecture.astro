@@ -1,0 +1,70 @@
+---
+// src/pages/projects/minigpt/architecture.astro (Español)
+import MiniGptLayout from '../../../layouts/MiniGptLayout.astro';
+
+const locale = 'es';
+const metaTitle = 'miniGPT · Architecture | Andrés Moros';
+const metaDescription = 'Arquitectura técnica del modelo miniGPT.';
+---
+
+<MiniGptLayout
+  title={metaTitle}
+  description={metaDescription}
+  locale={locale}
+  activeTab="architecture"
+>
+  <div class="static-view">
+    <header class="static-view__header">
+      <h1 class="static-view__title">Architecture</h1>
+      <p class="static-view__subtitle">Topología y arquitectura técnica del modelo miniGPT.</p>
+    </header>
+
+    <div class="static-view__content">
+      <!-- Espacio reservado para el contenido del usuario -->
+    </div>
+  </div>
+</MiniGptLayout>
+
+<style>
+  .static-view {
+    width: 100%;
+    max-width: 48rem;
+    margin-inline: auto;
+    padding: var(--minigpt-space-6) var(--minigpt-space-4);
+    display: flex;
+    flex-direction: column;
+    gap: var(--minigpt-space-4);
+    flex: 1;
+  }
+
+  .static-view__header {
+    display: flex;
+    flex-direction: column;
+    gap: var(--minigpt-space-1);
+  }
+
+  .static-view__title {
+    font-family: var(--minigpt-font-sans);
+    font-size: var(--minigpt-font-2xl);
+    font-weight: 700;
+    color: var(--minigpt-text-primary);
+    letter-spacing: -0.02em;
+  }
+
+  .static-view__subtitle {
+    font-family: var(--minigpt-font-sans);
+    font-size: var(--minigpt-font-sm);
+    color: var(--minigpt-text-secondary);
+  }
+
+  .static-view__content {
+    flex: 1;
+    min-height: 240px;
+    border-radius: var(--minigpt-radius-lg);
+    border: 1px dashed var(--minigpt-border-strong);
+    background: var(--minigpt-surface-container);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+</style>

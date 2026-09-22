@@ -10,6 +10,7 @@ export interface ProjectItem {
   schematicId: 'minigpt' | 'miclustering' | 'enterprise';
   schematicTitle: string;
   codeExcerpt: string;
+  isExternal?: boolean;
 }
 
 export interface TranslationSchema {
@@ -123,7 +124,8 @@ export const translations: Record<Locale, TranslationSchema> = {
           title: 'miniGPT',
           description: 'Modelo de lenguaje autoregresivo tipo GPT implementado desde cero en PyTorch para comprender los fundamentos de atención causal, normalización de capas y decodificación generativa.',
           tags: ['Python', 'PyTorch', 'Transformers', 'NLP'],
-          href: 'https://github.com/Andmo2004',
+          href: '/projects/minigpt',
+          isExternal: false,
           schematicId: 'minigpt',
           schematicTitle: 'fig. 01 > transformer_causal_decoder.diag',
           codeExcerpt: `class CausalSelfAttention(nn.Module):
@@ -273,7 +275,8 @@ export const translations: Record<Locale, TranslationSchema> = {
           title: 'miniGPT',
           description: 'A small GPT-style autoregressive language model implemented from scratch in PyTorch to explore causal self-attention, layer normalization, and generative token decoding.',
           tags: ['Python', 'PyTorch', 'Transformers', 'NLP'],
-          href: 'https://github.com/Andmo2004',
+          href: '/en/projects/minigpt',
+          isExternal: false,
           schematicId: 'minigpt',
           schematicTitle: 'fig. 01 > transformer_causal_decoder.diag',
           codeExcerpt: `class CausalSelfAttention(nn.Module):

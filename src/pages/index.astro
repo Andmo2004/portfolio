@@ -41,7 +41,7 @@ const t = translations[locale];
             schematicTitle={item.schematicTitle}
             codeExcerpt={item.codeExcerpt}
             exploreLabel={t.projects.exploreLabel}
-            isExternal={true}
+            isExternal={item.isExternal !== undefined ? item.isExternal : true}
           />
         ))}
       </div>

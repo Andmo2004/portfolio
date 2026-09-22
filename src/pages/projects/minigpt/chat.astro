@@ -1,0 +1,25 @@
+---
+// src/pages/projects/minigpt/chat.astro (Español)
+import MiniGptLayout from '../../../layouts/MiniGptLayout.astro';
+import MiniGptChat from '../../../components/minigpt/MiniGptChat.astro';
+import MiniGptDock from '../../../components/minigpt/MiniGptDock.astro';
+
+const locale = 'es';
+const metaTitle = 'miniGPT · Chat — Interfaz de Inferencia Autoregresiva | Andrés Moros';
+const metaDescription = 'Conversa con miniGPT: modelo Transformer decoder-only de 15.2M parámetros implementado en PyTorch con atención causal y generación de tokens.';
+---
+
+<MiniGptLayout
+  title={metaTitle}
+  description={metaDescription}
+  locale={locale}
+  activeTab="chat"
+>
+  <MiniGptChat currentLocale={locale} />
+  <MiniGptDock currentLocale={locale} />
+
+  <script>
+    import { initMiniGptChat } from '../../../scripts/minigpt/chat-engine';
+    initMiniGptChat({ locale: 'es' });
+  </script>
+</MiniGptLayout>

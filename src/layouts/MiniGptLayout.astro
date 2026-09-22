@@ -1,0 +1,122 @@
+---
+// src/layouts/MiniGptLayout.astro
+import '@fontsource-variable/jetbrains-mono/wght.css';
+import '../styles/minigpt-tokens.css';
+import MiniGptHeader from '../components/minigpt/MiniGptHeader.astro';
+import MiniGptSidebar from '../components/minigpt/MiniGptSidebar.astro';
+import MiniGptFooter from '../components/minigpt/MiniGptFooter.astro';
+
+interface Props {
+  title: string;
+  description: string;
+  locale?: 'es' | 'en';
+  activeTab?: 'chat' | 'training' | 'architecture' | 'experiments';
+}
+
+const {
+  title,
+  description,
+  locale = 'es',
+  activeTab = 'chat',
+} = Astro.props;
+---
+
+<!doctype html>
+<html lang={locale}>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="icon" href="/favicon.ico" />
+    <meta name="generator" content={Astro.generator} />
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <meta name="color-scheme" content="light dark" />
+    <meta name="author" content="Andrés Moros" />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:type" content="website" />
+    <meta name="twitter:card" content="summary_large_image" />
+
+    <!-- Google Fonts: Caveat para respuestas del modelo -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@400..700&display=swap" rel="stylesheet" />
+
+    <!-- KaTeX: Renderizado de fórmulas matemáticas LaTeX -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css" crossorigin="anonymous" />
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js" crossorigin="anonymous"></script>
+
+    <!-- Script anti-parpadeo de tema para miniGPT -->
+    <script is:inline>
+      (function () {
+        const saved = localStorage.getItem('minigpt_theme');
+        if (saved === 'dark' || saved === 'light') {
+          document.documentElement.setAttribute('data-theme', saved);
+          return;
+        }
+        const prefersDark = window.matchMedia('(prefers-color-scheme: dark)');
+        function updateTheme(mq) {
+          const theme = mq.matches ? 'dark' : 'light';
+          document.documentElement.setAttribute('data-theme', theme);
+        }
+        updateTheme(prefersDark);
+        try {
+          prefersDark.addEventListener('change', updateTheme);
+        } catch (e) {
+          prefersDark.addListener(updateTheme);
+        }
+      })();
+    </script>
+  </head>
+  <body class="minigpt-app">
+    <div class="app-shell">
+      <MiniGptHeader currentLocale={locale} activeTab={activeTab} />
+      <MiniGptSidebar currentLocale={locale} />
+
+      <main class="app-main">
+        <slot />
+      </main>
+
+      <MiniGptFooter currentLocale={locale} />
+    </div>
+  </body>
+</html>
+
+<style is:global>
+  * {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+  }
+
+  .minigpt-app {
+    background-color: var(--minigpt-bg-primary);
+    color: var(--minigpt-text-primary);
+    font-family: var(--minigpt-font-sans);
+    min-height: 100dvh;
+    height: 100dvh;
+    overflow: hidden;
+    transition: background-color var(--minigpt-duration-base) var(--minigpt-ease),
+                color var(--minigpt-duration-base) var(--minigpt-ease);
+  }
+
+  .app-shell {
+    display: grid;
+    grid-template-rows: auto 1fr auto;
+    height: 100dvh;
+    min-height: 100dvh;
+    width: 100%;
+    overflow: hidden;
+    background: var(--minigpt-bg-gradient);
+  }
+
+  .app-main {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    min-height: 0;
+    overflow: hidden;
+    position: relative;
+  }
+</style>

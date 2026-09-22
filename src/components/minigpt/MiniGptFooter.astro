@@ -1,0 +1,135 @@
+---
+// src/components/minigpt/MiniGptFooter.astro
+interface Props {
+  currentLocale: 'es' | 'en';
+}
+
+const { currentLocale } = Astro.props;
+---
+
+<footer class="minigpt-footer">
+  <div class="minigpt-footer__inner">
+    <div class="telemetry-item">
+      <span class="telemetry-item__label">Model:</span>
+      <span class="telemetry-item__value">miniGPT-v0.1</span>
+    </div>
+
+    <span class="telemetry-sep" aria-hidden="true">·</span>
+
+    <div class="telemetry-item">
+      <span class="telemetry-item__label">Arch:</span>
+      <span class="telemetry-item__value">Decoder 6L/6H</span>
+    </div>
+
+    <span class="telemetry-sep" aria-hidden="true">·</span>
+
+    <div class="telemetry-item">
+      <span class="telemetry-item__label">Params:</span>
+      <span class="telemetry-item__value font-mono">15.2M</span>
+    </div>
+
+    <span class="telemetry-sep" aria-hidden="true">·</span>
+
+    <div class="telemetry-item">
+      <span class="telemetry-item__label">Context:</span>
+      <span class="telemetry-item__value font-mono">1024</span>
+    </div>
+
+    <span class="telemetry-sep" aria-hidden="true">·</span>
+
+    <div class="telemetry-item telemetry-item--status">
+      <span class="status-dot" aria-hidden="true"></span>
+      <span class="telemetry-item__label">Status:</span>
+      <span class="telemetry-item__value">
+        {currentLocale === 'en' ? 'Local Demo' : 'Demo Local'}
+      </span>
+    </div>
+  </div>
+</footer>
+
+<style>
+  .minigpt-footer {
+    width: 100%;
+    padding: var(--minigpt-space-2) var(--minigpt-space-4);
+    background: var(--minigpt-glass-surface);
+    backdrop-filter: var(--minigpt-glass-blur);
+    -webkit-backdrop-filter: var(--minigpt-glass-blur);
+    border-top: 1px solid var(--minigpt-border-subtle);
+    font-size: var(--minigpt-font-xs);
+    color: var(--minigpt-text-tertiary);
+    z-index: 30;
+  }
+
+  @supports not (backdrop-filter: blur(1px)) {
+    .minigpt-footer {
+      background: var(--minigpt-bg-secondary);
+    }
+  }
+
+  .minigpt-footer__inner {
+    max-width: 48rem;
+    margin-inline: auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--minigpt-space-3);
+    flex-wrap: wrap;
+  }
+
+  .telemetry-item {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    white-space: nowrap;
+  }
+
+  .telemetry-item__label {
+    color: var(--minigpt-text-tertiary);
+  }
+
+  .telemetry-item__value {
+    color: var(--minigpt-text-secondary);
+    font-weight: 500;
+  }
+
+  .telemetry-item--status {
+    gap: 6px;
+  }
+
+  .status-dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--minigpt-status-dot);
+    box-shadow: 0 0 6px var(--minigpt-status-dot);
+    animation: pulse-dot 2.5s infinite;
+  }
+
+  @keyframes pulse-dot {
+    0%, 100% { opacity: 0.6; transform: scale(0.9); }
+    50% { opacity: 1; transform: scale(1.1); }
+  }
+
+  .telemetry-sep {
+    color: var(--minigpt-border-strong);
+    user-select: none;
+  }
+
+  .font-mono {
+    font-family: var(--minigpt-font-mono);
+  }
+
+  @media (max-width: 540px) {
+    .telemetry-item:nth-child(3),
+    .telemetry-item:nth-child(7) {
+      display: none;
+    }
+    .telemetry-sep {
+      display: none;
+    }
+    .minigpt-footer__inner {
+      gap: var(--minigpt-space-2);
+      justify-content: space-between;
+    }
+  }
+</style>
