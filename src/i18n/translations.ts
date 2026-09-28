@@ -140,7 +140,7 @@ export const translations: Record<Locale, TranslationSchema> = {
           title: 'MIClustering',
           description: 'Librería científica de Machine Learning en Python desarrollada como trabajo de investigación en Multiple-Instance Learning (MIL). Implementación de agrupamiento basado en densidad con métricas de distancia personalizadas entre bolsas de instancias.',
           tags: ['Python', 'Scikit-learn', 'NumPy', 'MIL', 'Research'],
-          href: 'https://github.com/Andmo2004',
+          href: 'https://github.com/Andmo2004/MIClustering',
           isExternal: true,
         },
         {
@@ -258,7 +258,7 @@ export const translations: Record<Locale, TranslationSchema> = {
           title: 'MIClustering',
           description: 'Python scientific Machine Learning library developed as part of research in Multiple-Instance Learning (MIL). Density-based clustering implementation supporting custom distance metrics across instance bags.',
           tags: ['Python', 'Scikit-learn', 'NumPy', 'MIL', 'Research'],
-          href: 'https://github.com/Andmo2004',
+          href: 'https://github.com/Andmo2004/MIClustering',
           isExternal: true,
         },
         {

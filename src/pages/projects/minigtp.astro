@@ -1,5 +1,10 @@
 ---
 // src/pages/projects/minigtp.astro
+// WIP guard
+import { getWipRedirect } from '../../config/wip-routes';
+const wipTarget = getWipRedirect('/projects/minigpt');
+if (wipTarget) return Astro.redirect(wipTarget);
+
 // Redirección tolerante a erratas hacia /projects/minigpt/chat
 return Astro.redirect('/projects/minigpt/chat', 301);
 ---

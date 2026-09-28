@@ -18,6 +18,11 @@ const navLinks = [
   { label: t.nav.github, href: 'https://github.com/Andmo2004', external: true },
   { label: t.nav.linkedin || 'LinkedIn', href: 'https://www.linkedin.com/in/andrés-moros-rincón-a0247639b', external: true },
 ];
+
+const pathname = Astro.url.pathname;
+const isCurrentEn = currentLocale === 'en' || pathname.startsWith('/en');
+const esHref = isCurrentEn ? (pathname.replace(/^\/en(?:\/|$)/, '/') || '/') : pathname;
+const enHref = isCurrentEn ? pathname : (pathname === '/' ? '/en' : `/en${pathname}`);
 ---
 
 <header class="nav">
@@ -44,15 +49,59 @@ const navLinks = [
   </nav>
 
   <div class="nav__actions">
-    <a
-      href={t.nav.langSwitchTarget}
-      class="nav__lang-toggle"
-      title={`Cambiar idioma a ${t.nav.langSwitchLabel}`}
-    >
-      <span class="nav__lang-bracket">[</span>
-      <span class="nav__lang-code">{t.nav.langSwitchLabel}</span>
-      <span class="nav__lang-bracket">]</span>
-    </a>
+    <div class="nav__lang-dropdown" id="lang-dropdown">
+      <button
+        class="nav__lang-trigger"
+        aria-haspopup="true"
+        aria-expanded="false"
+        aria-label={currentLocale === 'es' ? 'Cambiar idioma' : 'Change language'}
+        type="button"
+      >
+        <span class="nav__lang-bracket" aria-hidden="true">[</span>
+        <span class="nav__lang-current">{currentLocale.toUpperCase()}</span>
+        <svg class="nav__lang-chevron" width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <polyline points="6 9 12 15 18 9" />
+        </svg>
+        <span class="nav__lang-bracket" aria-hidden="true">]</span>
+      </button>
+
+      <ul class="nav__lang-menu" role="menu">
+        <li role="none">
+          <a
+            href={esHref}
+            role="menuitem"
+            hreflang="es"
+            class:list={['nav__lang-option', { 'is-active': currentLocale === 'es' }]}
+            aria-current={currentLocale === 'es' ? 'true' : undefined}
+          >
+            <span class="nav__lang-option-code">ES</span>
+            <span class="nav__lang-option-label">Español</span>
+            {currentLocale === 'es' && (
+              <svg class="nav__lang-check" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <polyline points="20 6 9 17 4 12" />
+              </svg>
+            )}
+          </a>
+        </li>
+        <li role="none">
+          <a
+            href={enHref}
+            role="menuitem"
+            hreflang="en"
+            class:list={['nav__lang-option', { 'is-active': currentLocale === 'en' }]}
+            aria-current={currentLocale === 'en' ? 'true' : undefined}
+          >
+            <span class="nav__lang-option-code">EN</span>
+            <span class="nav__lang-option-label">English</span>
+            {currentLocale === 'en' && (
+              <svg class="nav__lang-check" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <polyline points="20 6 9 17 4 12" />
+              </svg>
+            )}
+          </a>
+        </li>
+      </ul>
+    </div>
 
     <LiveClock
       baseTimeZone="Europe/Madrid"
@@ -61,6 +110,39 @@ const navLinks = [
     />
   </div>
 </header>
+
+<script>
+  const SEL = '.nav__lang-dropdown';
+
+  function setOpen(dropdown: Element, open: boolean) {
+    dropdown.classList.toggle('is-open', open);
+    dropdown
+      .querySelector('.nav__lang-trigger')
+      ?.setAttribute('aria-expanded', String(open));
+  }
+
+  document.addEventListener('click', (e) => {
+    const target = e.target as Element;
+    const dropdown = target.closest(SEL);
+
+    // Cierra todos los demás menús o todos si se hizo clic fuera
+    document.querySelectorAll(`${SEL}.is-open`).forEach((d) => {
+      if (d !== dropdown) setOpen(d, false);
+    });
+
+    // Toggle solo si se pulsó el botón disparador
+    if (dropdown && target.closest('.nav__lang-trigger')) {
+      const isOpen = dropdown.classList.contains('is-open');
+      setOpen(dropdown, !isOpen);
+    }
+  });
+
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') {
+      document.querySelectorAll(`${SEL}.is-open`).forEach((d) => setOpen(d, false));
+    }
+  });
+</script>
 
 <style>
   .nav {
@@ -172,39 +254,156 @@ const navLinks = [
     gap: var(--space-md);
   }
 
-  .nav__lang-toggle {
+  /* ── Language Dropdown ── */
+  .nav__lang-dropdown {
+    position: relative;
     display: inline-flex;
     align-items: center;
-    gap: 0.2em;
+  }
+
+  .nav__lang-trigger {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.25em;
     font-family: var(--font-roboto-serif);
     font-size: var(--text-caption);
+    letter-spacing: var(--tracking-wide);
     color: var(--fg-muted);
-    text-decoration: none;
+    background: transparent;
+    border: none;
+    padding: 0.2em 0.3em;
+    cursor: pointer;
+    user-select: none;
     transition: color var(--duration-fast) var(--ease-out);
+  }
+
+  .nav__lang-trigger:focus-visible {
+    outline: 1px solid var(--border);
+    border-radius: var(--radius-xs);
   }
 
   .nav__lang-bracket {
     color: var(--fg-subtle);
+    font-family: var(--font-roboto-serif);
     transition: transform var(--duration-fast) var(--ease-out);
   }
 
-  .nav__lang-code {
+  .nav__lang-current {
     font-weight: 600;
   }
 
-  .nav__lang-toggle:hover,
-  .nav__lang-toggle:focus-visible {
+  .nav__lang-chevron {
+    flex-shrink: 0;
+    color: var(--fg-subtle);
+    transition: transform var(--duration-fast) var(--ease-out),
+                color var(--duration-fast) var(--ease-out);
+  }
+
+  .nav__lang-trigger:hover,
+  .nav__lang-trigger:focus-visible,
+  .nav__lang-dropdown.is-open .nav__lang-trigger {
     color: var(--fg);
   }
 
-  .nav__lang-toggle:hover .nav__lang-bracket:first-child,
-  .nav__lang-toggle:focus-visible .nav__lang-bracket:first-child {
+  .nav__lang-trigger:hover .nav__lang-bracket:first-child,
+  .nav__lang-trigger:focus-visible .nav__lang-bracket:first-child,
+  .nav__lang-dropdown.is-open .nav__lang-bracket:first-child {
     transform: translateX(-2px);
   }
 
-  .nav__lang-toggle:hover .nav__lang-bracket:last-child,
-  .nav__lang-toggle:focus-visible .nav__lang-bracket:last-child {
+  .nav__lang-trigger:hover .nav__lang-bracket:last-child,
+  .nav__lang-trigger:focus-visible .nav__lang-bracket:last-child,
+  .nav__lang-dropdown.is-open .nav__lang-bracket:last-child {
     transform: translateX(2px);
+  }
+
+  .nav__lang-trigger:hover .nav__lang-chevron,
+  .nav__lang-trigger:focus-visible .nav__lang-chevron,
+  .nav__lang-dropdown.is-open .nav__lang-chevron {
+    color: var(--fg);
+  }
+
+  .nav__lang-dropdown.is-open .nav__lang-chevron {
+    transform: rotate(180deg);
+  }
+
+  /* Menu */
+  .nav__lang-menu {
+    position: absolute;
+    top: calc(100% + 6px);
+    right: 0;
+    min-width: 140px;
+    margin: 0;
+    padding: 0.3rem;
+    list-style: none;
+    background: color-mix(in srgb, var(--bg) 95%, transparent);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-xs);
+    box-shadow: 0 8px 24px -4px rgba(0, 0, 0, 0.12),
+                0 2px 6px -1px rgba(0, 0, 0, 0.04);
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(-4px) scale(0.98);
+    transition: opacity var(--duration-fast) var(--ease-out),
+                visibility var(--duration-fast) var(--ease-out),
+                transform var(--duration-fast) var(--ease-out);
+    z-index: 50;
+  }
+
+  .nav__lang-dropdown.is-open .nav__lang-menu {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0) scale(1);
+  }
+
+  .nav__lang-option {
+    display: flex;
+    align-items: center;
+    gap: 0.6em;
+    padding: 0.45em 0.65em;
+    border-radius: var(--radius-xs);
+    font-family: var(--font-roboto-serif);
+    font-size: var(--text-small);
+    color: var(--fg-muted);
+    text-decoration: none;
+    transition: background-color var(--duration-fast) var(--ease-out),
+                color var(--duration-fast) var(--ease-out);
+  }
+
+  .nav__lang-option:hover,
+  .nav__lang-option:focus-visible {
+    background: var(--surface);
+    color: var(--fg);
+  }
+
+  .nav__lang-option.is-active {
+    color: var(--fg);
+    font-weight: 500;
+  }
+
+  .nav__lang-option-code {
+    font-weight: 600;
+    font-family: var(--font-mono);
+    font-size: var(--text-caption);
+    letter-spacing: var(--tracking-wide);
+    color: var(--fg-subtle);
+    min-width: 1.6em;
+  }
+
+  .nav__lang-option.is-active .nav__lang-option-code {
+    color: var(--fg);
+  }
+
+  .nav__lang-option-label {
+    flex: 1;
+  }
+
+  .nav__lang-check {
+    flex-shrink: 0;
+    color: var(--fg);
+    margin-left: auto;
   }
 
   @media (max-width: 860px) {

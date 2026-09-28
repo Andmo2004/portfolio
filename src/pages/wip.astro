@@ -1,0 +1,280 @@
+---
+// src/pages/wip.astro (Español)
+import Layout from '../layouts/Layout.astro';
+import Navbar from '../components/Navbar.astro';
+import Footer from '../components/Footer.astro';
+import { translations } from '../i18n/translations';
+
+const locale = 'es';
+const t = translations[locale];
+const title = 'En Construcción — Andrés Moros';
+const description = 'Esta sección está actualmente en desarrollo. Vuelve pronto para ver el proyecto completo.';
+---
+
+<Layout title={title} description={description} lang={locale}>
+  <Navbar currentLocale={locale} t={t} />
+
+  <main class="wip-main">
+    <div class="wip-container">
+      <!-- Animated construction icon -->
+      <div class="wip-icon" aria-hidden="true">
+        <svg class="wip-icon__svg" viewBox="0 0 120 120" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <!-- Outer ring -->
+          <circle class="wip-ring wip-ring--outer" cx="60" cy="60" r="54" stroke="currentColor" stroke-width="1.5" stroke-dasharray="6 8" />
+          <!-- Inner ring -->
+          <circle class="wip-ring wip-ring--inner" cx="60" cy="60" r="40" stroke="currentColor" stroke-width="1" stroke-dasharray="4 6" />
+          <!-- Center gear -->
+          <g class="wip-gear" transform="translate(60,60)">
+            <path d="M0-18L3.5-7.5H14L5.5-1L8.5 9.5L0 4L-8.5 9.5L-5.5-1L-14-7.5H-3.5Z" fill="currentColor" opacity="0.3" />
+          </g>
+          <!-- Blinking cursor -->
+          <rect class="wip-cursor" x="52" y="50" width="16" height="20" rx="2" fill="currentColor" opacity="0.15" />
+          <line class="wip-cursor-line" x1="56" y1="56" x2="64" y2="56" stroke="currentColor" stroke-width="1.5" opacity="0.5" />
+          <line class="wip-cursor-blink" x1="56" y1="62" x2="62" y2="62" stroke="currentColor" stroke-width="1.5" opacity="0.5" />
+        </svg>
+      </div>
+
+      <span class="wip-label">[WIP]</span>
+
+      <h1 class="wip-title">En construcción</h1>
+
+      <p class="wip-description">
+        Esta sección del portfolio está siendo desarrollada activamente. 
+        Estoy trabajando en los detalles finales para ofrecer una experiencia 
+        completa y pulida.
+      </p>
+
+      <div class="wip-meta">
+        <div class="wip-meta__item">
+          <span class="wip-meta__label">Estado</span>
+          <span class="wip-meta__value">
+            <span class="wip-status-dot" aria-hidden="true"></span>
+            Desarrollo activo
+          </span>
+        </div>
+        <div class="wip-meta__divider" aria-hidden="true"></div>
+        <div class="wip-meta__item">
+          <span class="wip-meta__label">Progreso</span>
+          <span class="wip-meta__value">Próximamente</span>
+        </div>
+      </div>
+
+      <a href="/" class="wip-back-btn">
+        <span class="wip-back-btn__arrow" aria-hidden="true">←</span>
+        <span>Volver al portfolio</span>
+      </a>
+    </div>
+  </main>
+
+  <Footer t={t} />
+</Layout>
+
+<style>
+  .wip-main {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: calc(100vh - 200px);
+    padding: var(--space-lg) var(--grid-margin);
+  }
+
+  .wip-container {
+    max-width: 560px;
+    width: 100%;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--space-xs);
+  }
+
+  /* Icon */
+  .wip-icon {
+    width: clamp(80px, 15vw, 120px);
+    height: clamp(80px, 15vw, 120px);
+    color: var(--fg-subtle);
+    margin-bottom: var(--space-2xs);
+  }
+
+  .wip-icon__svg {
+    width: 100%;
+    height: 100%;
+  }
+
+  .wip-ring--outer {
+    animation: wip-spin 30s linear infinite;
+    transform-origin: center;
+  }
+
+  .wip-ring--inner {
+    animation: wip-spin 20s linear infinite reverse;
+    transform-origin: center;
+  }
+
+  .wip-gear {
+    animation: wip-spin 8s linear infinite;
+    transform-origin: center;
+  }
+
+  .wip-cursor-blink {
+    animation: wip-blink 1s ease-in-out infinite;
+  }
+
+  @keyframes wip-spin {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+  }
+
+  @keyframes wip-blink {
+    0%, 100% { opacity: 0.5; }
+    50% { opacity: 0; }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .wip-ring--outer,
+    .wip-ring--inner,
+    .wip-gear,
+    .wip-cursor-blink {
+      animation: none;
+    }
+  }
+
+  /* Label */
+  .wip-label {
+    font-family: var(--font-mono);
+    font-size: var(--text-caption);
+    color: var(--fg-subtle);
+    letter-spacing: var(--tracking-wide);
+    text-transform: uppercase;
+  }
+
+  /* Title */
+  .wip-title {
+    font-family: var(--font-serif);
+    font-size: var(--text-h2);
+    font-weight: 400;
+    line-height: var(--leading-snug);
+    letter-spacing: var(--tracking-tight);
+    color: var(--fg);
+    margin: 0;
+  }
+
+  /* Description */
+  .wip-description {
+    font-family: var(--font-serif);
+    font-size: var(--text-body);
+    line-height: var(--leading-body);
+    color: var(--fg-muted);
+    max-width: 45ch;
+    margin: var(--space-3xs) 0 0;
+  }
+
+  /* Meta info */
+  .wip-meta {
+    display: flex;
+    align-items: center;
+    gap: var(--space-sm);
+    padding: var(--space-xs) var(--space-sm);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-md);
+    background: var(--surface);
+    margin-top: var(--space-xs);
+  }
+
+  .wip-meta__item {
+    display: flex;
+    flex-direction: column;
+    gap: 0.2rem;
+  }
+
+  .wip-meta__label {
+    font-family: var(--font-mono);
+    font-size: var(--text-caption);
+    color: var(--fg-subtle);
+    letter-spacing: var(--tracking-wide);
+    text-transform: uppercase;
+  }
+
+  .wip-meta__value {
+    font-family: var(--font-serif);
+    font-size: var(--text-small);
+    color: var(--fg);
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+  }
+
+  .wip-status-dot {
+    width: 6px;
+    height: 6px;
+    border-radius: var(--radius-full);
+    background: #22c55e;
+    box-shadow: 0 0 6px rgba(34, 197, 94, 0.5);
+    animation: wip-pulse 2s ease-in-out infinite;
+  }
+
+  @keyframes wip-pulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.4; }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .wip-status-dot {
+      animation: none;
+    }
+  }
+
+  .wip-meta__divider {
+    width: 1px;
+    height: 2rem;
+    background: var(--border);
+  }
+
+  /* Back button */
+  .wip-back-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-family: var(--font-serif);
+    font-size: var(--text-small);
+    color: var(--fg-muted);
+    text-decoration: none;
+    padding: var(--space-2xs) var(--space-xs);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    margin-top: var(--space-sm);
+    transition: all var(--duration-fast) var(--ease-out);
+  }
+
+  .wip-back-btn:hover {
+    color: var(--fg);
+    border-color: var(--fg-muted);
+    transform: translateY(-1px);
+  }
+
+  .wip-back-btn__arrow {
+    transition: transform var(--duration-fast) var(--ease-out);
+  }
+
+  .wip-back-btn:hover .wip-back-btn__arrow {
+    transform: translateX(-3px);
+  }
+
+  /* Responsive */
+  @media (max-width: 640px) {
+    .wip-meta {
+      flex-direction: column;
+      gap: var(--space-xs);
+      text-align: center;
+    }
+
+    .wip-meta__divider {
+      width: 3rem;
+      height: 1px;
+    }
+
+    .wip-meta__item {
+      align-items: center;
+    }
+  }
+</style>
