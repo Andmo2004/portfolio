@@ -8,6 +8,12 @@ interface Props {
 
 const { t } = Astro.props;
 const currentYear = new Date().getFullYear();
+
+const pathname = Astro.url.pathname;
+const isHome = pathname === '/' || pathname === '/en' || pathname === '/en/';
+const isEn = pathname.startsWith('/en');
+const homePrefix = isEn ? '/en' : '';
+const getNavHref = (hash: string) => (isHome ? hash : `${homePrefix}/${hash}`);
 ---
 
 <footer class="footer">
@@ -20,10 +26,10 @@ const currentYear = new Date().getFullYear();
 
     <div class="footer__nav">
       <ul class="footer__links">
-        <li><a href="#projects">{t.nav.projects}</a></li>
-        <li><a href="#tech">{t.nav.tech}</a></li>
-        <li><a href="#about">{t.nav.about}</a></li>
-        <li><a href="#contact">{t.nav.contact}</a></li>
+        <li><a href={getNavHref('#projects')}>{t.nav.projects}</a></li>
+        <li><a href={getNavHref('#tech')}>{t.nav.tech}</a></li>
+        <li><a href={getNavHref('#about')}>{t.nav.about}</a></li>
+        <li><a href={getNavHref('#contact')}>{t.nav.contact}</a></li>
         <li>
           <a
             href="https://github.com/Andmo2004"

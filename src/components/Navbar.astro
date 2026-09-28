@@ -10,19 +10,23 @@ interface Props {
 
 const { currentLocale, t } = Astro.props;
 
-const navLinks = [
-  { label: t.nav.projects, href: '#projects' },
-  { label: t.nav.tech, href: '#tech' },
-  { label: t.nav.about, href: '#about' },
-  { label: t.nav.contact, href: '#contact' },
-  { label: t.nav.github, href: 'https://github.com/Andmo2004', external: true },
-  { label: t.nav.linkedin || 'LinkedIn', href: 'https://www.linkedin.com/in/andrés-moros-rincón-a0247639b', external: true },
-];
-
 const pathname = Astro.url.pathname;
 const isCurrentEn = currentLocale === 'en' || pathname.startsWith('/en');
 const esHref = isCurrentEn ? (pathname.replace(/^\/en(?:\/|$)/, '/') || '/') : pathname;
 const enHref = isCurrentEn ? pathname : (pathname === '/' ? '/en' : `/en${pathname}`);
+
+const isHome = pathname === '/' || pathname === '/en' || pathname === '/en/';
+const homePrefix = isCurrentEn ? '/en' : '';
+const getNavHref = (hash: string) => (isHome ? hash : `${homePrefix}/${hash}`);
+
+const navLinks = [
+  { label: t.nav.projects, href: getNavHref('#projects') },
+  { label: t.nav.tech, href: getNavHref('#tech') },
+  { label: t.nav.about, href: getNavHref('#about') },
+  { label: t.nav.contact, href: getNavHref('#contact') },
+  { label: t.nav.github, href: 'https://github.com/Andmo2004', external: true },
+  { label: t.nav.linkedin || 'LinkedIn', href: 'https://www.linkedin.com/in/andrés-moros-rincón-a0247639b', external: true },
+];
 ---
 
 <header class="nav">

@@ -55,7 +55,9 @@ const isReversed = index % 2 === 1;
 
     {collaborator && (
       <div class="case-study__collaborator">
-        <span class="case-study__collaborator-label">En colaboración con:</span>
+        <span class="case-study__collaborator-label">
+          {href.startsWith('/en') ? 'In collaboration with:' : 'En colaboración con:'}
+        </span>
         {collaborator.url ? (
           <a href={collaborator.url} target="_blank" rel="noopener noreferrer" class="case-study__collaborator-link">
             {collaborator.name}

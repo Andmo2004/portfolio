@@ -1,27 +1,48 @@
-# build output
+# Build output
 dist/
-# generated types
+
+# Generated Astro types & cache
 .astro/
 
-# dependencies
+# Dependencies
 node_modules/
 
-# logs
+# Environment variables & secrets (prevents accidental key leak)
+.env
+.env.*
+.env*.local
+!.env.example
+
+# Logs
+*.log
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 pnpm-debug.log*
 
-
-# environment variables
-.env
-.env.production
-
 # macOS-specific files
 .DS_Store
+.AppleDouble
+.LSOverride
+._*
+.Spotlight-V100
+.Trashes
 
-# jetbrains setting folder
+# Windows & OS temporary files
+Thumbs.db
+ehthumbs.db
+[Dd]esktop.ini
+
+# IDE & Editor configurations
 .idea/
+*.swp
+*.swo
+*~
 
+# VS Code (ignore local state, preserve shared workspace settings)
+.vscode/*
+!.vscode/extensions.json
+!.vscode/launch.json
 
+# Internal skills
 skills/
