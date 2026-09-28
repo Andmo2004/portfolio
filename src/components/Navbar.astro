@@ -36,7 +36,7 @@ const navLinks = [
     </a>
   </div>
 
-  <nav class="nav__menu" aria-label="Navegación principal">
+  <nav class="nav__menu" aria-label={currentLocale === 'en' ? 'Main navigation' : 'Navegación principal'}>
     <ul class="nav__links">
       {navLinks.map((link) => (
         <li>

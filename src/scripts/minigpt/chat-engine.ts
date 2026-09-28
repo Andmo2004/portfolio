@@ -357,40 +357,52 @@ export function initMiniGptChat(options: ChatEngineOptions) {
     });
 
     // 3. Fórmulas LaTeX inline $ ... $
+    const mathInlineBlocks: string[] = [];
     html = html.replace(/\$([^\$\n]+?)\$/g, (_match, inlineEq) => {
+      const placeholder = `__MATH_INLINE_${mathInlineBlocks.length}__`;
       const cleanInline = inlineEq.trim();
       const win = typeof window !== 'undefined' ? (window as any) : null;
+      let mathHtml = '';
       if (win?.katex?.renderToString) {
         try {
-          return win.katex.renderToString(cleanInline, { displayMode: false, throwOnError: false });
+          mathHtml = win.katex.renderToString(cleanInline, { displayMode: false, throwOnError: false });
         } catch {
-          return `<code class="math-inline">${escapeHtml(cleanInline)}</code>`;
+          mathHtml = `<code class="math-inline">${escapeHtml(cleanInline)}</code>`;
         }
+      } else {
+        mathHtml = `<code class="math-inline">${escapeHtml(cleanInline)}</code>`;
       }
-      return `<code class="math-inline">${escapeHtml(cleanInline)}</code>`;
+      mathInlineBlocks.push(mathHtml);
+      return placeholder;
     });
 
     // 4. Código inline `code`
+    const inlineCodeBlocks: string[] = [];
     html = html.replace(/`([^`\n]+?)`/g, (_match, inlineCode) => {
-      return `<code>${escapeHtml(inlineCode)}</code>`;
+      const placeholder = `__INLINE_CODE_${inlineCodeBlocks.length}__`;
+      inlineCodeBlocks.push(`<code>${escapeHtml(inlineCode)}</code>`);
+      return placeholder;
     });
 
-    // 5. Encabezados (h3, h4)
+    // 5. Escapar cualquier HTML restante para neutralizar vectores XSS (ej: <script>, <img onerror...>)
+    html = escapeHtml(html);
+
+    // 6. Encabezados (h3, h4)
     html = html.replace(/^### (.*$)/gim, '<h3>$1</h3>');
     html = html.replace(/^## (.*$)/gim, '<h3>$1</h3>');
 
-    // 6. Negrita y cursiva
+    // 7. Negrita y cursiva
     html = html.replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>');
     html = html.replace(/\*([^*]+)\*/g, '<em>$1</em>');
 
-    // 7. Listas con viñetas (- ...) y listas numeradas (1. ...)
+    // 8. Listas con viñetas (- ...) y listas numeradas (1. ...)
     html = html.replace(/^\s*-\s+(.*$)/gim, '<li>$1</li>');
     html = html.replace(/^\s*\d+\.\s+(.*$)/gim, '<li>$1</li>');
     html = html.replace(/(<li>.*<\/li>)/gms, '<ul>$1</ul>');
     // Limpieza de ul anidados contiguos
     html = html.replace(/<\/ul>\s*<ul>/g, '');
 
-    // 8. Párrafos
+    // 9. Párrafos
     const paragraphs = html
       .split(/\n\n+/)
       .map((p) => {
@@ -400,6 +412,8 @@ export function initMiniGptChat(options: ChatEngineOptions) {
           p.startsWith('<div class="code-block"') ||
           p.startsWith('__CODE_BLOCK_') ||
           p.startsWith('__MATH_BLOCK_') ||
+          p.startsWith('__MATH_INLINE_') ||
+          p.startsWith('__INLINE_CODE_') ||
           p.startsWith('<h3>') ||
           p.startsWith('<ul>')
         ) {
@@ -409,13 +423,19 @@ export function initMiniGptChat(options: ChatEngineOptions) {
       })
       .join('');
 
-    // 9. Restaurar bloques protegidos
+    // 10. Restaurar bloques protegidos
     let finalHtml = paragraphs;
     codeBlocks.forEach((block, idx) => {
       finalHtml = finalHtml.replace(`__CODE_BLOCK_${idx}__`, block);
     });
     mathBlocks.forEach((block, idx) => {
       finalHtml = finalHtml.replace(`__MATH_BLOCK_${idx}__`, block);
+    });
+    mathInlineBlocks.forEach((block, idx) => {
+      finalHtml = finalHtml.replace(`__MATH_INLINE_${idx}__`, block);
+    });
+    inlineCodeBlocks.forEach((block, idx) => {
+      finalHtml = finalHtml.replace(`__INLINE_CODE_${idx}__`, block);
     });
 
     return finalHtml;

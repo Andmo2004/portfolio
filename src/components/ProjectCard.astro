@@ -32,6 +32,7 @@ const {
 } = Astro.props;
 
 const isReversed = index % 2 === 1;
+const isEn = href.startsWith('/en');
 ---
 
 <article
@@ -56,7 +57,7 @@ const isReversed = index % 2 === 1;
     {collaborator && (
       <div class="case-study__collaborator">
         <span class="case-study__collaborator-label">
-          {href.startsWith('/en') ? 'In collaboration with:' : 'En colaboración con:'}
+          {isEn ? 'In collaboration with:' : 'En colaboración con:'}
         </span>
         {collaborator.url ? (
           <a href={collaborator.url} target="_blank" rel="noopener noreferrer" class="case-study__collaborator-link">
@@ -71,7 +72,7 @@ const isReversed = index % 2 === 1;
 
     <p class="case-study__description">{description}</p>
     
-    <ul class="case-study__tags" aria-label="Tecnologías empleadas">
+    <ul class="case-study__tags" aria-label={isEn ? 'Technologies used' : 'Tecnologías empleadas'}>
       {tags.map((tag) => (
         <li>{tag}</li>
       ))}

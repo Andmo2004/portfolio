@@ -1,3 +1,9 @@
 User-agent: *
 Allow: /
-Disallow: /projects/minigtp
+Disallow: /wip
+Disallow: /en/wip
+Disallow: /projects/minigpt
+Disallow: /en/projects/minigpt
+Disallow: /projects/glasstics
+Disallow: /en/projects/glasstics
+
