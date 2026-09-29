@@ -1,10 +1,6 @@
 ---
 // src/pages/en/projects/minigpt/experiments.astro (English)
 import MiniGptLayout from '../../../../layouts/MiniGptLayout.astro';
-import { getWipRedirect } from '../../../../config/wip-routes';
-
-const wipTarget = getWipRedirect(Astro.url.pathname);
-if (wipTarget) return Astro.redirect(wipTarget);
 
 const locale = 'en';
 const metaTitle = 'miniGPT · Experiments | Andrés Moros';

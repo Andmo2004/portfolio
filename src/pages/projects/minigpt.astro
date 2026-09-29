@@ -1,9 +1,5 @@
 ---
 // src/pages/projects/minigpt.astro
-// WIP guard: redirige a /wip si la ruta está bloqueada
-import { getWipRedirect } from '../../config/wip-routes';
-const wipTarget = getWipRedirect(Astro.url.pathname);
-if (wipTarget) return Astro.redirect(wipTarget);
 
 // Redirección a la subpágina por defecto de Chat
 return Astro.redirect('/projects/minigpt/chat');

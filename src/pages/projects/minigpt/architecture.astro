@@ -1,10 +1,6 @@
 ---
 // src/pages/projects/minigpt/architecture.astro (Español)
 import MiniGptLayout from '../../../layouts/MiniGptLayout.astro';
-import { getWipRedirect } from '../../../config/wip-routes';
-
-const wipTarget = getWipRedirect(Astro.url.pathname);
-if (wipTarget) return Astro.redirect(wipTarget);
 
 const locale = 'es';
 const metaTitle = 'miniGPT · Architecture | Andrés Moros';

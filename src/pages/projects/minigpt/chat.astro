@@ -3,10 +3,6 @@
 import MiniGptLayout from '../../../layouts/MiniGptLayout.astro';
 import MiniGptChat from '../../../components/minigpt/MiniGptChat.astro';
 import MiniGptDock from '../../../components/minigpt/MiniGptDock.astro';
-import { getWipRedirect } from '../../../config/wip-routes';
-
-const wipTarget = getWipRedirect(Astro.url.pathname);
-if (wipTarget) return Astro.redirect(wipTarget);
 
 const locale = 'es';
 const metaTitle = 'miniGPT · Chat — Interfaz de Inferencia Autoregresiva | Andrés Moros';
