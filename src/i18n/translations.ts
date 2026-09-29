@@ -19,6 +19,13 @@ export interface ProjectItem {
     src: string;
     alt: string;
   };
+  logos?: {
+    iconLight: string;
+    iconDark: string;
+    nameLight?: string;
+    nameDark?: string;
+    alt: string;
+  };
   isExternal?: boolean;
 }
 
@@ -141,6 +148,17 @@ export const translations: Record<Locale, TranslationSchema> = {
           description: 'Librería científica de Machine Learning en Python desarrollada como trabajo de investigación en Multiple-Instance Learning (MIL). Implementación de agrupamiento basado en densidad con métricas de distancia personalizadas entre bolsas de instancias.',
           tags: ['Python', 'Scikit-learn', 'NumPy', 'MIL', 'Research'],
           href: 'https://github.com/Andmo2004/MIClustering',
+          image: {
+            src: '/miclustering/icon-miclustering.svg',
+            alt: 'MIClustering',
+          },
+          logos: {
+            iconLight: '/miclustering/icon-miclustering.svg',
+            iconDark: '/miclustering/icon-miclustering.svg',
+            nameLight: '/miclustering/name-miclustering.svg',
+            nameDark: '/miclustering/name-miclustering.svg',
+            alt: 'MIClustering — Librería de Machine Learning (Multiple-Instance Learning)',
+          },
           isExternal: true,
         },
         {
@@ -154,6 +172,17 @@ export const translations: Record<Locale, TranslationSchema> = {
           },
           tags: ['FastAPI', 'Python 3.12', 'React', 'PostgreSQL', 'Anthropic API', 'Prophet', 'Docker'],
           href: '/projects/glasstics',
+          image: {
+            src: '/glasticss/icon-for-light-theme.svg',
+            alt: 'Glasstics',
+          },
+          logos: {
+            iconLight: '/glasticss/icon-for-light-theme.svg',
+            iconDark: '/glasticss/icon-for-dark-theme.svg',
+            nameLight: '/glasticss/name-for-light-theme.svg',
+            nameDark: '/glasticss/name-for-dark-theme.svg',
+            alt: 'Glasstics — Gobierno y observabilidad de IA',
+          },
           isExternal: false,
         },
       ],
@@ -259,6 +288,17 @@ export const translations: Record<Locale, TranslationSchema> = {
           description: 'Python scientific Machine Learning library developed as part of research in Multiple-Instance Learning (MIL). Density-based clustering implementation supporting custom distance metrics across instance bags.',
           tags: ['Python', 'Scikit-learn', 'NumPy', 'MIL', 'Research'],
           href: 'https://github.com/Andmo2004/MIClustering',
+          image: {
+            src: '/miclustering/icon-miclustering.svg',
+            alt: 'MIClustering',
+          },
+          logos: {
+            iconLight: '/miclustering/icon-miclustering.svg',
+            iconDark: '/miclustering/icon-miclustering.svg',
+            nameLight: '/miclustering/name-miclustering.svg',
+            nameDark: '/miclustering/name-miclustering.svg',
+            alt: 'MIClustering — Python Machine Learning Library for Multiple-Instance Learning',
+          },
           isExternal: true,
         },
         {
@@ -272,6 +312,17 @@ export const translations: Record<Locale, TranslationSchema> = {
           },
           tags: ['FastAPI', 'Python 3.12', 'React', 'PostgreSQL', 'Anthropic API', 'Prophet', 'Docker'],
           href: '/en/projects/glasstics',
+          image: {
+            src: '/glasticss/icon-for-light-theme.svg',
+            alt: 'Glasstics',
+          },
+          logos: {
+            iconLight: '/glasticss/icon-for-light-theme.svg',
+            iconDark: '/glasticss/icon-for-dark-theme.svg',
+            nameLight: '/glasticss/name-for-light-theme.svg',
+            nameDark: '/glasticss/name-for-dark-theme.svg',
+            alt: 'Glasstics — AI Governance & Observability',
+          },
           isExternal: false,
         },
       ],

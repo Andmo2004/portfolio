@@ -15,6 +15,13 @@ interface Props {
     src: string;
     alt: string;
   };
+  logos?: {
+    iconLight: string;
+    iconDark: string;
+    nameLight?: string;
+    nameDark?: string;
+    alt: string;
+  };
   isExternal?: boolean;
 }
 
@@ -28,11 +35,15 @@ const {
   badge,
   collaborator,
   image,
+  logos,
   isExternal = true,
 } = Astro.props;
 
 const isReversed = index % 2 === 1;
 const isEn = href.startsWith('/en');
+const isGlasstics = title.toLowerCase().includes('glasstics');
+const isMiclustering = title.toLowerCase().includes('miclustering');
+const brandTheme = isMiclustering ? 'miclustering' : isGlasstics ? 'glasstics' : 'default';
 ---
 
 <article
@@ -41,13 +52,61 @@ const isEn = href.startsWith('/en');
 >
   <span class="case-study__ref">[{index + 1}]</span>
 
-  <div class="case-study__media">
-    {image ? (
+  <a
+    href={href}
+    class="case-study__media"
+    target={isExternal ? '_blank' : undefined}
+    rel={isExternal ? 'noopener noreferrer' : undefined}
+    tabindex="-1"
+    aria-hidden="true"
+  >
+    {logos ? (
+      <div class:list={['case-study__brand-showcase', `case-study__brand-showcase--${brandTheme}`]}>
+        <div class="case-study__brand-grid" aria-hidden="true" />
+        <div class="case-study__brand-glow" aria-hidden="true" />
+        <div class="case-study__brand-lockup">
+          <div class="case-study__brand-icon-wrap">
+            <img
+              src={logos.iconLight}
+              alt={logos.alt}
+              class="case-study__brand-icon case-study__theme--light"
+              loading="lazy"
+            />
+            <img
+              src={logos.iconDark}
+              alt={logos.alt}
+              class="case-study__brand-icon case-study__theme--dark"
+              loading="lazy"
+            />
+          </div>
+          {(logos.nameLight || logos.nameDark) && (
+            <div class="case-study__brand-name-wrap">
+              {logos.nameLight && (
+                <img
+                  src={logos.nameLight}
+                  alt={title}
+                  class="case-study__brand-name case-study__theme--light"
+                  loading="lazy"
+                />
+              )}
+              {logos.nameDark && (
+                <img
+                  src={logos.nameDark}
+                  alt={title}
+                  class="case-study__brand-name case-study__theme--dark"
+                  loading="lazy"
+                />
+              )}
+            </div>
+          )}
+        </div>
+      </div>
+    ) : image ? (
       <img src={image.src} alt={image.alt} loading="lazy" />
     ) : (
       <div class="case-study__empty-frame" aria-hidden="true" />
     )}
-  </div>
+  </a>
 
   <div class="case-study__content">
     {badge && <span class="case-study__badge">{badge}</span>}
@@ -121,6 +180,9 @@ const isEn = href.startsWith('/en');
   }
 
   .case-study__media {
+    display: block;
+    text-decoration: none;
+    color: inherit;
     grid-column: 2 / 8;
     aspect-ratio: 4 / 3;
     overflow: hidden;
@@ -137,7 +199,7 @@ const isEn = href.startsWith('/en');
     border-color: var(--fg-subtle);
   }
 
-  .case-study__media img {
+  .case-study__media > img {
     width: 100%;
     height: 100%;
     object-fit: cover;
@@ -145,8 +207,211 @@ const isEn = href.startsWith('/en');
     transition: transform 700ms var(--ease-out);
   }
 
-  .case-study:hover .case-study__media img {
+  .case-study:hover .case-study__media > img {
     transform: scale(1.03);
+  }
+
+  /* Brand Showcase para proyectos con logos (Glasstics, MIClustering) */
+  .case-study__brand-showcase {
+    --brand-ambient: rgba(95, 145, 243, 0.08);
+    --brand-ambient-subtle: rgba(43, 81, 185, 0.02);
+    --brand-ambient-dark: rgba(95, 145, 243, 0.16);
+    --brand-ambient-dark-subtle: rgba(43, 81, 185, 0.06);
+    --brand-glow-1: rgba(95, 145, 243, 0.24);
+    --brand-glow-2: rgba(43, 81, 185, 0.08);
+    --brand-glow-dark-1: rgba(95, 145, 243, 0.38);
+    --brand-glow-dark-2: rgba(43, 81, 185, 0.16);
+    --brand-shadow: rgba(43, 81, 185, 0.16);
+    --brand-shadow-dark: rgba(95, 145, 243, 0.28);
+
+    position: relative;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    background: radial-gradient(circle at 50% 42%, var(--brand-ambient) 0%, var(--brand-ambient-subtle) 55%, transparent 80%), var(--surface);
+    transition: background-color var(--duration-base) var(--ease-out);
+  }
+
+  [data-theme='dark'] .case-study__brand-showcase {
+    background: radial-gradient(circle at 50% 42%, var(--brand-ambient-dark) 0%, var(--brand-ambient-dark-subtle) 55%, transparent 80%), var(--surface);
+  }
+
+  /* Paleta Glasstics (Azul / Observabilidad) */
+  .case-study__brand-showcase--glasstics {
+    --brand-ambient: rgba(95, 145, 243, 0.08);
+    --brand-ambient-subtle: rgba(43, 81, 185, 0.02);
+    --brand-ambient-dark: rgba(95, 145, 243, 0.16);
+    --brand-ambient-dark-subtle: rgba(43, 81, 185, 0.06);
+    --brand-glow-1: rgba(95, 145, 243, 0.24);
+    --brand-glow-2: rgba(43, 81, 185, 0.08);
+    --brand-glow-dark-1: rgba(95, 145, 243, 0.38);
+    --brand-glow-dark-2: rgba(43, 81, 185, 0.16);
+    --brand-shadow: rgba(43, 81, 185, 0.16);
+    --brand-shadow-dark: rgba(95, 145, 243, 0.28);
+  }
+
+  /* Paleta MIClustering (Teal / Sage / Green ML Research) */
+  .case-study__brand-showcase--miclustering {
+    --brand-ambient: rgba(102, 157, 151, 0.12);
+    --brand-ambient-subtle: rgba(101, 161, 108, 0.03);
+    --brand-ambient-dark: rgba(102, 157, 151, 0.20);
+    --brand-ambient-dark-subtle: rgba(101, 161, 108, 0.08);
+    --brand-glow-1: rgba(102, 157, 151, 0.32);
+    --brand-glow-2: rgba(101, 161, 108, 0.12);
+    --brand-glow-dark-1: rgba(102, 157, 151, 0.44);
+    --brand-glow-dark-2: rgba(101, 161, 108, 0.20);
+    --brand-shadow: rgba(83, 122, 149, 0.24);
+    --brand-shadow-dark: rgba(102, 157, 151, 0.36);
+  }
+
+  /* Cuadrícula sutil de ingeniería / observabilidad */
+  .case-study__brand-grid {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    background-image: radial-gradient(circle, color-mix(in srgb, var(--fg) 6.5%, transparent) 1px, transparent 1px);
+    background-size: 22px 22px;
+    background-position: center center;
+    opacity: 0.65;
+    transition: opacity var(--duration-base) var(--ease-out);
+  }
+
+  .case-study:hover .case-study__brand-grid {
+    opacity: 0.9;
+  }
+
+  /* Resplandor ambiental adaptativo */
+  .case-study__brand-glow {
+    position: absolute;
+    top: 40%;
+    left: 50%;
+    width: 200px;
+    height: 200px;
+    border-radius: 50%;
+    transform: translate(-50%, -50%);
+    background: radial-gradient(circle, var(--brand-glow-1) 0%, var(--brand-glow-2) 50%, transparent 70%);
+    filter: blur(28px);
+    pointer-events: none;
+    opacity: 0.75;
+    transition: transform var(--duration-base) var(--ease-out),
+                opacity var(--duration-base) var(--ease-out),
+                filter var(--duration-base) var(--ease-out);
+  }
+
+  [data-theme='dark'] .case-study__brand-glow {
+    background: radial-gradient(circle, var(--brand-glow-dark-1) 0%, var(--brand-glow-dark-2) 50%, transparent 70%);
+    filter: blur(34px);
+    opacity: 0.85;
+  }
+
+  .case-study:hover .case-study__brand-glow {
+    transform: translate(-50%, -50%) scale(1.18);
+    opacity: 1;
+    filter: blur(32px);
+  }
+
+  [data-theme='dark'] .case-study:hover .case-study__brand-glow {
+    filter: blur(38px);
+  }
+
+  /* Bloque de logo centrado */
+  .case-study__brand-lockup {
+    position: relative;
+    z-index: 2;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: clamp(0.75rem, 1.3vw, 1.25rem);
+    padding: var(--space-md);
+    transition: transform var(--duration-base) var(--ease-out);
+  }
+
+  .case-study:hover .case-study__brand-lockup {
+    transform: translateY(-4px) scale(1.02);
+  }
+
+  /* Icono de marca */
+  .case-study__brand-icon-wrap {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .case-study__brand-icon {
+    width: clamp(82px, 11vw, 118px);
+    height: auto;
+    max-height: 118px;
+    object-fit: contain;
+    filter: drop-shadow(0 6px 20px var(--brand-shadow));
+    transition: transform var(--duration-base) var(--ease-out),
+                filter var(--duration-base) var(--ease-out);
+  }
+
+  [data-theme='dark'] .case-study__brand-icon {
+    filter: drop-shadow(0 8px 26px var(--brand-shadow-dark));
+  }
+
+  .case-study:hover .case-study__brand-icon {
+    transform: translateY(-2px);
+  }
+
+  /* Logotipo / Tipografía */
+  .case-study__brand-name-wrap {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .case-study__brand-name {
+    width: clamp(140px, 18vw, 205px);
+    height: auto;
+    max-height: 48px;
+    object-fit: contain;
+    transition: transform var(--duration-base) var(--ease-out);
+  }
+
+  .case-study:hover .case-study__brand-name {
+    transform: translateY(-1px);
+  }
+
+  /* Conmutación entre Light y Dark */
+  .case-study__theme--light {
+    display: block;
+  }
+
+  .case-study__theme--dark {
+    display: none;
+  }
+
+  [data-theme='dark'] .case-study__theme--light {
+    display: none;
+  }
+
+  [data-theme='dark'] .case-study__theme--dark {
+    display: block;
+  }
+
+  [data-theme='light'] .case-study__theme--light {
+    display: block;
+  }
+
+  [data-theme='light'] .case-study__theme--dark {
+    display: none;
+  }
+
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme='light']) .case-study__theme--light {
+      display: none;
+    }
+    :root:not([data-theme='light']) .case-study__theme--dark {
+      display: block;
+    }
   }
 
   .case-study__empty-frame {
