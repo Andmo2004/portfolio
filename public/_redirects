@@ -1,1 +1,19 @@
-# No project routes are currently redirected to the work-in-progress page.
+# Legacy miniGPT routes redirect at the edge without an intermediate HTML page.
+/projects/minigpt /projects/minigpt/architecture/ 301
+/projects/minigpt/ /projects/minigpt/architecture/ 301
+/projects/minigpt/chat /projects/minigpt/architecture/ 301
+/projects/minigpt/chat/ /projects/minigpt/architecture/ 301
+/projects/minigpt/training /projects/minigpt/architecture/ 301
+/projects/minigpt/training/ /projects/minigpt/architecture/ 301
+/projects/minigpt/experiments /projects/minigpt/architecture/ 301
+/projects/minigpt/experiments/ /projects/minigpt/architecture/ 301
+/projects/minigtp /projects/minigpt/architecture/ 301
+/projects/minigtp/ /projects/minigpt/architecture/ 301
+/en/projects/minigpt /en/projects/minigpt/architecture/ 301
+/en/projects/minigpt/ /en/projects/minigpt/architecture/ 301
+/en/projects/minigpt/chat /en/projects/minigpt/architecture/ 301
+/en/projects/minigpt/chat/ /en/projects/minigpt/architecture/ 301
+/en/projects/minigpt/training /en/projects/minigpt/architecture/ 301
+/en/projects/minigpt/training/ /en/projects/minigpt/architecture/ 301
+/en/projects/minigpt/experiments /en/projects/minigpt/architecture/ 301
+/en/projects/minigpt/experiments/ /en/projects/minigpt/architecture/ 301
