@@ -43,7 +43,8 @@ const isReversed = index % 2 === 1;
 const isEn = href.startsWith('/en');
 const isGlasstics = title.toLowerCase().includes('glasstics');
 const isMiclustering = title.toLowerCase().includes('miclustering');
-const brandTheme = isMiclustering ? 'miclustering' : isGlasstics ? 'glasstics' : 'default';
+const isMiniGpt = title.toLowerCase() === 'minigpt';
+const brandTheme = isMiclustering ? 'miclustering' : isGlasstics ? 'glasstics' : isMiniGpt ? 'minigpt' : 'default';
 ---
 
 <article
@@ -211,7 +212,7 @@ const brandTheme = isMiclustering ? 'miclustering' : isGlasstics ? 'glasstics' :
     transform: scale(1.03);
   }
 
-  /* Brand Showcase para proyectos con logos (Glasstics, MIClustering) */
+  /* Brand showcase para proyectos con identidad visual */
   .case-study__brand-showcase {
     --brand-ambient: rgba(95, 145, 243, 0.08);
     --brand-ambient-subtle: rgba(43, 81, 185, 0.02);
@@ -265,6 +266,29 @@ const brandTheme = isMiclustering ? 'miclustering' : isGlasstics ? 'glasstics' :
     --brand-glow-dark-2: rgba(101, 161, 108, 0.20);
     --brand-shadow: rgba(83, 122, 149, 0.24);
     --brand-shadow-dark: rgba(102, 157, 151, 0.36);
+  }
+
+  .case-study__brand-showcase--minigpt {
+    --brand-ambient: rgba(250, 35, 59, 0.08);
+    --brand-ambient-subtle: rgba(250, 35, 59, 0.02);
+    --brand-ambient-dark: rgba(255, 55, 95, 0.14);
+    --brand-ambient-dark-subtle: rgba(255, 55, 95, 0.04);
+    --brand-glow-1: rgba(250, 35, 59, 0.24);
+    --brand-glow-2: rgba(250, 35, 59, 0.08);
+    --brand-glow-dark-1: rgba(255, 55, 95, 0.32);
+    --brand-glow-dark-2: rgba(255, 55, 95, 0.12);
+  }
+
+  .case-study__brand-showcase--minigpt .case-study__brand-icon {
+    width: clamp(252px, 33.6vw, 420px);
+    max-width: 100%;
+    max-height: none;
+    filter: none;
+  }
+
+  .case-study__brand-showcase--minigpt .case-study__brand-lockup,
+  .case-study__brand-showcase--minigpt .case-study__brand-icon-wrap {
+    max-width: 100%;
   }
 
   /* Cuadrícula sutil de ingeniería / observabilidad */

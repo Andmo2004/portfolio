@@ -9,10 +9,7 @@
 //   '/projects/glasstics'   → bloquea /projects/glasstics y sub-rutas
 //   '/projects/minigpt'     → bloquea /projects/minigpt, /projects/minigpt/chat, etc.
 
-export const wipRoutePrefixes: string[] = [
-  '/projects/glasstics',
-  '/projects/minigpt',
-];
+export const wipRoutePrefixes: string[] = [];
 
 /**
  * Comprueba si una ruta dada está marcada como WIP.

@@ -39,21 +39,7 @@ const { title, description, lang = 'es', noindex = false } = Astro.props;
     <link href="https://fonts.googleapis.com/css2?family=Roboto+Serif:ital,opsz,wght@0,8..144,100..900;1,8..144,100..900&display=swap" rel="stylesheet" />
 
     <!-- Detección instantánea de tema según preferencia del sistema (sin parpadeo) -->
-    <script is:inline>
-      (function () {
-        const prefersDark = window.matchMedia('(prefers-color-scheme: dark)');
-        function updateTheme(mediaQuery) {
-          const theme = mediaQuery.matches ? 'dark' : 'light';
-          document.documentElement.setAttribute('data-theme', theme);
-        }
-        updateTheme(prefersDark);
-        try {
-          prefersDark.addEventListener('change', updateTheme);
-        } catch (e) {
-          prefersDark.addListener(updateTheme);
-        }
-      })();
-    </script>
+    <script is:inline src="/scripts/portfolio-theme.js"></script>
   </head>
   <body>
     <slot />
