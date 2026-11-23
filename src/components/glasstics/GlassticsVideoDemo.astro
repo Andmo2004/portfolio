@@ -1,101 +1,50 @@
 ---
-// src/components/glasstics/GlassticsVideoDemo.astro
-interface Props {
-  currentLocale: 'es' | 'en';
-}
-
-const { currentLocale } = Astro.props;
+interface Props { currentLocale: 'es' | 'en'; videoSrc?: string; captionsSrc?: string }
+const { currentLocale, videoSrc, captionsSrc } = Astro.props;
 const isEs = currentLocale === 'es';
 ---
-
-<section class="glass-card video-section" aria-labelledby="video-demo-heading">
-  <div class="video-section__header">
-    <div class="video-section__title-group">
-      <h2 id="video-demo-heading" class="video-section__title">
-        {isEs ? 'Vídeo Demostrativo de Glasstics' : 'Glasstics Demo Video'}
-      </h2>
-      <p class="video-section__subtitle">
-        {isEs 
-          ? 'Grabación de la herramienta en ejecución mostrando el flujo de telemetría y métricas de principio a fin.' 
-          : 'Full recording showing end-to-end telemetry and metric flows.'}
-      </p>
+<section class="glass-card availability" aria-labelledby="availability-heading">
+  <h2 id="availability-heading">{isEs ? 'El dashboard en imágenes' : 'The dashboard in screenshots'}</h2>
+  <p>{isEs ? 'Vistas de una ejecución local del prototipo. Los datos son sintéticos y no representan clientes ni actividad real.' : 'Views from a local run of the prototype. The data is synthetic and does not represent real customers or activity.'}</p>
+  {videoSrc ? (
+    <video controls preload="metadata" src={videoSrc} aria-label={isEs ? 'Grabación de Glasstics' : 'Glasstics recording'}>
+      {captionsSrc && <track kind="captions" src={captionsSrc} srclang={currentLocale} label={isEs ? 'Español' : 'English'} default />}
+      {isEs ? 'Tu navegador no permite reproducir este vídeo.' : 'Your browser cannot play this video.'}
+    </video>
+  ) : (
+    <p>{isEs ? 'No hay una demostración interactiva pública ni una grabación disponible.' : 'No public interactive demonstration or recording is available.'}</p>
+  )}
+  <div class="captures" aria-labelledby="captures-heading">
+    <h3 id="captures-heading">{isEs ? 'Capturas · Datos de demostración' : 'Screenshots · Demonstration data'}</h3>
+    <p>{isEs ? 'Capturadas el 23 de noviembre de 2026. Pulsa una imagen para verla a tamaño completo.' : 'Captured on November 23, 2026. Select an image to view it at full size.'}</p>
+    <div class="capture-grid">
+      <figure>
+        <a href="/glasstics/capturas/dashboard.jpg" target="_blank" rel="noopener noreferrer">
+          <img src="/glasstics/capturas/dashboard.jpg" width="656" height="761" loading="lazy" decoding="async" alt={isEs ? 'Panel de Glasstics con indicadores de tokens, coste estimado, sesiones y correlación IA y Git con datos de demostración.' : 'Glasstics dashboard showing token, estimated cost, session and AI to Git correlation indicators with demonstration data.'} />
+        </a>
+        <figcaption>{isEs ? 'Dashboard: resumen de indicadores con datos sintéticos.' : 'Dashboard: indicators using synthetic data.'}</figcaption>
+      </figure>
+      <figure>
+        <a href="/glasstics/capturas/predicciones.jpg" target="_blank" rel="noopener noreferrer">
+          <img src="/glasstics/capturas/predicciones.jpg" width="656" height="1002" loading="lazy" decoding="async" alt={isEs ? 'Vista de predicción de tokens con gráficas y datos de demostración.' : 'Token forecast view with charts and demonstration data.'} />
+        </a>
+        <figcaption>{isEs ? 'Predicciones: la aplicación muestra una proyección sobre datos sintéticos; el backend contempla un método alternativo si Prophet falla.' : 'Forecasts: the application displays a projection based on synthetic data; the backend includes a fallback if Prophet fails.'}</figcaption>
+      </figure>
     </div>
-
-    <div class="video-section__meta">
-      <span class="video-meta-chip">16:9 Aspect Ratio</span>
-      <span class="video-meta-chip">1080p HD</span>
-    </div>
-  </div>
-
-  <!-- Contenedor del Vídeo con Dimensiones 16:9 para Embeber (Vacío) -->
-  <div class="video-embed-frame">
-    <!-- Espacio reservado para embeber vídeo (iframe / video) -->
   </div>
 </section>
-
 <style>
-  .video-section {
-    padding: 2.25rem;
-    margin-bottom: 2.5rem;
-    border-radius: var(--glasstics-radius-xl);
-  }
-
-  .video-section__header {
-    display: flex;
-    align-items: flex-start;
-    justify-content: space-between;
-    gap: 1.5rem;
-    margin-bottom: 1.75rem;
-    flex-wrap: wrap;
-    position: relative;
-    z-index: 2;
-  }
-
-  .video-section__title {
-    font-size: 1.5rem;
-    font-weight: 700;
-    color: var(--foreground);
-    letter-spacing: -0.02em;
-    margin: 0 0 0.35rem;
-  }
-
-  .video-section__subtitle {
-    font-size: 0.875rem;
-    color: var(--muted-foreground);
-    margin: 0;
-    max-width: 65ch;
-  }
-
-  .video-section__meta {
-    display: flex;
-    gap: 0.5rem;
-  }
-
-  .video-meta-chip {
-    font-family: var(--glasstics-font-mono);
-    font-size: 0.6875rem;
-    padding: 0.25rem 0.6rem;
-    border-radius: var(--glasstics-radius-sm);
-    background: var(--secondary);
-    border: 1px solid var(--glass-border);
-    color: var(--muted-foreground);
-  }
-
-  /* Contenedor 16:9 completamente vacío con bordes agrandados */
-  .video-embed-frame {
-    position: relative;
-    z-index: 2;
-    width: 100%;
-    aspect-ratio: 16 / 9;
-    border-radius: var(--glasstics-radius-lg);
-    overflow: hidden;
-    background: color-mix(in srgb, var(--card) 75%, transparent);
-    border: 1.5px solid var(--glass-border);
-    box-shadow: 0 12px 36px -8px rgba(0, 0, 0, 0.4);
-    transition: border-color var(--glasstics-duration) var(--glasstics-ease);
-  }
-
-  .video-embed-frame:hover {
-    border-color: var(--primary);
-  }
+.availability { padding:2rem; margin-bottom:1.75rem; border-radius:1.5rem; }
+h2 { color:var(--foreground); font-size:1.5rem; margin:0 0 .7rem; }
+p { color:var(--muted-foreground); line-height:1.65; max-width:75ch; margin:.5rem 0 0; }
+video { display:block; width:100%; margin-top:1rem; border-radius:var(--glasstics-radius-lg); }
+.captures { margin-top:2rem; padding-top:1.5rem; border-top:1px solid var(--glass-border); }
+h3 { color:var(--foreground); font-size:1.2rem; margin:0 0 .5rem; }
+.capture-grid { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:1.25rem; margin-top:1.25rem; align-items:start; }
+figure { margin:0; min-width:0; }
+figure a { display:block; border-radius:var(--glasstics-radius-lg); overflow:hidden; border:1px solid var(--glass-border); }
+figure a:focus-visible { outline:3px solid var(--primary); outline-offset:3px; }
+img { display:block; width:100%; height:auto; }
+figcaption { color:var(--muted-foreground); font-size:.875rem; line-height:1.55; margin-top:.65rem; }
+@media (max-width:640px) { .availability { padding:1.25rem; } .capture-grid { grid-template-columns:1fr; } }
 </style>

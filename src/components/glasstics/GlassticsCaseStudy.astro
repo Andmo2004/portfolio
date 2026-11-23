@@ -1,0 +1,68 @@
+---
+import GlassticsNavbar from './GlassticsNavbar.astro';
+import GlassticsVideoDemo from './GlassticsVideoDemo.astro';
+import GlassticsArchitecture from './GlassticsArchitecture.astro';
+interface Props { currentLocale: 'es' | 'en' }
+const { currentLocale } = Astro.props;
+const isEs = currentLocale === 'es';
+const homeHref = isEs ? '/' : '/en';
+---
+<GlassticsNavbar currentLocale={currentLocale} />
+<main id="contenido" class="study-main">
+  <div class="study-container">
+    <header class="study-header" id="resumen">
+      <div>
+        <p class="study-kicker">{isEs ? 'CASO DE ESTUDIO · HACKATHON' : 'CASE STUDY · HACKATHON'}</p>
+        <h1>Glasstics</h1>
+        <p class="study-subtitle">{isEs ? 'Gobierno y observabilidad del uso de IA en desarrollo de software' : 'AI governance and observability for software development'}</p>
+      </div>
+      <span class="status"><span aria-hidden="true"></span>{isEs ? 'PROTOTIPO · SIN DESPLIEGUE PÚBLICO' : 'PROTOTYPE · NO PUBLIC DEPLOYMENT'}</span>
+    </header>
+
+    <section class="glass-card introduction" aria-labelledby="intro-title">
+      <span class="section-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6A2.25 2.25 0 016 3.75h2.25A2.25 2.25 0 0110.5 6v2.25A2.25 2.25 0 018.25 10.5H6a2.25 2.25 0 01-2.25-2.25V6zM13.5 6a2.25 2.25 0 012.25-2.25H18A2.25 2.25 0 0120.25 6v2.25A2.25 2.25 0 0118 10.5h-2.25a2.25 2.25 0 01-2.25-2.25V6zM3.75 15.75A2.25 2.25 0 016 13.5h2.25a2.25 2.25 0 012.25 2.25V18a2.25 2.25 0 01-2.25 2.25H6A2.25 2.25 0 013.75 18v-2.25zM13.5 15.75a2.25 2.25 0 012.25-2.25H18a2.25 2.25 0 012.25 2.25V18A2.25 2.25 0 0118 20.25h-2.25a2.25 2.25 0 01-2.25-2.25v-2.25z"/></svg></span>
+      <div><h2 id="intro-title">{isEs ? 'El proyecto' : 'The project'}</h2><p>{isEs ? 'Un dashboard creado en pareja durante un hackathon para explorar cómo los equipos de desarrollo utilizan asistentes de IA. El prototipo reúne eventos, métricas, actividad Git y previsiones en una misma interfaz.' : 'A dashboard built by a two-person team during a hackathon to explore how development teams use AI assistants. The prototype brings events, metrics, Git activity and forecasts together in one interface.'}</p></div>
+    </section>
+
+    <section class="overview-grid" aria-label={isEs ? 'Resumen del proyecto' : 'Project overview'}>
+      <article class="glass-card overview-card"><span class="card-icon card-icon--blue" aria-hidden="true">◎</span><p>{isEs ? 'Tipo de proyecto' : 'Project type'}</p><h2>{isEs ? 'Hackathon' : 'Hackathon'}</h2><span>{isEs ? 'Primer premio del reto' : 'First prize in the challenge'}</span></article>
+      <article class="glass-card overview-card"><span class="card-icon card-icon--violet" aria-hidden="true">⌘</span><p>{isEs ? 'Equipo' : 'Team'}</p><h2>{isEs ? 'Dos personas' : 'Two people'}</h2><span>Miguel Ángel Montijano Sempere &amp; Andrés Moros Rincón</span></article>
+      <article class="glass-card overview-card"><span class="card-icon card-icon--pink" aria-hidden="true">◇</span><p>{isEs ? 'Implementación' : 'Implementation'}</p><h2>{isEs ? 'Prototipo funcional' : 'Working prototype'}</h2><span>React · FastAPI · PostgreSQL</span></article>
+      <article class="glass-card overview-card"><span class="card-icon card-icon--gold" aria-hidden="true">↗</span><p>{isEs ? 'Disponibilidad' : 'Availability'}</p><h2>{isEs ? 'Ejecución local' : 'Local execution'}</h2><span>{isEs ? 'Sin servicio público' : 'No public service'}</span></article>
+    </section>
+
+    <div id="capturas" class="section-anchor"><GlassticsVideoDemo currentLocale={currentLocale} /></div>
+    <div id="arquitectura" class="section-anchor"><GlassticsArchitecture currentLocale={currentLocale} /></div>
+    <footer class="study-footer"><span>Glasstics · {isEs ? 'Caso de estudio' : 'Case study'}</span><a href={homeHref}>{isEs ? 'Volver al portfolio' : 'Back to portfolio'} <span aria-hidden="true">↗</span></a></footer>
+  </div>
+</main>
+<style>
+.study-main { min-height:100dvh; padding:2.5rem clamp(1rem,4vw,3rem) 4.5rem; }
+.study-container { max-width:1440px; margin:0 auto; }
+.study-header { display:flex; align-items:flex-end; justify-content:space-between; gap:1.5rem; margin-bottom:1.75rem; }
+.study-kicker { color:var(--primary); font-size:.68rem; font-weight:700; letter-spacing:.1em; margin-bottom:.6rem; }
+h1 { color:var(--foreground); font-size:clamp(2rem,4vw,2.75rem); font-weight:700; letter-spacing:-.035em; line-height:1.1; }
+.study-subtitle { color:var(--muted-foreground); font-size:.9rem; margin-top:.45rem; }
+.status { flex-shrink:0; display:inline-flex; align-items:center; gap:.55rem; color:var(--muted-foreground); font-size:.66rem; font-weight:700; letter-spacing:.045em; padding:.55rem .8rem; border:1px solid var(--glass-border); border-radius:999px; background:var(--glass-bg-thin); }
+.status span { width:7px; height:7px; border-radius:50%; background:#a0a0c8; }
+.introduction { display:flex; gap:1rem; align-items:flex-start; padding:1.35rem 1.5rem; margin-bottom:1.25rem; }
+.introduction h2 { font-size:1rem; font-weight:650; margin-bottom:.3rem; }
+.introduction p { color:var(--muted-foreground); font-size:.875rem; line-height:1.7; max-width:95ch; }
+.section-icon,.card-icon { width:42px; height:42px; flex-shrink:0; display:grid; place-items:center; border-radius:14px; border:1px solid rgba(131,143,250,.2); background:rgba(131,143,250,.12); color:var(--primary); }
+.section-icon svg { width:20px; height:20px; }
+.overview-grid { display:grid; grid-template-columns:repeat(4,minmax(0,1fr)); gap:1rem; margin-bottom:1.75rem; }
+.overview-card { padding:1.25rem; min-height:164px; }
+.card-icon { font-size:1.25rem; margin-bottom:1.1rem; }
+.card-icon--blue { color:#82bbff; background:rgba(66,165,245,.12); }
+.card-icon--pink { color:#ed92d8; background:rgba(237,146,216,.1); }
+.card-icon--gold { color:#e7b064; background:rgba(231,176,100,.1); }
+.overview-card p { color:var(--muted-foreground); font-size:.75rem; margin-bottom:.25rem; }
+.overview-card h2 { font-size:1.05rem; font-weight:650; line-height:1.35; margin:0 0 .25rem; }
+.overview-card > span:last-child { color:var(--muted-foreground); font-size:.72rem; line-height:1.4; display:block; }
+.section-anchor { scroll-margin-top:1.5rem; }
+.study-footer { display:flex; justify-content:space-between; flex-wrap:wrap; gap:1rem; color:var(--muted-foreground); font-size:.75rem; padding:.5rem .25rem; }
+.study-footer a { color:var(--muted-foreground); text-decoration:none; }
+.study-footer a:hover { color:var(--primary); }
+@media(max-width:900px) { .overview-grid { grid-template-columns:repeat(2,minmax(0,1fr)); } .study-header { align-items:flex-start; flex-direction:column; } }
+@media(max-width:480px) { .study-main { padding-top:1.5rem; } .overview-grid { gap:.7rem; } .overview-card { padding:1rem; min-height:155px; } .overview-card h2 { font-size:.94rem; } .introduction { padding:1.15rem; } }
+</style>

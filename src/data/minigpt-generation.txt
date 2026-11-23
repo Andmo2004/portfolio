@@ -1,0 +1,19 @@
+$ TIKTOKEN_CACHE_DIR=/private/tmp/minigpt-tokenizer-cache OMP_NUM_THREADS=4 \
+  .venv/bin/python generate.py --checkpoint runs/best_model.pt \
+  --prompt 'Once upon a time, a little girl named Lily' \
+  --max_tokens 64 --temperature 0.8 --top_k 40 --seed 42
+
+Loading model checkpoint from runs/best_model.pt...
+Loaded config from checkpoint (d_model=384, n_layers=6, n_heads=6)
+Inference device: cpu
+Model parameters: 30.02M
+------------------------------------------------------------
+Prompt: Once upon a time, a little girl named Lily
+Temperature: 0.8 
+Top-k: 40
+Seed: 42
+------------------------------------------------------------
+Once upon a time, a little girl named Lily went to the park with her mommy. They saw a big tree and Lily felt very brave. She climbed up the tree and looked inside the tree. It was very quiet there. 
+
+As they walked towards the tree, Lily saw a little boy crying. She asked him what was wrong. The boy said
+------------------------------------------------------------

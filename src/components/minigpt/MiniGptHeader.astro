@@ -18,10 +18,7 @@ const langSwitchTarget = `${otherLocaleBase}/${activeTab}`;
 const langSwitchLabel = currentLocale === 'en' ? 'ES' : 'EN';
 
 const tabs = [
-  { id: 'chat', label: 'Chat' },
-  { id: 'training', label: 'Training' },
-  { id: 'architecture', label: 'Architecture' },
-  { id: 'experiments', label: 'Experiments' },
+  { id: 'architecture', label: currentLocale === 'en' ? 'Case study' : 'Caso de estudio' },
 ];
 
 const activeTabIndex = Math.max(0, tabs.findIndex((t) => t.id === activeTab));
@@ -29,22 +26,8 @@ const activeTabIndex = Math.max(0, tabs.findIndex((t) => t.id === activeTab));
 
 <header class="minigpt-header">
   <div class="minigpt-header__left">
-    <button
-      type="button"
-      id="btn-open-sidebar"
-      class="minigpt-icon-btn"
-      title={currentLocale === 'en' ? 'Model architecture & parameters' : 'Arquitectura y parámetros del modelo'}
-      aria-label={currentLocale === 'en' ? 'Open model parameters' : 'Abrir parámetros del modelo'}
-    >
-      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-        <line x1="4" x2="20" y1="6" y2="6"/>
-        <line x1="4" x2="20" y1="12" y2="12"/>
-        <line x1="4" x2="20" y1="18" y2="18"/>
-      </svg>
-    </button>
-
     <div class="minigpt-header__brand">
-      <a href={`${basePath}/chat`} class="minigpt-header__logo-link">
+      <a href={`${basePath}/architecture`} class="minigpt-header__logo-link">
         <span class="minigpt-header__logo">miniGPT</span>
       </a>
       <span class="minigpt-header__subtitle">
@@ -61,6 +44,7 @@ const activeTabIndex = Math.max(0, tabs.findIndex((t) => t.id === activeTab));
           href={`${basePath}/${tab.id}`}
           class:list={['seg', { 'is-active': activeTab === tab.id }]}
           data-tab={tab.id}
+          aria-current={activeTab === tab.id ? "page" : undefined}
         >
           {tab.label}
         </a>
@@ -76,7 +60,7 @@ const activeTabIndex = Math.max(0, tabs.findIndex((t) => t.id === activeTab));
         <span>Portfolio</span>
         <span class="header-nav-arrow" aria-hidden="true">↗</span>
       </a>
-      <a href="https://github.com/Andmo2004" target="_blank" rel="noopener noreferrer" class="header-nav-item">
+      <a href="https://github.com/Andmo2004/miniGPT" target="_blank" rel="noopener noreferrer" class="header-nav-item">
         <span>GitHub</span>
         <span class="header-nav-arrow" aria-hidden="true">↗</span>
       </a>
@@ -122,53 +106,7 @@ const activeTabIndex = Math.max(0, tabs.findIndex((t) => t.id === activeTab));
   </div>
 </header>
 
-<script is:inline>
-  const themeBtn = document.getElementById('btn-theme-toggle');
-  if (themeBtn) {
-    themeBtn.addEventListener('click', () => {
-      const currentTheme = document.documentElement.getAttribute('data-theme') || 
-        (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
-      const nextTheme = currentTheme === 'dark' ? 'light' : 'dark';
-      document.documentElement.setAttribute('data-theme', nextTheme);
-      localStorage.setItem('minigpt_theme', nextTheme);
-    });
-  }
-
-  // Segmented control — animate thumb before navigating
-  (function () {
-    const segmented = document.querySelector('.segmented');
-    if (!segmented) return;
-
-    const segs = Array.from(segmented.querySelectorAll('.seg'));
-    const thumb = segmented.querySelector('.seg-thumb');
-    if (!thumb || segs.length === 0) return;
-
-    let isAnimating = false;
-
-    segs.forEach((seg, targetIndex) => {
-      seg.addEventListener('click', (e) => {
-        // Skip if already on this tab or mid-animation
-        if (seg.classList.contains('is-active') || isAnimating) return;
-
-        e.preventDefault();
-        isAnimating = true;
-        const href = seg.getAttribute('href');
-
-        // Move thumb to target position
-        thumb.style.transform = 'translateX(' + (targetIndex * 100) + '%)';
-
-        // Update active states immediately for visual feedback
-        segs.forEach((s) => s.classList.remove('is-active'));
-        seg.classList.add('is-active');
-
-        // Navigate after animation completes
-        setTimeout(() => {
-          if (href) window.location.href = href;
-        }, 280);
-      });
-    });
-  })();
-</script>
+<script is:inline src="/scripts/minigpt-theme-toggle.js"></script>
 
 <style>
   /* CABECERA CON GLASSMORPHISM PESADO */

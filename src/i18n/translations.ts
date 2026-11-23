@@ -134,18 +134,23 @@ export const translations: Record<Locale, TranslationSchema> = {
       sectionRef: 'SEC. 01',
       sectionTitle: 'Proyectos Seleccionados',
       exploreLabel: 'Explorar',
-      statusNotice: 'Casos de estudio & sistemas interactivos',
+      statusNotice: 'Casos de estudio y proyectos',
       items: [
         {
           title: 'miniGPT',
-          description: 'Modelo de lenguaje autoregresivo tipo GPT implementado desde cero en PyTorch para comprender los fundamentos de atención causal, normalización de capas y decodificación generativa.',
+          description: 'Proyecto educativo de Transformer autorregresivo en PyTorch, con pruebas de entrenamiento en TinyStories. Sin servicio de inferencia público.',
           tags: ['Python', 'PyTorch', 'Transformers', 'NLP'],
           href: '/projects/minigpt',
+          logos: {
+            iconLight: '/minigpt/logo-light.svg',
+            iconDark: '/minigpt/logo-dark.svg',
+            alt: 'miniGPT',
+          },
           isExternal: false,
         },
         {
           title: 'MIClustering',
-          description: 'Librería científica de Machine Learning en Python desarrollada como trabajo de investigación en Multiple-Instance Learning (MIL). Implementación de agrupamiento basado en densidad con métricas de distancia personalizadas entre bolsas de instancias.',
+          description: 'Librería científica de Machine Learning en Python desarrollada como trabajo de investigación en Multiple-Instance Learning (MIL). Implementación de agrupamiento basado en densidad mediante la adaptación de métricas de distancia existentes a bolsas de instancias.',
           tags: ['Python', 'Scikit-learn', 'NumPy', 'MIL', 'Research'],
           href: 'https://github.com/Andmo2004/MIClustering',
           image: {
@@ -163,7 +168,7 @@ export const translations: Record<Locale, TranslationSchema> = {
         },
         {
           title: 'Glasstics',
-          description: 'Dashboard de gobierno, observabilidad y monitorización del uso de IA en desarrollo software. Cruza eventos de asistentes de IA (prompts, tokens, costes) con actividad Git en ventanas de ±30 min, proyecta costes con series temporales (Prophet), aplica gobernanza RGPD e integra informes ejecutivos generados por Claude.',
+          description: 'Prototipo de dashboard para explorar el uso de IA en desarrollo software, creado en pareja durante un hackathon. Sin despliegue público.',
           badge: 'Reto Hackathon · Gobierno y control de IA',
           collaborator: {
             name: 'Miguel Ángel Montijano Sempere',
@@ -206,7 +211,7 @@ export const translations: Record<Locale, TranslationSchema> = {
         },
         {
           category: 'Cloud & Sistemas',
-          items: ['Linux', 'Azure Fundamentals (AZ-900)', 'AWS Practitioner', 'Data Engineering'],
+          items: ['Linux', 'Data Engineering'],
         },
       ],
     },
@@ -216,7 +221,7 @@ export const translations: Record<Locale, TranslationSchema> = {
       lead: 'Ingeniero Informático enfocado en la intersección entre ingeniería de software robusta y modelado de inteligencia artificial.',
       paragraphs: [
         'Graduado en Ingeniería Informática con especialidad en Computación por la Universidad de Córdoba y actualmente cursando el Máster Universitario en Inteligencia Artificial en UNIR.',
-        'Cuento con experiencia profesional en desarrollo de aplicaciones web corporativas fullstack con C#/.NET, JavaScript y SQL (CTI Computación, Tecnología e Innovación), así como en investigación aplicada: he desarrollado librerías científicas en Python para Multiple-Instance Learning (MIL) y coescrito publicaciones científicas asociadas.',
+        'Cuento con experiencia profesional en desarrollo de aplicaciones web corporativas fullstack con C#/.NET, JavaScript y SQL (CTI Computación, Tecnología e Innovación), así como en investigación aplicada: he desarrollado una librería en Python para Multiple-Instance Learning (MIL).',
         'Ganador del primer premio en el Hackathon Tecnológico de la Cátedra Atmira OpenAI & Big Data, desarrollando prototipos funcionales bajo entornos de alta exigencia.',
       ],
       highlights: [
@@ -274,18 +279,23 @@ export const translations: Record<Locale, TranslationSchema> = {
       sectionRef: 'SEC. 01',
       sectionTitle: 'Selected Projects',
       exploreLabel: 'Explore',
-      statusNotice: 'Selected systems & interactive case studies',
+      statusNotice: 'Selected projects and case studies',
       items: [
         {
           title: 'miniGPT',
-          description: 'A small GPT-style autoregressive language model implemented from scratch in PyTorch to explore causal self-attention, layer normalization, and generative token decoding.',
+          description: 'Educational autoregressive Transformer in PyTorch, with small-scale TinyStories training tests. No public inference service.',
           tags: ['Python', 'PyTorch', 'Transformers', 'NLP'],
           href: '/en/projects/minigpt',
+          logos: {
+            iconLight: '/minigpt/logo-light.svg',
+            iconDark: '/minigpt/logo-dark.svg',
+            alt: 'miniGPT',
+          },
           isExternal: false,
         },
         {
           title: 'MIClustering',
-          description: 'Python scientific Machine Learning library developed as part of research in Multiple-Instance Learning (MIL). Density-based clustering implementation supporting custom distance metrics across instance bags.',
+          description: 'Python scientific Machine Learning library developed as part of research in Multiple-Instance Learning (MIL). Density-based clustering implementation adapting existing distance metrics to instance bags.',
           tags: ['Python', 'Scikit-learn', 'NumPy', 'MIL', 'Research'],
           href: 'https://github.com/Andmo2004/MIClustering',
           image: {
@@ -303,7 +313,7 @@ export const translations: Record<Locale, TranslationSchema> = {
         },
         {
           title: 'Glasstics',
-          description: 'AI governance, observability, and cost-monitoring dashboard for software engineering teams. Correlates AI assistant telemetry (prompts, tokens, models, spend) with Git commit activity in ±30 min sliding windows. Features 7- and 15-day cost forecasts with Prophet, RGPD compliance guardrails, and automated weekly executive summaries powered by Claude.',
+          description: 'Hackathon dashboard prototype for exploring AI use in software development, built by a two-person team. No public deployment.',
           badge: 'Hackathon Challenge · AI Governance & Control',
           collaborator: {
             name: 'Miguel Ángel Montijano Sempere',
@@ -346,7 +356,7 @@ export const translations: Record<Locale, TranslationSchema> = {
         },
         {
           category: 'Cloud & Systems',
-          items: ['Linux', 'Azure Fundamentals (AZ-900)', 'AWS Practitioner', 'Data Engineering'],
+          items: ['Linux', 'Data Engineering'],
         },
       ],
     },
@@ -356,7 +366,7 @@ export const translations: Record<Locale, TranslationSchema> = {
       lead: 'Computer Engineer focused on the intersection between robust software engineering and applied artificial intelligence.',
       paragraphs: [
         'Computer Engineering graduate with a specialization in Computer Science from the University of Córdoba, currently pursuing a Master\'s Degree in Artificial Intelligence at UNIR.',
-        'Hands-on professional experience developing fullstack corporate web applications with C#/.NET, JavaScript, and SQL at CTI Computación, complemented by applied research: developed Python scientific libraries for Multiple-Instance Learning (MIL) and co-authored related scientific publications.',
+        'Hands-on professional experience developing fullstack corporate web applications with C#/.NET, JavaScript, and SQL at CTI Computación, complemented by applied research: developed a Python library for Multiple-Instance Learning (MIL).',
         '1st Place Winner at the Atmira OpenAI & Big Data Chair Technology Hackathon, building functional prototypes under tight time constraints.',
       ],
       highlights: [
