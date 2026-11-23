@@ -140,7 +140,7 @@ export const translations: Record<Locale, TranslationSchema> = {
           title: 'miniGPT',
           description: 'Proyecto educativo de Transformer autorregresivo en PyTorch, con pruebas de entrenamiento en TinyStories. Sin servicio de inferencia público.',
           tags: ['Python', 'PyTorch', 'Transformers', 'NLP'],
-          href: '/projects/minigpt',
+          href: '/projects/minigpt/architecture/',
           logos: {
             iconLight: '/minigpt/logo-light.svg',
             iconDark: '/minigpt/logo-dark.svg',
@@ -285,7 +285,7 @@ export const translations: Record<Locale, TranslationSchema> = {
           title: 'miniGPT',
           description: 'Educational autoregressive Transformer in PyTorch, with small-scale TinyStories training tests. No public inference service.',
           tags: ['Python', 'PyTorch', 'Transformers', 'NLP'],
-          href: '/en/projects/minigpt',
+          href: '/en/projects/minigpt/architecture/',
           logos: {
             iconLight: '/minigpt/logo-light.svg',
             iconDark: '/minigpt/logo-dark.svg',
