@@ -1,0 +1,1287 @@
+---
+import GeometryResults from "./GeometryResults.astro";
+interface Props {
+  locale: "es" | "en";
+}
+const { locale } = Astro.props;
+const home = locale === "en" ? "/en/#projects" : "/#projects";
+const source = "https://github.com/Andmo2004/MIClustering";
+const snapshot = `${source}/blob/060db144d56def9cb508046d69fd4fc387cb60ca/README.md`;
+const enSections = [
+  ["abstract", "Abstract"],
+  ["introduction", "Introduction"],
+  ["methodology", "The library"],
+  ["experimental-setup", "Experimental setup"],
+  ["results", "Results & discussion"],
+  ["reproducibility", "Reproducibility"],
+  ["references", "References"],
+];
+const esSections = [
+  ["abstract", "Resumen"],
+  ["introduction", "Introducción"],
+  ["methodology", "La librería"],
+  ["experimental-setup", "Diseño experimental"],
+  ["results", "Resultados y discusión"],
+  ["reproducibility", "Reproducibilidad"],
+  ["references", "Referencias"],
+];
+const sections = locale === "es" ? esSections : enSections;
+---
+
+<div class="report">
+  <a class="skip" href="#abstract">
+    {locale === "es" ? "Saltar al informe" : "Skip to report"}
+  </a>
+  <header class="topbar">
+    <a href={home}>
+      {locale === "en" ? "Portfolio / Projects" : "Portfolio / Proyectos"}
+    </a>
+    <div class="topbar-right">
+      <span>
+        ANDRÉS MOROS <span aria-hidden="true">/</span>{" "}
+        {locale === "es" ? "INVESTIGACIÓN" : "RESEARCH"}
+      </span>
+      <nav
+        aria-label={locale === "es" ? "Idioma" : "Language"}
+        class="language"
+      >
+        <a
+          href="/projects/miclustering/"
+          hreflang="es"
+          lang="es"
+          aria-current={locale === "es" ? "page" : undefined}
+        >
+          ES
+        </a>
+        <span aria-hidden="true">/</span>
+        <a
+          href="/en/projects/miclustering/"
+          hreflang="en"
+          lang="en"
+          aria-current={locale === "en" ? "page" : undefined}
+        >
+          EN
+        </a>
+      </nav>
+    </div>
+  </header>
+  <main>
+    <div class="hero">
+      <div class="hero-inner">
+        <p class="eyebrow">
+          <span class="" aria-hidden="true"></span>
+          {locale === "es"
+            ? " PROYECTO DE INVESTIGACIÓN DE CÓDIGO ABIERTO"
+            : " OPEN-SOURCE RESEARCH PROJECT"}
+        </p>
+        <h1>MIClustering</h1>
+        <p class="subtitle">
+          {locale === "es"
+            ? "Agrupamiento en el paradigma de aprendizaje multiinstancia"
+            : "Clustering in the multiple-instance learning paradigm"}
+        </p>
+        <p class="author">Andrés Moros</p>
+        <div class="actions">
+          <a
+            class="action action-primary"
+            href={source}
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            {locale === "es" ? "Código de la librería " : "Library source "}
+          </a>
+          <a
+            class="action"
+            href="https://github.com/Andmo2004/MIClustering-experiments"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            {locale === "es" ? "Experimentos " : "Experiments "}
+          </a>
+          <a
+            class="action"
+            href={`${source}#readme`}
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            {locale === "es" ? "Documentación " : "Documentation "}
+          </a>
+          <a class="action" href="#abstract">
+            {locale === "es" ? "Leer el informe" : "Read the report"}
+          </a>
+        </div>
+      </div>
+      <div
+        class="metadata"
+        aria-label={locale === "es" ? "Datos del proyecto" : "Project details"}
+      >
+        <div>
+          <span>
+            {locale === "es" ? "ÁREA DE INVESTIGACIÓN" : "RESEARCH AREA"}
+          </span>
+          <strong>
+            {locale === "es"
+              ? "Aprendizaje multiinstancia"
+              : "Multiple-instance learning"}
+          </strong>
+        </div>
+        <div>
+          <span>{locale === "es" ? "IMPLEMENTACIÓN" : "IMPLEMENTATION"}</span>
+          <strong>Python · scikit-learn API</strong>
+        </div>
+        <div>
+          <span>{locale === "es" ? "PROYECTO" : "PROJECT"}</span>
+          <strong>
+            {locale === "es"
+              ? "Software de investigación"
+              : "Research software"}
+          </strong>
+        </div>
+      </div>
+    </div>
+    <div class="layout">
+      <aside class="contents">
+        <details open>
+          <summary>{locale === "es" ? "CONTENIDO" : "CONTENTS"}</summary>
+          <nav
+            aria-label={
+              locale === "es" ? "Contenido del informe" : "Report contents"
+            }
+          >
+            <ol>
+              {sections.map(([id, label]) => (
+                <li>
+                  <a href={`#${id}`}>{label}</a>
+                </li>
+              ))}
+            </ol>
+          </nav>
+        </details>
+        <p class="aside-note">
+          {locale === "es"
+            ? "Una visión técnica del proyecto y de su trabajo experimental."
+            : "A technical overview of the project and its experimental work."}
+        </p>
+      </aside>
+      <article class="paper">
+        <section id="abstract" class="abstract">
+          <p class="section-kicker">
+            {locale === "es" ? "VISIÓN GENERAL" : "OVERVIEW"}
+          </p>
+          <h2>{locale === "es" ? "Resumen" : "Abstract"}</h2>
+          <p>
+            {locale === "es"
+              ? "El aprendizaje multiinstancia representa cada observación como una colección de instancias en lugar de un único vector de características. Esta estructura requiere métodos capaces de comparar colecciones completas. MIClustering es una librería de Python desarrollada para explorar este contexto, que reúne distancias entre bolsas, métodos de agrupamiento y herramientas de preprocesado y evaluación. Incluye enfoques basados en densidad y particiones, además de un clasificador supervisado de vecinos más próximos. Un estudio exploratorio posterior compara cuatro modelos de agrupamiento en diez conjuntos de datos, con dos escaladores y seis distancias entre bolsas. Sus resultados muestran que una fuerte separación geométrica no siempre coincide con la concordancia respecto a las etiquetas de referencia. Los resultados siguientes son descriptivos e incluyen los datos y la configuración disponibles para su consulta."
+              : "Multiple-instance learning represents an observation as a collection of instances rather than a single feature vector. This structure calls for methods that can compare collections as a whole. MIClustering is a Python library developed to explore this setting, bringing together bag-level distances, clustering methods, preprocessing and evaluation tools. Its implementations include density-based and partitioning approaches, alongside a supervised nearest-neighbour classifier. A later exploratory study compares four clustering models across ten datasets, two scalers and six bag distances. Its findings show that strong geometric separation and agreement with reference labels do not necessarily coincide. The results below are descriptive and include the available study-level data and configuration for inspection."}
+          </p>
+          <p class="keywords">
+            <strong>{locale === "es" ? "Palabras clave" : "Keywords"}</strong>{" "}
+            &nbsp;{" "}
+            {locale === "es"
+              ? "Aprendizaje multiinstancia · Agrupamiento · Distancias entre bolsas · Python"
+              : "Multiple-instance learning · Clustering · Bag distances · Python"}
+          </p>
+        </section>
+        <section id="introduction">
+          <p class="section-kicker">
+            {locale === "es" ? "01 / EL PROBLEMA" : "01 / THE PROBLEM"}
+          </p>
+          <h2>{locale === "es" ? "Introducción" : "Introduction"}</h2>
+          <p>
+            {locale === "es"
+              ? "En el aprendizaje multiinstancia (MIL), cada observación es una "
+              : "In multiple-instance learning (MIL), each observation is a "}
+            <em>{locale === "es" ? "bolsa" : "bag"}</em>
+            {locale === "es"
+              ? " que contiene una colección de instancias. Las bolsas pueden tener distinto número de instancias, por lo que comparar dos observaciones implica comparar dos conjuntos en lugar de dos puntos individuales. La formulación original se motivó en la predicción de la actividad de fármacos "
+              : " containing a collection of instances. Bags may contain different numbers of instances, so comparing two observations means comparing two sets rather than two individual points. The original multiple-instance formulation was motivated by drug activity prediction "}
+            <a href="#ref-dietterich">[1]</a>.
+          </p>
+          <p>
+            {locale === "es"
+              ? "En el MIL supervisado clásico, las etiquetas están disponibles a nivel de bolsa. El agrupamiento plantea otra pregunta: ¿cómo agrupar bolsas según su similitud sin utilizar esas etiquetas para definir los grupos? La elección de la distancia entre bolsas es, por tanto, fundamental para el resultado."
+              : "In classical supervised MIL, labels are available at the bag level. Clustering asks a different question: how can bags be grouped according to their similarity without using those labels to define the groups? The choice of distance between bags is therefore central to the result."}
+          </p>
+          <div
+            class="equation"
+            aria-label={
+              locale === "es"
+                ? "El conjunto D contiene N bolsas. La bolsa i contiene m sub i instancias."
+                : "Dataset D contains N bags. Bag i contains m sub i instances."
+            }
+          >
+            <span>
+              𝒟 = {"{"}B<sub>i</sub>
+              {"}"}
+              <sub>i=1</sub>
+              <sup>N</sup>, &nbsp; B<sub>i</sub> = {"{"}x<sub>ij</sub>
+              {"}"}
+              <sub>j=1</sub>
+              <sup>mᵢ</sup>
+            </span>
+            <span>(1)</span>
+          </div>
+          <figure class="bag-figure">
+            <div
+              class="mil-diagram"
+              role="img"
+              aria-label={
+                locale === "es"
+                  ? "Un conjunto de datos contiene N bolsas. Como ejemplo supervisado, la bolsa B i tiene etiqueta positiva y tres instancias; la bolsa B j tiene etiqueta negativa y cinco instancias. Las instancias no muestran etiquetas individuales. Cada instancia es un vector con d características, con la misma dimensión d en el conjunto."
+                  : "A dataset contains N bags. In a supervised example, bag B i has a positive label and three instances; bag B j has a negative label and five instances. No individual instance labels are shown. Each instance is a vector with d features, with the same dimension d throughout the dataset."
+              }
+            >
+              <div class="diagram-dataset" aria-hidden="true">
+                <span class="diagram-kicker">
+                  {locale === "es" ? "CONJUNTO DE DATOS" : "DATASET"}
+                </span>
+                <strong>
+                  𝒟 = {"{"}B<sub>1</sub>, …, B<sub>N</sub>
+                  {"}"}
+                </strong>
+                <span>{locale === "es" ? "N bolsas" : "N bags"}</span>
+              </div>
+              <div class="diagram-branches" aria-hidden="true"></div>
+              <div class="diagram-bags" aria-hidden="true">
+                <div class="diagram-bag">
+                  <div class="diagram-bag-header">
+                    <strong>
+                      {locale === "es" ? "Bolsa" : "Bag"} B<sub>i</sub>
+                    </strong>
+                    <span class="bag-label">
+                      Y<sub>i</sub> = +
+                    </span>
+                  </div>
+                  <div class="diagram-instances">
+                    <span class="instance instance-selected"></span>
+                    <span class="instance"></span>
+                    <span class="instance"></span>
+                  </div>
+                  <span class="bag-count">
+                    m<sub>i</sub> = 3{" "}
+                    {locale === "es" ? "instancias" : "instances"}
+                  </span>
+                </div>
+                <div class="diagram-bag">
+                  <div class="diagram-bag-header">
+                    <strong>
+                      {locale === "es" ? "Bolsa" : "Bag"} B<sub>j</sub>
+                    </strong>
+                    <span class="bag-label">
+                      Y<sub>j</sub> = −
+                    </span>
+                  </div>
+                  <div class="diagram-instances">
+                    <span class="instance"></span>
+                    <span class="instance"></span>
+                    <span class="instance"></span>
+                    <span class="instance"></span>
+                    <span class="instance"></span>
+                  </div>
+                  <span class="bag-count">
+                    m<sub>j</sub> = 5{" "}
+                    {locale === "es" ? "instancias" : "instances"}
+                  </span>
+                </div>
+              </div>
+              <div class="diagram-legend" aria-hidden="true">
+                <span>
+                  <span class="legend-dot instance-selected"></span>
+                  {locale === "es"
+                    ? "Instancia detallada"
+                    : "Detailed instance"}
+                  :{" "}
+                  <span>
+                    x<sub>i1</sub>
+                  </span>
+                </span>
+                <span>
+                  {locale === "es"
+                    ? "+ / −: etiquetas de bolsa de ejemplo"
+                    : "+ / −: example bag labels"}
+                </span>
+              </div>
+              <div class="diagram-vector" aria-hidden="true">
+                <div>
+                  <span class="diagram-kicker">
+                    {locale === "es"
+                      ? "DETALLE DE UNA INSTANCIA"
+                      : "INSTANCE DETAIL"}
+                  </span>
+                  <strong>
+                    x<sub>i1</sub> ∈ ℝ<sup>d</sup>
+                  </strong>
+                </div>
+                <div class="vector-values">
+                  <span>
+                    f<sub>1</sub>
+                  </span>
+                  <span>
+                    f<sub>2</sub>
+                  </span>
+                  <span>…</span>
+                  <span>
+                    f<sub>d</sub>
+                  </span>
+                </div>
+                <p>
+                  {locale === "es"
+                    ? "d características por instancia; misma dimensión en el conjunto."
+                    : "d features per instance; the same dimension throughout the dataset."}
+                </p>
+              </div>
+            </div>
+            <figcaption>
+              <strong>{locale === "es" ? "Figura 1." : "Figure 1."}</strong>
+              {locale === "es"
+                ? " Estructura conceptual de datos multiinstancia. Las bolsas pueden contener distinto número de instancias. Los signos ilustran etiquetas de bolsa en un ejemplo supervisado; no se muestran etiquetas individuales. En el agrupamiento, estas etiquetas no se usan para formar los grupos."
+                : " Conceptual structure of multi-instance data. Bags can contain different numbers of instances. The signs illustrate bag labels in a supervised example; individual labels are not shown. In clustering, these labels are not used to form groups."}
+            </figcaption>
+          </figure>
+        </section>
+        <section id="methodology">
+          <p class="section-kicker">
+            {locale === "es" ? "02 / EL SOFTWARE" : "02 / THE SOFTWARE"}
+          </p>
+          <h2>{locale === "es" ? "La librería" : "The library"}</h2>
+          <p>
+            {locale === "es"
+              ? "MIClustering proporciona herramientas de Python para trabajar con datos organizados en bolsas. Su flujo de trabajo documentado combina la carga y el escalado de datos con distancias entre bolsas, modelos y evaluación. La librería adapta ideas existentes al contexto multiinstancia; los métodos parten de investigaciones previas sobre agrupamiento y clasificación "
+              : "MIClustering provides tools for working with bag-structured data in Python. Its documented workflow combines data loading and scaling with bag distances, models and evaluation. The library adapts existing ideas to the multiple-instance setting; the methods themselves build on prior clustering and classification research "}
+            <a href="#ref-software">[2]</a>.
+          </p>
+          <div class="method-list">
+            <div>
+              <span>01</span>
+              <div>
+                <h3>{locale === "es" ? "Comparar bolsas" : "Compare bags"}</h3>
+                <p>
+                  {locale === "es"
+                    ? "Entre las distancias documentadas se encuentran variantes de Hausdorff, Mahalanobis y Earth Mover’s Distance."
+                    : "Distance options documented by the project include Hausdorff variants, Mahalanobis and Earth Mover’s Distance."}
+                </p>
+              </div>
+            </div>
+            <div>
+              <span>02</span>
+              <div>
+                <h3>
+                  {locale === "es" ? "Encontrar estructura" : "Find structure"}
+                </h3>
+                <p>
+                  {locale === "es"
+                    ? "MIDBSCAN y COSMIC abordan el agrupamiento basado en densidad; MIKMeans y MIKMedoids ofrecen métodos de partición. MIKnn es un clasificador supervisado independiente."
+                    : "MIDBSCAN and COSMIC address density-based clustering; MIKMeans and MIKMedoids provide partitioning approaches. MIKnn is a separate supervised classifier."}
+                </p>
+              </div>
+            </div>
+            <div>
+              <span>03</span>
+              <div>
+                <h3>
+                  {locale === "es"
+                    ? "Evaluar y analizar"
+                    : "Evaluate and inspect"}
+                </h3>
+                <p>
+                  {locale === "es"
+                    ? "El proyecto incluye preprocesado, herramientas de evaluación interna y externa, y un flujo experimental configurable mediante JSON."
+                    : "The project includes preprocessing, internal and external evaluation utilities, and a JSON-configured experimental pipeline."}
+                </p>
+              </div>
+            </div>
+          </div>
+          <p class="source-note">
+            {locale === "es" ? "Basado en la " : "Based on the "}
+            <a href={snapshot}>
+              {locale === "es"
+                ? "documentación del repositorio en el commit 060db14"
+                : "repository documentation at commit 060db14"}
+            </a>
+            {locale === "es"
+              ? ". Consulta el código para conocer la implementación y el uso actuales."
+              : ". Consult the source for the current implementation and usage."}
+          </p>
+        </section>
+        <section id="experimental-setup">
+          <p class="section-kicker">
+            {locale === "es" ? "03 / EXPERIMENTOS" : "03 / EXPERIMENTS"}
+          </p>
+          <h2>
+            {locale === "es" ? "Diseño experimental" : "Experimental setup"}
+          </h2>
+          <p>
+            {locale === "es"
+              ? "El trabajo de fin de grado original se centró en adaptar DBSCAN a bolsas. Los resultados siguientes proceden de un "
+              : "The original undergraduate project focused on adapting DBSCAN to bags. The results below come from a "}
+            <strong>
+              {locale === "es"
+                ? "estudio exploratorio posterior sobre geometría"
+                : "subsequent exploratory geometry study"}
+            </strong>
+            {locale === "es"
+              ? ", distinto de la comparación del TFG. La búsqueda combina 10 conjuntos de datos, dos escaladores, seis distancias y cuatro modelos: 480 estudios en total. El resumen conserva un ensayo seleccionado por estudio; 422 tienen al menos dos clústeres y 58 se consideran degenerados."
+              : ", not the thesis comparison. Its grid crosses 10 datasets, two scalers, six distances and four models: 480 studies in total. The archived summary contains one selected trial per study; 422 have at least two clusters and 58 are marked degenerate."}
+          </p>
+          <p>
+            {locale === "es"
+              ? "Para cada estudio, el script optimiza una puntuación geométrica que combina silhouette y Dunn normalizado con el mismo peso. En MIDBSCAN y COSMIC también minimiza la proporción de bolsas marcadas como ruido y selecciona un punto del frente de Pareto. MIKMeans y MIKMedoids maximizan la puntuación geométrica. F1 se calcula posteriormente a partir de las etiquetas de referencia mediante asignación húngara; se utiliza el mismo conjunto para ajustar y evaluar, por lo que estos valores no estiman la generalización sobre datos reservados."
+              : "For each study, the script optimizes a geometric score combining silhouette and normalized Dunn with equal weights. For MIDBSCAN and COSMIC, it also minimizes the proportion of bags marked as noise, selecting a point on the Pareto front. MIKMeans and MIKMedoids maximize the geometric score. F1 is calculated afterwards from reference labels via Hungarian mapping; the same dataset is used to fit and evaluate, so these values do not estimate held-out generalization."}
+          </p>
+          <div class="protocol">
+            <div>
+              <span>
+                {locale === "es" ? "SEMILLA DEL NOTEBOOK" : "NOTEBOOK SEED"}
+              </span>
+              <strong>42</strong>
+            </div>
+            <div>
+              <span>
+                {locale === "es"
+                  ? "MODELOS DE PARTICIÓN"
+                  : "PARTITIONING MODELS"}
+              </span>
+              <strong>
+                {locale === "es"
+                  ? "hasta 250 ensayos · paciencia 50"
+                  : "up to 250 trials · patience 50"}
+              </strong>
+            </div>
+            <div>
+              <span>
+                {locale === "es" ? "MODELOS DE DENSIDAD" : "DENSITY MODELS"}
+              </span>
+              <strong>
+                {locale === "es"
+                  ? "hasta 50 ensayos · paciencia 30"
+                  : "up to 50 trials · patience 30"}
+              </strong>
+            </div>
+            <div>
+              <span>{locale === "es" ? "ENTORNO" : "ENVIRONMENT"}</span>
+              <strong>Kaggle · CPU (notebook)</strong>
+            </div>
+          </div>
+          <p class="source-note">
+            {locale === "es"
+              ? "Esta es la configuración del notebook proporcionado; la parada temprana puede reducir el número real de ensayos. El notebook instala MIClustering desde una rama sin fijar, por lo que la revisión exacta de la librería utilizada en esta ejecución no está verificada."
+              : "These are the settings in the supplied notebook; early stopping means actual trial counts can be lower. The input notebook installs MIClustering from an unpinned branch, so the exact library revision used for this run remains unverified."}
+          </p>
+        </section>
+        <section id="results">
+          <p class="section-kicker">
+            {locale === "es" ? "04 / EVIDENCIA" : "04 / EVIDENCE"}
+          </p>
+          <h2>
+            {locale === "es"
+              ? "Resultados y discusión"
+              : "Results & discussion"}
+          </h2>
+          <p>
+            {locale === "es"
+              ? "La relación entre calidad geométrica y concordancia externa requiere cautela. En los 422 estudios seleccionados no degenerados, el análisis proporcionado indica una correlación global de Spearman de ρ = 0.0489 entre la puntuación CVI y F1 (p = 0.3159). Las observaciones comparten conjuntos de datos y no son réplicas independientes, por lo que se trata de una asociación descriptiva y no de una prueba de rendimiento general."
+              : "The relationship between geometric quality and external agreement deserves care. Across the 422 non-degenerate selected studies, the supplied analysis reports a global Spearman correlation of ρ = 0.0489 between CVI score and F1 (p = 0.3159). These observations share datasets and are not independent replications, so this is a descriptive association rather than evidence of general performance."}
+          </p>
+          <GeometryResults locale={locale} />
+          <p>
+            {locale === "es"
+              ? "Por ejemplo, la mayor puntuación CVI de MIDBSCAN en Harddrive 1 es "
+              : "For example, the highest CVI score for MIDBSCAN on Harddrive 1 is "}
+            <strong>0.9500</strong>
+            {locale === "es"
+              ? ", mientras que su F1 es "
+              : ", while its F1 is "}
+            <strong>0.6774</strong>
+            {locale === "es"
+              ? ". El mayor F1 para ese mismo conjunto y modelo es "
+              : ". The highest F1 for that same dataset and model is "}
+            <strong>0.9737</strong>
+            {locale === "es"
+              ? ", obtenido con otra configuración de distancia y una puntuación CVI de "
+              : ", obtained with a different distance configuration and a CVI score of "}
+            <strong>0.5236</strong>
+            {locale === "es"
+              ? ". Ambos valores son máximos seleccionados entre los estudios explorados y no predicen el rendimiento sobre datos no vistos."
+              : ". Both values are maxima selected from the explored studies, not a prediction of performance on unseen data."}
+          </p>
+        </section>
+        <section id="reproducibility">
+          <p class="section-kicker">
+            {locale === "es"
+              ? "05 / INVESTIGACIÓN ABIERTA"
+              : "05 / OPEN RESEARCH"}
+          </p>
+          <h2>{locale === "es" ? "Reproducibilidad" : "Reproducibility"}</h2>
+          <p>
+            {locale === "es"
+              ? "El notebook archivado especifica la semilla 42 y los presupuestos de búsqueda anteriores. El siguiente ejemplo identifica el ensayo seleccionado para la celda de máximo CVI de Harddrive 1 / MIDBSCAN. El archivo de ensayos conserva tanto el epsilon efectivo como el percentil explorado."
+              : "The archived notebook specifies seed 42 and the search budgets above. The example below identifies the selected trial behind the Harddrive 1 / MIDBSCAN maximum CVI cell. The trial file preserves the effective epsilon as well as the searched percentile."}
+          </p>
+          <div class="run-detail">
+            <p class="section-kicker">
+              {locale === "es"
+                ? "EJEMPLO / CVI MÁXIMO"
+                : "EXAMPLE / MAXIMUM CVI"}
+            </p>
+            <h3>Harddrive 1 · MIDBSCAN</h3>
+            <dl>
+              <div>
+                <dt>
+                  {locale === "es"
+                    ? "Escalador / distancia"
+                    : "Scaler / distance"}
+                </dt>
+                <dd>MinMaxScaler / Cauchy–Schwarz</dd>
+              </div>
+              <div>
+                <dt>
+                  {locale === "es" ? "Ensayo / min_pts" : "Trial / min_pts"}
+                </dt>
+                <dd>5 / 2</dd>
+              </div>
+              <div>
+                <dt>
+                  {locale === "es"
+                    ? "epsilon / percentil"
+                    : "epsilon / percentile"}
+                </dt>
+                <dd>0.013209905887373918 / 48.52558275593772</dd>
+              </div>
+              <div>
+                <dt>
+                  {locale === "es" ? "CVI / F1 / ruido" : "CVI / F1 / noise"}
+                </dt>
+                <dd>0.949976 / 0.677419 / 1.355%</dd>
+              </div>
+            </dl>
+            <p>
+              <a href="/miclustering/experiments/harddrive1-midbscan-minmax-cauchy-schwarz-trials.csv">
+                {locale === "es"
+                  ? "Descargar los ensayos de este estudio"
+                  : "Download this study's trials"}
+              </a>
+            </p>
+          </div>
+          <p>
+            {locale === "es" ? "Los " : "The "}
+            <a href="/miclustering/experiments/resultados_combinados.csv">
+              {locale === "es"
+                ? "resultados combinados de los estudios"
+                : "combined study results"}
+            </a>
+            ,{" "}
+            <a href="/miclustering/experiments/optimize_geometry.py">
+              {locale === "es"
+                ? "script de optimización"
+                : "optimization script"}
+            </a>
+            {locale === "es" ? " y " : " and "}
+            <a href="/miclustering/experiments/geometry-tests.ipynb">
+              notebook
+            </a>
+            {locale === "es"
+              ? " se archivan con este informe. El "
+              : " are archived with this report. The separate "}
+            <a
+              href="https://github.com/Andmo2004/MIClustering-experiments"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              {locale === "es"
+                ? "repositorio de experimentos"
+                : "experiments repository"}
+            </a>
+            {locale === "es"
+              ? " contiene trabajo relacionado; esta ejecución concreta sobre geometría se proporciona aquí. Los conjuntos de datos originales, las distancias en caché, el commit exacto de la librería y el entorno completamente fijado no se incluyen en este archivo, por lo que aún no se puede garantizar una reproducción exacta."
+              : " contains related project work; this particular geometry run is supplied here. The original datasets, cached distances, exact library commit and fully pinned environment are not included in this archive, so an exact rerun cannot yet be guaranteed."}
+          </p>
+        </section>
+        <section id="references" class="references">
+          <p class="section-kicker">
+            {locale === "es" ? "BIBLIOGRAFÍA" : "BIBLIOGRAPHY"}
+          </p>
+          <h2>{locale === "es" ? "Referencias" : "References"}</h2>
+          <ol>
+            <li id="ref-software">
+              A. Moros. <em>MIClustering</em>
+              {locale === "es"
+                ? ", repositorio de software. "
+                : ", software repository. "}
+              <a href={snapshot}>
+                {locale === "es"
+                  ? "Versión de la documentación, commit 060db14"
+                  : "Documentation snapshot, commit 060db14"}
+              </a>
+              .
+            </li>
+          </ol>
+        </section>
+      </article>
+    </div>
+  </main>
+  <footer>
+    <span>
+      {locale === "es"
+        ? "MIClustering / PROYECTO DE INVESTIGACIÓN"
+        : "MIClustering / RESEARCH PROJECT"}
+    </span>
+    <a href={home}>
+      {locale === "en" ? "Back to projects" : "Volver a proyectos"}
+    </a>
+  </footer>
+</div>
+<style>
+  .report {
+    --paper: #fbf9f5;
+    --ink: #1b1c1a;
+    --muted: #55423f;
+    --line: #dbc1bc;
+    --panel: #f5f3ef;
+    --panel-high: #efeeea;
+    --accent: #6d2417;
+    --on-accent: #fff;
+    --sage: #48654f;
+    --report-serif: "Crimson Pro", Georgia, serif;
+    --report-sans: "Commissioner", Arial, sans-serif;
+    --report-mono: "Spline Sans Mono", "SF Mono", monospace;
+    min-height: 100vh;
+    color: var(--ink);
+    background: var(--paper);
+    font-family: var(--report-sans);
+    font-size: 1.0625rem;
+    line-height: 1.65;
+  }
+  :global([data-theme="dark"]) .report {
+    --paper: #131412;
+    --ink: #e4e2de;
+    --muted: #d0c4c0;
+    --line: #55423f;
+    --panel: #1b1c1a;
+    --panel-high: #1f201e;
+    --accent: #ffb4a6;
+    --on-accent: #5d180c;
+    --sage: #aecfb4;
+  }
+  .report a {
+    color: inherit;
+    text-underline-offset: 0.2em;
+    transition:
+      color 120ms ease-out,
+      background-color 120ms ease-out,
+      border-color 120ms ease-out;
+  }
+  .report a:focus-visible,
+  .report summary:focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 4px;
+  }
+  .skip {
+    position: absolute;
+    top: -100px;
+    left: 1rem;
+    z-index: 10;
+    padding: 0.5rem;
+    background: var(--paper);
+  }
+  .skip:focus {
+    top: 1rem;
+  }
+  .topbar,
+  footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 1rem;
+    padding: 1rem max(1.25rem, calc((100vw - 1024px) / 2));
+    font-size: 0.8125rem;
+    font-weight: 600;
+    line-height: 1.4;
+  }
+  .topbar {
+    border-bottom: 1px solid var(--line);
+  }
+  .topbar a,
+  footer a {
+    text-decoration: none;
+  }
+  .topbar a:hover,
+  footer a:hover {
+    color: var(--accent);
+    text-decoration: underline;
+  }
+  .topbar span {
+    color: var(--muted);
+    text-align: right;
+  }
+  .topbar-right {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 1.25rem;
+    flex-wrap: wrap;
+  }
+  .language {
+    display: flex;
+    gap: 0.45rem;
+    align-items: center;
+    white-space: nowrap;
+    font-family: var(--report-mono);
+  }
+  .language a {
+    color: var(--muted);
+  }
+  .language a[aria-current="page"] {
+    color: var(--accent);
+    font-weight: 600;
+  }
+  .hero {
+    border-bottom: 1px solid var(--line);
+    background: var(--panel);
+  }
+  .hero-inner {
+    max-width: 800px;
+    margin: auto;
+    padding: 5rem 1.5rem 4rem;
+    text-align: center;
+  }
+  .eyebrow,
+  .section-kicker,
+  .metadata span,
+  .contents summary {
+    color: var(--accent);
+    font: 600 0.75rem/1.5 var(--report-sans);
+    letter-spacing: 0.08em;
+  }
+  .hero-mark {
+    display: inline-block;
+    width: 0.55rem;
+    height: 0.55rem;
+    margin-right: 0.55rem;
+    background: var(--sage);
+  }
+  h1 {
+    margin: 1.5rem 0 0.75rem;
+    font: 600 clamp(2.5rem, 5vw, 3.5rem)/1.08 var(--report-serif);
+    letter-spacing: -0.01em;
+  }
+  .subtitle {
+    color: var(--muted);
+    font: 400 clamp(1.2rem, 2.3vw, 1.5rem)/1.4 var(--report-serif);
+  }
+  .author {
+    margin-top: 1.5rem;
+    font-size: 1rem;
+    font-weight: 600;
+  }
+  .actions {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin-top: 2rem;
+  }
+  .action {
+    padding: 0.7rem 1rem;
+    border: 1px solid var(--line);
+    border-radius: 4px;
+    font-size: 0.8125rem;
+    font-weight: 600;
+    text-decoration: none;
+  }
+  .action:hover {
+    border-color: var(--accent);
+    color: var(--accent);
+  }
+  .action-primary,
+  .action-primary:hover {
+    color: var(--on-accent) !important;
+    background: var(--accent);
+    border-color: var(--accent);
+  }
+  .action-primary:hover {
+    opacity: 0.88;
+  }
+  .metadata {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    max-width: 1024px;
+    margin: auto;
+    border-top: 1px solid var(--line);
+  }
+  .metadata div {
+    padding: 1.25rem 1.5rem;
+  }
+  .metadata div + div {
+    border-left: 1px solid var(--line);
+  }
+  .metadata span,
+  .metadata strong {
+    display: block;
+  }
+  .metadata span {
+    color: var(--sage);
+  }
+  .metadata strong {
+    margin-top: 0.35rem;
+    font-size: 0.9375rem;
+    font-weight: 600;
+  }
+  .layout {
+    display: grid;
+    grid-template-columns: 168px minmax(0, 1fr);
+    gap: 3rem;
+    max-width: 1024px;
+    margin: auto;
+    padding: 4rem 1.5rem 6rem;
+  }
+  .contents {
+    position: sticky;
+    top: 2rem;
+    align-self: start;
+    font-family: var(--report-sans);
+  }
+  .contents summary {
+    cursor: pointer;
+    list-style: none;
+  }
+  .contents summary::-webkit-details-marker {
+    display: none;
+  }
+  .contents ol {
+    margin: 1rem 0;
+    padding: 0;
+    border-left: 1px solid var(--line);
+    list-style: none;
+  }
+  .contents a {
+    display: block;
+    padding: 0.35rem 0 0.35rem 1rem;
+    color: var(--muted);
+    font-size: 0.8125rem;
+    line-height: 1.5;
+    text-decoration: none;
+  }
+  .contents a:hover {
+    color: var(--accent);
+  }
+  .aside-note {
+    padding-top: 1rem;
+    border-top: 1px solid var(--line);
+    color: var(--muted);
+    font-size: 0.8125rem;
+    line-height: 1.6;
+  }
+  .paper {
+    min-width: 0;
+    font-size: 1.0625rem;
+    line-height: 1.7;
+  }
+  .paper section {
+    margin-bottom: 3.5rem;
+    scroll-margin-top: 2rem;
+  }
+  .paper section:last-child {
+    margin-bottom: 0;
+  }
+  .paper h2 {
+    margin: 0.4rem 0 1.25rem;
+    color: var(--accent);
+    font: 600 2.125rem/1.18 var(--report-serif);
+    letter-spacing: -0.01em;
+  }
+  .paper p + p {
+    margin-top: 1rem;
+  }
+  .paper a {
+    color: var(--accent);
+  }
+  .abstract {
+    padding: 1.5rem;
+    border-left: 3px solid var(--accent);
+    border-radius: 4px;
+    background: var(--panel);
+  }
+  .abstract h2 {
+    margin-bottom: 0.75rem;
+  }
+  .keywords {
+    color: var(--muted);
+    font-size: 0.875rem;
+  }
+  .equation {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    overflow-x: auto;
+    margin: 2rem 0;
+    padding: 1.5rem;
+    border-radius: 4px;
+    background: var(--panel);
+    font: 400 1.2rem/1.5 var(--report-serif);
+  }
+  .equation > span:first-child {
+    margin: auto;
+    white-space: nowrap;
+  }
+  .equation > span:last-child {
+    color: var(--muted);
+    font: 0.8125rem var(--report-mono);
+  }
+  .bag-figure {
+    margin: 2rem 0;
+  }
+  .mil-diagram {
+    padding: 1.5rem;
+    border: 1px solid var(--line);
+    border-radius: 4px;
+    background: var(--panel);
+    font-family: var(--report-sans);
+  }
+  .diagram-dataset {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 0.4rem 1rem;
+    padding: 0.9rem 1rem;
+    background: var(--panel-high);
+    text-align: center;
+  }
+  .diagram-kicker {
+    color: var(--sage);
+    font: 600 0.7rem/1.4 var(--report-sans);
+    letter-spacing: 0.07em;
+  }
+  .diagram-dataset strong {
+    font: 600 1.15rem/1.3 var(--report-serif);
+  }
+  .diagram-dataset > span:last-child,
+  .bag-count {
+    color: var(--muted);
+    font-size: 0.8125rem;
+  }
+  .diagram-branches {
+    width: 50%;
+    height: 1.5rem;
+    margin: 0 auto;
+    border-top: 0;
+    border-right: 1px solid var(--line);
+    border-bottom: 1px solid var(--line);
+    border-left: 1px solid var(--line);
+  }
+  .diagram-bags {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+  }
+  .diagram-bag {
+    min-width: 0;
+    padding: 1rem;
+    border: 1px solid var(--line);
+    background: var(--paper);
+  }
+  .diagram-bag-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.875rem;
+  }
+  .bag-label {
+    padding: 0.2rem 0.45rem;
+    border-radius: 2px;
+    background: var(--panel-high);
+    color: var(--accent);
+    font: 600 0.8125rem var(--report-mono);
+    white-space: nowrap;
+  }
+  .diagram-instances {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 0.6rem;
+    min-height: 3.5rem;
+    padding: 0.75rem 0;
+  }
+  .instance,
+  .legend-dot {
+    display: inline-block;
+    flex: none;
+    width: 0.85rem;
+    height: 0.85rem;
+    border-radius: 50%;
+    background: var(--sage);
+  }
+  .instance-selected {
+    outline: 2px solid var(--accent);
+    outline-offset: 3px;
+  }
+  .diagram-legend {
+    display: flex;
+    justify-content: space-between;
+    gap: 0.5rem 1rem;
+    flex-wrap: wrap;
+    margin-top: 1rem;
+    color: var(--muted);
+    font-size: 0.8125rem;
+  }
+  .diagram-legend > span {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+  .legend-dot {
+    width: 0.65rem;
+    height: 0.65rem;
+  }
+  .diagram-vector {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    align-items: center;
+    gap: 0.75rem 1rem;
+    margin-top: 1.25rem;
+    padding: 1rem;
+    border-left: 3px solid var(--accent);
+    background: var(--panel-high);
+  }
+  .diagram-vector > div:first-child {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+  }
+  .diagram-vector strong {
+    font: 600 1.125rem var(--report-serif);
+  }
+  .vector-values {
+    display: flex;
+    border: 1px solid var(--line);
+    font: 0.875rem var(--report-mono);
+  }
+  .vector-values span {
+    min-width: 2.2rem;
+    padding: 0.4rem;
+    text-align: center;
+  }
+  .vector-values span + span {
+    border-left: 1px solid var(--line);
+  }
+  .diagram-vector p {
+    grid-column: 1 / -1;
+    color: var(--muted);
+    font-size: 0.8125rem;
+    line-height: 1.5;
+  }
+  @media (max-width: 500px) {
+    .mil-diagram {
+      padding: 1rem;
+    }
+    .diagram-bags {
+      gap: 0.5rem;
+    }
+    .diagram-bag {
+      padding: 0.75rem;
+    }
+    .diagram-bag-header {
+      flex-wrap: wrap;
+    }
+    .diagram-instances {
+      gap: 0.55rem;
+    }
+    .diagram-vector {
+      grid-template-columns: 1fr;
+    }
+  }
+  figcaption {
+    margin-top: 0.75rem;
+    color: var(--muted);
+    font-size: 0.875rem;
+    line-height: 1.5;
+  }
+  .method-list {
+    margin: 1.75rem 0;
+    border-top: 1px solid var(--line);
+  }
+  .method-list > div {
+    display: grid;
+    grid-template-columns: 2.5rem 1fr;
+    gap: 1rem;
+    padding: 1.25rem 0;
+    border-bottom: 1px solid var(--line);
+  }
+  .method-list > div > span {
+    padding-top: 0.35rem;
+    color: var(--accent);
+    font: 0.75rem var(--report-mono);
+  }
+  .method-list h3,
+  .run-detail h3 {
+    font: 600 1.125rem/1.45 var(--report-sans);
+  }
+  .method-list p {
+    margin-top: 0.25rem;
+    color: var(--muted);
+    font-size: 0.9375rem;
+  }
+  .source-note {
+    color: var(--muted);
+    font-size: 0.9375rem;
+  }
+  .protocol {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1px;
+    margin: 1.75rem 0;
+    background: var(--line);
+  }
+  .protocol div {
+    padding: 1rem;
+    background: var(--panel);
+  }
+  .protocol span {
+    display: block;
+    color: var(--sage);
+    font: 600 0.75rem/1.4 var(--report-sans);
+    letter-spacing: 0.04em;
+  }
+  .protocol strong {
+    display: block;
+    margin-top: 0.35rem;
+    font-size: 0.9375rem;
+    font-weight: 600;
+  }
+  .run-detail {
+    margin: 1.5rem 0;
+    padding: 1.5rem;
+    border-left: 3px solid var(--sage);
+    border-radius: 4px;
+    background: var(--panel-high);
+  }
+  .run-detail h3 {
+    margin: 0.4rem 0 1rem;
+  }
+  .run-detail dl div {
+    display: grid;
+    grid-template-columns: 12rem minmax(0, 1fr);
+    gap: 1rem;
+    padding: 0.65rem 0;
+    border-top: 1px solid var(--line);
+    font-size: 0.875rem;
+  }
+  .run-detail dt {
+    color: var(--muted);
+  }
+  .run-detail dd {
+    overflow-wrap: anywhere;
+    font-family: var(--report-mono);
+    font-variant-numeric: tabular-nums;
+  }
+  .references ol {
+    padding-left: 1.5rem;
+  }
+  .references li {
+    margin-bottom: 1rem;
+    padding-left: 0.4rem;
+    overflow-wrap: anywhere;
+    font-size: 0.9375rem;
+  }
+  footer {
+    border-top: 1px solid var(--line);
+    color: var(--muted);
+  }
+  footer a {
+    color: var(--ink) !important;
+  }
+  @media (max-width: 900px) {
+    .layout {
+      grid-template-columns: 1fr;
+      gap: 2rem;
+      padding-top: 2rem;
+    }
+    .contents {
+      position: static;
+    }
+    .contents ol {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.25rem 0.75rem;
+      border: 0;
+    }
+    .contents a {
+      padding: 0.2rem 0;
+    }
+    .aside-note {
+      display: none;
+    }
+  }
+  @media (max-width: 600px) {
+    .topbar,
+    footer {
+      font-size: 0.75rem;
+    }
+    .topbar-right {
+      gap: 0.5rem;
+    }
+    .hero-inner {
+      padding: 3.5rem 1.25rem 3rem;
+    }
+    .metadata {
+      grid-template-columns: 1fr;
+    }
+    .metadata div {
+      padding: 0.85rem 1.25rem;
+    }
+    .metadata div + div {
+      border-left: 0;
+      border-top: 1px solid var(--line);
+    }
+    .paper h2 {
+      font-size: 1.75rem;
+    }
+    .abstract {
+      padding: 1.25rem;
+    }
+    .protocol {
+      grid-template-columns: 1fr;
+    }
+    .run-detail dl div {
+      grid-template-columns: 1fr;
+      gap: 0.1rem;
+    }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .report a {
+      transition: none;
+    }
+  }
+  @media print {
+    .topbar,
+    .contents,
+    footer,
+    .actions,
+    .skip {
+      display: none;
+    }
+    .report {
+      --paper: #fff;
+      --ink: #111;
+      --muted: #333;
+      --line: #aaa;
+      --panel: #fff;
+      --panel-high: #fff;
+      --accent: #222;
+      --sage: #333;
+    }
+    .hero-inner {
+      padding: 1rem;
+    }
+    .layout {
+      display: block;
+      padding: 1rem 0;
+    }
+    .paper section,
+    figure {
+      break-inside: avoid;
+    }
+  }
+</style>

@@ -147,10 +147,14 @@ const brandTheme = isMiclustering ? 'miclustering' : isGlasstics ? 'glasstics' :
       <span>{exploreLabel}</span>
       <span class="case-study__arrow" aria-hidden="true">→</span>
     </a>
+    {isMiclustering && (
+      <a class="case-study__source" href="https://github.com/Andmo2004/MIClustering" target="_blank" rel="noopener noreferrer">GitHub <span aria-hidden="true">↗</span></a>
+    )}
   </div>
 </article>
 
 <style>
+  .case-study__source { display: inline-block; margin-left: 1.25rem; font-size: var(--text-small); color: var(--fg-muted); }
   .case-study {
     --reveal-x: 24px;
     display: grid;
