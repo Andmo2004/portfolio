@@ -152,7 +152,7 @@ export const translations: Record<Locale, TranslationSchema> = {
           title: 'MIClustering',
           description: 'Librería científica de Machine Learning en Python desarrollada como trabajo de investigación en Multiple-Instance Learning (MIL). Implementación de agrupamiento basado en densidad mediante la adaptación de métricas de distancia existentes a bolsas de instancias.',
           tags: ['Python', 'Scikit-learn', 'NumPy', 'MIL', 'Research'],
-          href: 'https://github.com/Andmo2004/MIClustering',
+          href: '/projects/miclustering/',
           image: {
             src: '/miclustering/icon-miclustering.svg',
             alt: 'MIClustering',
@@ -164,7 +164,7 @@ export const translations: Record<Locale, TranslationSchema> = {
             nameDark: '/miclustering/name-miclustering.svg',
             alt: 'MIClustering — Librería de Machine Learning (Multiple-Instance Learning)',
           },
-          isExternal: true,
+          isExternal: false,
         },
         {
           title: 'Glasstics',
@@ -297,7 +297,7 @@ export const translations: Record<Locale, TranslationSchema> = {
           title: 'MIClustering',
           description: 'Python scientific Machine Learning library developed as part of research in Multiple-Instance Learning (MIL). Density-based clustering implementation adapting existing distance metrics to instance bags.',
           tags: ['Python', 'Scikit-learn', 'NumPy', 'MIL', 'Research'],
-          href: 'https://github.com/Andmo2004/MIClustering',
+          href: '/en/projects/miclustering/',
           image: {
             src: '/miclustering/icon-miclustering.svg',
             alt: 'MIClustering',
@@ -309,7 +309,7 @@ export const translations: Record<Locale, TranslationSchema> = {
             nameDark: '/miclustering/name-miclustering.svg',
             alt: 'MIClustering — Python Machine Learning Library for Multiple-Instance Learning',
           },
-          isExternal: true,
+          isExternal: false,
         },
         {
           title: 'Glasstics',
